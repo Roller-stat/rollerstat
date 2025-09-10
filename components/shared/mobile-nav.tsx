@@ -6,13 +6,13 @@ import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { navigationItems, navigationConfig } from "@/lib/navigation";
+import { Logo } from "./logo";
 
 interface MobileNavProps {
   className?: string;
@@ -37,11 +37,8 @@ export function MobileNav({ className }: MobileNavProps) {
       </SheetTrigger>
       <SheetContent side="left" className={cn(navigationConfig.mobile.drawerWidth.default, navigationConfig.mobile.drawerWidth.sm)}>
         <SheetHeader>
-          <SheetTitle className="flex items-center space-x-2">
-            <div className="h-6 w-6 bg-primary rounded flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-xs">RS</span>
-            </div>
-            <span className="font-bold">Rollerstat</span>
+          <SheetTitle>
+            <Logo size="md" showText={true} href="/" />
           </SheetTitle>
         </SheetHeader>
         
