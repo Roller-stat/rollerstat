@@ -1,59 +1,21 @@
 "use client";
 
-import Link from "next/link";
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-} from "@/components/ui/navigation-menu";
-import { cn } from "@/lib/utils";
+import { NavbarLogo } from "./navbar-logo";
+import { DesktopNav } from "./desktop-nav";
+import { MobileNav } from "./mobile-nav";
 
 export function Navbar() {
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
-        {/* Logo space - left side */}
-        <div className="flex items-center space-x-4">
-          <div className="h-8 w-8 bg-primary rounded-md flex items-center justify-center">
-            <span className="text-primary-foreground font-bold text-sm">RS</span>
-          </div>
-          <span className="font-bold text-xl">Rollerstat</span>
-        </div>
-
-        {/* Navigation - positioned towards the left */}
-        <NavigationMenu>
-          <NavigationMenuList>
-            <NavigationMenuItem>
-              <Link href="/" className={cn(
-                "group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
-              )}>
-                Home
-              </Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <Link href="/news" className={cn(
-                "group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
-              )}>
-                News
-              </Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <Link href="/blogs" className={cn(
-                "group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
-              )}>
-                Blogs
-              </Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <Link href="/contact" className={cn(
-                "group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
-              )}>
-                Contact
-              </Link>
-            </NavigationMenuItem>
-          </NavigationMenuList>
-        </NavigationMenu>
+        {/* Logo - always visible */}
+        <NavbarLogo />
+        
+        {/* Desktop Navigation - hidden on mobile */}
+        <DesktopNav className="hidden md:flex" />
+        
+        {/* Mobile Navigation - visible only on mobile/tablet */}
+        <MobileNav />
       </div>
     </nav>
   );
