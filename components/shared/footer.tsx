@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
+import { Logo } from "./logo";
 
 export function Footer() {
   return (
@@ -8,12 +9,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <div className="h-6 w-6 bg-primary rounded flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-xs">RS</span>
-              </div>
-              <span className="font-bold">Rollerstat</span>
-            </div>
+            <Logo size="sm" showText={true} href="/" />
             <p className="text-sm text-muted-foreground">
               Your premier source for roller hockey news, insights, and community across Europe.
             </p>

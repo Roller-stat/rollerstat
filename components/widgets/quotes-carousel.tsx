@@ -28,8 +28,10 @@ const quotes = [
 
 export function QuotesCarousel() {
   const [currentQuote, setCurrentQuote] = useState(0);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    setIsClient(true);
     const interval = setInterval(() => {
       setCurrentQuote((prev) => (prev + 1) % quotes.length);
     }, 5000); // Change quote every 5 seconds
@@ -37,20 +39,23 @@ export function QuotesCarousel() {
     return () => clearInterval(interval);
   }, []);
 
+  // Always show the first quote on server-side to ensure hydration consistency
+  const displayQuote = isClient ? currentQuote : 0;
+
   return (
     <section className="py-12 bg-muted/30">
       <div className="container mx-auto px-4">
         <Card className="max-w-4xl mx-auto">
           <CardContent className="p-8 text-center">
             <blockquote className="text-xl md:text-2xl font-medium italic mb-6 text-foreground">
-              &ldquo;{quotes[currentQuote].text}&rdquo;
+              &ldquo;{quotes[displayQuote].text}&rdquo;
             </blockquote>
             <div className="flex flex-col items-center">
               <cite className="font-semibold text-primary">
-                {quotes[currentQuote].author}
+                {quotes[displayQuote].author}
               </cite>
               <span className="text-sm text-muted-foreground">
-                {quotes[currentQuote].role}
+                {quotes[displayQuote].role}
               </span>
             </div>
             
@@ -61,7 +66,7 @@ export function QuotesCarousel() {
                   key={index}
                   onClick={() => setCurrentQuote(index)}
                   className={`w-2 h-2 rounded-full transition-colors ${
-                    index === currentQuote ? 'bg-primary' : 'bg-muted-foreground/30'
+                    index === displayQuote ? 'bg-primary' : 'bg-muted-foreground/30'
                   }`}
                   aria-label={`Go to quote ${index + 1}`}
                 />
