@@ -20,7 +20,7 @@ export function Logo({
   const LogoIcon = () => (
     <div className={cn("relative flex-shrink-0", config.container, className)}>
       <img
-        src="/rollerstat-logo.png"
+        src="/11.svg"
         alt="Rollerstat Logo"
         className="w-full h-full object-contain"
         style={{ 
@@ -44,9 +44,9 @@ export function Logo({
   return (
     <Link href={href} className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
       <LogoIcon />
-      <span className={cn("font-bold text-foreground", config.text)}>
+      {/* <span className={cn("font-bold text-foreground", config.text)}>
         Rollerstat
-      </span>
+      </span> */}
     </Link>
   );
 }

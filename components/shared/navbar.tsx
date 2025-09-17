@@ -18,14 +18,14 @@ export function Navbar() {
       `}>
         {/* Logo - always visible with proper spacing */}
         <div className={navbarConfig.spacing.logoMargin}>
-          <Logo size="md" showText={true} />
+          <Logo size="lg" showText={true} className="h-48 w-48"/>
         </div>
         
-        {/* Desktop Navigation - hidden on mobile */}
-        <DesktopNav className={`hidden ${navbarConfig.breakpoints.mobile}:flex ${navbarConfig.spacing.navGap}`} />
+        {/* Desktop Navigation - hidden only on very small screens */}
+        <DesktopNav className={`hidden sm:flex ${navbarConfig.spacing.navGap}`} />
         
-        {/* Mobile Navigation - visible only on mobile/tablet */}
-        <div className="md:hidden mr-4 sm:mr-6 lg:mr-8">
+        {/* Mobile Navigation - visible only on very small screens */}
+        <div className="sm:hidden mr-4">
           <MobileNav />
         </div>
       </div>

@@ -38,11 +38,11 @@ export function MobileNav({ className }: MobileNavProps) {
       <SheetContent side="left" className={cn(navigationConfig.mobile.drawerWidth.default, navigationConfig.mobile.drawerWidth.sm)}>
         <SheetHeader>
           <SheetTitle>
-            <Logo size="md" showText={true} href="/" />
+            <Logo size="lg" showText={true} href="/" />
           </SheetTitle>
         </SheetHeader>
         
-        <nav className="mt-8">
+        <nav>
           <ul className="space-y-2">
             {navigationItems.map((item) => (
               <li key={item.href}>
