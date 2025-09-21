@@ -9,6 +9,8 @@ export const navigationItems: NavigationItem[] = [
   { href: "/news", label: "News" },
   { href: "/blogs", label: "Blogs" },
   { href: "/contact", label: "Contact" },
+  { href: "/signin", label: "Sign In" },
+  { href: "/login", label: "Log In" },
 ];
 
 export const navigationConfig = {
