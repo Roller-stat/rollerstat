@@ -2,7 +2,7 @@ export const navbarConfig = {
   // Navbar dimensions
   height: {
     mobile: "h-16",
-    desktop: "h-20"
+    desktop: "h-24"
   },
   
   // Logo sizing
