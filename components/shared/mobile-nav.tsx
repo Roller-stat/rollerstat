@@ -48,7 +48,7 @@ export function MobileNav({ className }: MobileNavProps) {
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  className="flex items-center px-3 py-2 text-sm font-medium rounded-md hover:bg-accent hover:text-accent-foreground transition-colors"
+                  className="flex items-center px-3 py-2 text-base font-medium rounded-md hover:bg-accent hover:text-accent-foreground transition-colors"
                 >
                   {item.label}
                 </Link>
