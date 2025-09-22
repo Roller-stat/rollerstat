@@ -9,7 +9,7 @@ export function Navbar() {
       <div className="w-full flex h-24 items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo - always visible with proper spacing */}
         <div className="ml-4 sm:ml-6 lg:ml-8">
-          <Logo size="lg" showText={true} className="h-48 w-48"/>
+          <Logo size="lg" showText={true} loop={true} loopDelay={2000} />
         </div>
         
         {/* Unified Navigation - handles both desktop and mobile */}

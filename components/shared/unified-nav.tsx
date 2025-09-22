@@ -44,8 +44,8 @@ export function UnifiedNav() {
 
   const getNavLinkClasses = (href: string, isMobile = false) => {
     const baseClasses = isMobile 
-      ? "flex items-center px-3 py-2 text-base font-medium rounded-md transition-colors hover:bg-accent hover:text-accent-foreground"
-      : "group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-base font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50";
+      ? "flex items-center px-3 py-2 text-3xl font-medium rounded-md transition-colors hover:bg-accent hover:text-accent-foreground"
+      : "group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-xl font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50";
     
     const activeClasses = isMobile
       ? "bg-accent text-accent-foreground"
@@ -66,7 +66,16 @@ export function UnifiedNav() {
           <NavigationMenuList>
             {navigationItems.map((item) => (
               <NavigationMenuItem key={item.href}>
-                <Link href={item.href} className={getNavLinkClasses(item.href)}>
+                <Link 
+                  href={item.href} 
+                  className={getNavLinkClasses(item.href)}
+                  style={{ 
+                    fontFamily: 'var(--font-barlow-condensed), "Barlow Condensed", Arial, sans-serif',
+                    color: '#057ec8',
+                    fontWeight: '600',
+                    fontStyle: 'normal'
+                  }}
+                >
                   {item.label}
                 </Link>
               </NavigationMenuItem>
@@ -98,6 +107,12 @@ export function UnifiedNav() {
                 href={item.href}
                 onClick={() => handleDesktopNavClick(item.href)}
                 className={getNavLinkClasses(item.href)}
+                style={{ 
+                  fontFamily: 'var(--font-barlow-condensed), "Barlow Condensed", Arial, sans-serif',
+                  color: '#057ec8',
+                  fontWeight: '600',
+                  fontStyle: 'normal'
+                }}
               >
                 {item.label}
               </Link>
@@ -134,6 +149,12 @@ export function UnifiedNav() {
                       href={item.href}
                       onClick={() => handleMobileNavClick(item.href)}
                       className={getNavLinkClasses(item.href, true)}
+                      style={{ 
+                        fontFamily: 'var(--font-barlow-condensed), "Barlow Condensed", Arial, sans-serif',
+                        color: '#057ec8',
+                        fontWeight: '600',
+                        fontStyle: 'normal'
+                      }}
                     >
                         {item.label}
                       </Link>

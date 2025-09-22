@@ -1,52 +1,118 @@
+"use client";
+
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { TextScramble } from "@/components/motion-primitives/text-scramble";
+import { useEffect, useState } from "react";
 
 interface LogoProps {
   className?: string;
-  size?: "sm" | "md" | "lg";
+  size?: "xxs" | "xs" | "sm" | "md" | "lg";
   showText?: boolean;
   href?: string;
+  animateOnMount?: boolean;
+  loop?: boolean;
+  loopDelay?: number;
 }
 
 export function Logo({ 
   className, 
   size = "md", 
   showText = true, 
-  href = "/" 
+  href = "/",
+  animateOnMount = true,
+  loop = false,
+  loopDelay = 2000
 }: LogoProps) {
-  const sizeClasses = {
-    sm: "h-7 w-7",
-    md: "h-10 w-10", 
-    lg: "h-12 w-12"
+  const textSizeClasses = {
+    xxs: "text-xs",
+    xs: "text-sm",
+    sm: "text-lg",
+    md: "text-2xl", 
+    lg: "text-3xl"
+  };
+
+  const fontSizeStyles = {
+    xxs: "1rem",
+    xs: "1.2rem", 
+    sm: "1.5rem",
+    md: "2rem",
+    lg: "4rem"
+  };
+
+  const [triggerAnimation, setTriggerAnimation] = useState(false);
+
+  useEffect(() => {
+    if (!loop) return;
+
+    const startLoop = () => {
+      // Initial delay before first animation
+      const initialTimeout = setTimeout(() => {
+        setTriggerAnimation(true);
+      }, 1000);
+
+      return () => clearTimeout(initialTimeout);
+    };
+
+    const cleanup = startLoop();
+
+    return cleanup;
+  }, [loop]);
+
+  const handleScrambleComplete = () => {
+    if (!loop) return;
+
+    // Reset trigger to false first
+    setTriggerAnimation(false);
+    
+    // Wait for the specified delay, then trigger next animation
+    setTimeout(() => {
+      setTriggerAnimation(true);
+    }, loopDelay);
   };
   
-  const LogoIcon = () => (
-    <div className={cn("relative flex-shrink-0", sizeClasses[size], className)}>
-      <img
-        src="/11.svg"
-        alt="Rollerstat Logo"
-        className="w-full h-full object-contain"
+  const LogoText = () => (
+    <div className={cn("relative flex-shrink-0", className)}>
+      <TextScramble
+        as="span"
+        className={cn(
+          "font-bold tracking-tight",
+          textSizeClasses[size]
+        )}
         style={{ 
-          imageRendering: '-webkit-optimize-contrast'
+          fontFamily: 'var(--font-barlow-condensed), "Barlow Condensed", Arial, sans-serif',
+          color: '#057ec8',
+          display: 'block',
+          fontSize: fontSizeStyles[size],
+          fontWeight: '700',
+          fontStyle: 'italic',
+          lineHeight: '1',
+          textTransform: 'uppercase'
         }}
-        loading="eager"
-      />
+        duration={1.2}
+        speed={0.05}
+        trigger={loop ? triggerAnimation : animateOnMount}
+        onScrambleComplete={handleScrambleComplete}
+        characterSet="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()"
+      >
+        ROLLERSTAT
+      </TextScramble>
     </div>
   );
 
   if (!showText) {
     return href ? (
       <Link href={href} className="inline-block">
-        <LogoIcon />
+        <LogoText />
       </Link>
     ) : (
-      <LogoIcon />
+      <LogoText />
     );
   }
 
   return (
     <Link href={href} className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
-      <LogoIcon />
+      <LogoText />
     </Link>
   );
 }
