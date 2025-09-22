@@ -2,67 +2,27 @@
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { useState, useEffect } from "react";
+import { useVideoRotation } from "@/lib/hooks";
 
 export function HeroSection() {
-  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
-  
   // Array of video URLs - replace with your actual video URLs
   const videos = [
     "/videos/testclip1.mp4",
     "/videos/testclip2.mp4",
   ];
 
-  // Auto-rotate videos based on their actual duration
-  useEffect(() => {
-    const videoElement = document.querySelector('video');
-    let timeoutId: NodeJS.Timeout;
-
-    const handleVideoEnd = () => {
-      setCurrentVideoIndex((prevIndex) => (prevIndex + 1) % videos.length);
-    };
-
-    const handleLoadedMetadata = () => {
-      if (videoElement) {
-        // Clear any existing timeout
-        if (timeoutId) {
-          clearTimeout(timeoutId);
-        }
-        
-        // Set timeout based on video duration
-        const duration = videoElement.duration * 1000; // Convert to milliseconds
-        timeoutId = setTimeout(() => {
-          setCurrentVideoIndex((prevIndex) => (prevIndex + 1) % videos.length);
-        }, duration);
-      }
-    };
-
-    if (videoElement) {
-      videoElement.addEventListener('loadedmetadata', handleLoadedMetadata);
-      videoElement.addEventListener('ended', handleVideoEnd);
-    }
-
-    return () => {
-      if (videoElement) {
-        videoElement.removeEventListener('loadedmetadata', handleLoadedMetadata);
-        videoElement.removeEventListener('ended', handleVideoEnd);
-      }
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-    };
-  }, [currentVideoIndex, videos.length]);
+  const { currentVideoIndex, setCurrentVideoIndex } = useVideoRotation(videos);
 
   return (
-    <section className="relative w-full h-[60vh] min-h-[400px] bg-gradient-to-br from-primary/20 via-background to-secondary/20 overflow-hidden">
+    <section className="relative w-full bg-gradient-to-br from-primary/20 via-background to-secondary/20 overflow-hidden">
       
       {/* Desktop Layout: Videos Left, Text Right */}
-      <div className="hidden md:flex h-full">
-        {/* Video Section - Left Side (Full Height, No Container) */}
-        <div className="w-1/2 relative">
+      <div className="hidden md:flex items-stretch">
+        {/* Video Section - Left Side (Dynamic Width Based on Video Aspect Ratio) */}
+        <div className="relative flex-shrink-0 max-w-[50%]">
           <video
             key={currentVideoIndex}
-            className="w-full h-full object-cover"
+            className="w-auto h-auto max-h-[80vh] object-contain"
             autoPlay
             muted
             playsInline
@@ -86,27 +46,22 @@ export function HeroSection() {
         </div>
         
         {/* Text Content - Right Side */}
-        <div className="w-1/2 relative z-10 flex items-center justify-center">
-          <div className="w-full max-w-lg px-8">
-            <div className="space-y-6">
-              <Badge variant="secondary" className="text-sm">
-                Your Source for Roller Hockey News
-              </Badge>
-              
-              <h1 className="text-4xl lg:text-6xl font-bold tracking-tight">
-                Welcome to{" "}
+        <div className="flex-1 relative z-10 flex items-center justify-center min-h-0 overflow-hidden">
+          <div className="w-full max-w-lg px-4 sm:px-6 lg:px-8 text-center">
+            <div className="flex flex-col justify-center items-center h-full gap-[clamp(1rem,1vh,3rem)]">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight">
                 <span className="text-primary">Rollerstat</span>
               </h1>
               
-              <p className="text-xl text-muted-foreground">
+              <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground">
                 Stay updated with the latest news, insights, and stories from the world of roller hockey across Europe.
               </p>
               
-              <div className="flex gap-4">
-                <Button size="lg">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+                <Button size="sm" className="sm:size-lg">
                   Subscribe to Newsletter
                 </Button>
-                <Button variant="outline" size="lg">
+                <Button variant="outline" size="sm" className="sm:size-lg">
                   Read Latest News
                 </Button>
               </div>
@@ -119,12 +74,7 @@ export function HeroSection() {
       <div className="md:hidden flex flex-col h-full py-8 px-6">
           {/* Text Content - Top */}
           <div className="flex-1 flex flex-col justify-center text-center space-y-6 mb-8">
-            <Badge variant="secondary" className="text-sm">
-              Your Source for Roller Hockey News
-            </Badge>
-            
             <h1 className="text-3xl font-bold tracking-tight">
-              Welcome to{" "}
               <span className="text-primary">Rollerstat</span>
             </h1>
             

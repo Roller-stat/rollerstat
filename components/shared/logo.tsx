@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { navbarConfig } from "@/lib/navbar-config";
 
 interface LogoProps {
   className?: string;
@@ -15,10 +14,14 @@ export function Logo({
   showText = true, 
   href = "/" 
 }: LogoProps) {
-  const config = navbarConfig.logo.sizes[size];
+  const sizeClasses = {
+    sm: "h-7 w-7",
+    md: "h-10 w-10", 
+    lg: "h-12 w-12"
+  };
   
   const LogoIcon = () => (
-    <div className={cn("relative flex-shrink-0", config.container, className)}>
+    <div className={cn("relative flex-shrink-0", sizeClasses[size], className)}>
       <img
         src="/11.svg"
         alt="Rollerstat Logo"
@@ -44,9 +47,6 @@ export function Logo({
   return (
     <Link href={href} className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
       <LogoIcon />
-      {/* <span className={cn("font-bold text-foreground", config.text)}>
-        Rollerstat
-      </span> */}
     </Link>
   );
 }

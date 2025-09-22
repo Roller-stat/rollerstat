@@ -13,14 +13,5 @@ export const navigationItems: NavigationItem[] = [
   { href: "/login", label: "Log In" },
 ];
 
-export const navigationConfig = {
-  breakpoints: {
-    mobile: "md", // Hide desktop nav below md breakpoint
-  },
-  mobile: {
-    drawerWidth: {
-      default: "w-[300px]",
-      sm: "sm:w-[400px]",
-    },
-  },
-} as const;
+// Mobile drawer width configuration
+export const mobileDrawerWidth = "w-[300px] sm:w-[400px]";

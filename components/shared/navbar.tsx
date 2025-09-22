@@ -1,33 +1,19 @@
 "use client";
 
 import { Logo } from "./logo";
-import { DesktopNav } from "./desktop-nav";
-import { MobileNav } from "./mobile-nav";
-import { navbarConfig } from "@/lib/navbar-config";
+import { UnifiedNav } from "./unified-nav";
 
 export function Navbar() {
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-background">
-      <div className={`
-        w-full
-        flex 
-        ${navbarConfig.height.desktop} 
-        items-center 
-        justify-between
-        ${navbarConfig.spacing.container}
-      `}>
+      <div className="w-full flex h-24 items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo - always visible with proper spacing */}
-        <div className={navbarConfig.spacing.logoMargin}>
+        <div className="ml-4 sm:ml-6 lg:ml-8">
           <Logo size="lg" showText={true} className="h-48 w-48"/>
         </div>
         
-        {/* Desktop Navigation - hidden only on very small screens */}
-        <DesktopNav className={`hidden sm:flex ${navbarConfig.spacing.navGap}`} />
-        
-        {/* Mobile Navigation - visible only on very small screens */}
-        <div className="sm:hidden mr-4">
-          <MobileNav />
-        </div>
+        {/* Unified Navigation - handles both desktop and mobile */}
+        <UnifiedNav />
       </div>
     </nav>
   );
