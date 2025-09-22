@@ -29,7 +29,13 @@ export function UnifiedNav() {
   } = useUIStore();
   const isHydrated = useHydration();
 
-  const handleNavClick = (href: string) => {
+  const handleDesktopNavClick = (href: string) => {
+    if (isHydrated) {
+      setActiveMenuItem(href);
+    }
+  };
+
+  const handleMobileNavClick = (href: string) => {
     if (isHydrated) {
       setActiveMenuItem(href);
       toggleMobileMenu(); // Close mobile menu when link is clicked
@@ -90,7 +96,7 @@ export function UnifiedNav() {
             <NavigationMenuItem key={item.href}>
               <Link 
                 href={item.href}
-                onClick={() => handleNavClick(item.href)}
+                onClick={() => handleDesktopNavClick(item.href)}
                 className={getNavLinkClasses(item.href)}
               >
                 {item.label}
@@ -124,11 +130,11 @@ export function UnifiedNav() {
                 <ul className="space-y-6 text-center">
                   {navigationItems.map((item) => (
                     <li key={item.href}>
-                      <Link
-                        href={item.href}
-                        onClick={() => handleNavClick(item.href)}
-                        className={getNavLinkClasses(item.href, true)}
-                      >
+                    <Link
+                      href={item.href}
+                      onClick={() => handleMobileNavClick(item.href)}
+                      className={getNavLinkClasses(item.href, true)}
+                    >
                         {item.label}
                       </Link>
                     </li>

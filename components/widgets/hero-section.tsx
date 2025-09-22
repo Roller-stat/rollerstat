@@ -71,9 +71,9 @@ export function HeroSection() {
       </div>
 
       {/* Mobile Layout: Text Top, Videos Bottom */}
-      <div className="md:hidden flex flex-col h-full py-8 px-6">
+      <div className="md:hidden flex flex-col h-full">
           {/* Text Content - Top */}
-          <div className="flex-1 flex flex-col justify-center text-center space-y-6 mb-8">
+          <div className="flex-1 flex flex-col justify-center text-center space-y-6 mb-8 py-8 px-6">
             <h1 className="text-3xl font-bold tracking-tight">
               <span className="text-primary">Rollerstat</span>
             </h1>
@@ -92,32 +92,30 @@ export function HeroSection() {
             </div>
           </div>
           
-          {/* Video Section - Bottom */}
-          <div className="flex-1">
-            <div className="relative aspect-video rounded-lg overflow-hidden shadow-2xl">
-              <video
-                key={currentVideoIndex}
-                className="w-full h-full object-cover"
-                autoPlay
-                muted
-                playsInline
-              >
-                <source src={videos[currentVideoIndex]} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-              
-              {/* Video indicator dots */}
-              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-                {videos.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentVideoIndex(index)}
-                    className={`w-2 h-2 rounded-full transition-colors ${
-                      index === currentVideoIndex ? 'bg-white' : 'bg-white/50'
-                    }`}
-                  />
-                ))}
-              </div>
+          {/* Video Section - Bottom (Full Width) */}
+          <div className="flex-1 relative w-full">
+            <video
+              key={currentVideoIndex}
+              className="w-full h-full object-contain"
+              autoPlay
+              muted
+              playsInline
+            >
+              <source src={videos[currentVideoIndex]} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+            
+            {/* Video indicator dots */}
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+              {videos.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentVideoIndex(index)}
+                  className={`w-2 h-2 rounded-full transition-colors ${
+                    index === currentVideoIndex ? 'bg-white' : 'bg-white/50'
+                  }`}
+                />
+              ))}
             </div>
           </div>
         </div>
