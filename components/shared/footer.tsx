@@ -9,7 +9,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="space-y-4">
-            <Logo size="sm" showText={true} href="/" />
+            <Logo size="md" showText={true} href="/" loop={true} loopDelay={2000} />
             <p className="text-sm text-muted-foreground">
               Your premier source for roller hockey news, insights, and community across Europe.
             </p>
