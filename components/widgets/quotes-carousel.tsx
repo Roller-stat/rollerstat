@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
+import { useQuotesCarousel } from "@/lib/hooks";
 
 const quotes = [
   {
@@ -27,20 +27,10 @@ const quotes = [
 ];
 
 export function QuotesCarousel() {
-  const [currentQuote, setCurrentQuote] = useState(0);
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-    const interval = setInterval(() => {
-      setCurrentQuote((prev) => (prev + 1) % quotes.length);
-    }, 5000); // Change quote every 5 seconds
-
-    return () => clearInterval(interval);
-  }, []);
-
+  const { currentQuote, setCurrentQuote, isHydrated } = useQuotesCarousel(quotes.length);
+  
   // Always show the first quote on server-side to ensure hydration consistency
-  const displayQuote = isClient ? currentQuote : 0;
+  const displayQuote = isHydrated ? currentQuote : 0;
 
   return (
     <section className="py-12 bg-muted/30">
