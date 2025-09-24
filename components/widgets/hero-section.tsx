@@ -49,23 +49,11 @@ export function HeroSection() {
         <div className="flex-1 relative z-10 flex items-center justify-center min-h-0 overflow-hidden">
           <div className="w-full max-w-lg px-4 sm:px-6 lg:px-8 text-center">
             <div className="flex flex-col justify-center items-center h-full gap-[clamp(1rem,1vh,3rem)]">
-              <h1 
-                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight"
-                style={{ 
-                  fontFamily: 'var(--font-barlow-condensed), "Barlow Condensed", Arial, sans-serif',
-                  fontStyle: 'normal'
-                }}
-              >
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight font-barlow-condensed">
                 <span className="text-primary">Rollerstat</span>
               </h1>
               
-              <p 
-                className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground"
-                style={{ 
-                  fontFamily: 'var(--font-barlow-condensed), "Barlow Condensed", Arial, sans-serif',
-                  fontStyle: 'normal'
-                }}
-              >
+              <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground font-barlow-condensed">
                 Stay updated with the latest news, insights, and stories from the world of roller hockey across Europe.
               </p>
               
@@ -86,23 +74,11 @@ export function HeroSection() {
       <div className="md:hidden flex flex-col h-full">
           {/* Text Content - Top */}
           <div className="flex-1 flex flex-col justify-center text-center space-y-6 mb-8 py-8 px-6">
-            <h1 
-              className="text-3xl font-bold tracking-tight"
-              style={{ 
-                fontFamily: 'var(--font-barlow-condensed), "Barlow Condensed", Arial, sans-serif',
-                fontStyle: 'normal'
-              }}
-            >
+            <h1 className="text-3xl font-bold tracking-tight font-barlow-condensed">
               <span className="text-primary">Rollerstat</span>
             </h1>
             
-            <p 
-              className="text-lg text-muted-foreground"
-              style={{ 
-                fontFamily: 'var(--font-barlow-condensed), "Barlow Condensed", Arial, sans-serif',
-                fontStyle: 'normal'
-              }}
-            >
+            <p className="text-lg text-muted-foreground font-barlow-condensed">
               Stay updated with the latest news, insights, and stories from the world of roller hockey across Europe.
             </p>
             
