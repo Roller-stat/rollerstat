@@ -7,7 +7,8 @@ import { useEffect, useState } from "react";
 
 interface LogoProps {
   className?: string;
-  size?: "xxs" | "xs" | "sm" | "md" | "lg";
+  size?: "xxs" | "xs" | "sm" | "md" | "ml" | "lg";
+  mobileSize?: "xxs" | "xs" | "sm" | "md" | "ml" | "lg";
   showText?: boolean;
   href?: string;
   animateOnMount?: boolean;
@@ -18,6 +19,7 @@ interface LogoProps {
 export function Logo({ 
   className, 
   size = "md", 
+  mobileSize,
   showText = true, 
   href = "/",
   animateOnMount = true,
@@ -28,7 +30,8 @@ export function Logo({
     xxs: "text-xs",
     xs: "text-sm",
     sm: "text-lg",
-    md: "text-2xl", 
+    md: "text-2xl",
+    ml: "text-2xl", 
     lg: "text-3xl"
   };
 
@@ -37,6 +40,7 @@ export function Logo({
     xs: "1.2rem", 
     sm: "1.5rem",
     md: "2rem",
+    ml: "3rem",
     lg: "4rem"
   };
 
@@ -83,7 +87,7 @@ export function Logo({
           fontFamily: 'var(--font-barlow-condensed), "Barlow Condensed", Arial, sans-serif',
           color: '#057ec8',
           display: 'block',
-          fontSize: fontSizeStyles[size],
+          fontSize: mobileSize ? `clamp(${fontSizeStyles[mobileSize]}, 4vw, ${fontSizeStyles[size]})` : fontSizeStyles[size],
           fontWeight: '700',
           fontStyle: 'italic',
           lineHeight: '1',
