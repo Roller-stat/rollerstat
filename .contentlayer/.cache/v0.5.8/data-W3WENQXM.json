@@ -1,0 +1,160 @@
+{
+  "cacheItemsMap": {
+    "en/blogs/tactical-analysis-2024.mdx": {
+      "document": {
+        "title": "Tactical Analysis: The Evolution of Modern Roller Hockey",
+        "slug": "tactical-analysis-2024",
+        "summary": "An in-depth look at how tactical innovations are reshaping the game of roller hockey in 2024.",
+        "date": "2024-01-12T00:00:00.000Z",
+        "locale": "en",
+        "tags": [
+          "tactics",
+          "analysis",
+          "strategy",
+          "evolution"
+        ],
+        "coverImage": "https://res.cloudinary.com/rollerstat/image/upload/v1705123456/tactical-analysis.jpg",
+        "author": "Marco Rodriguez",
+        "translation_key": "tactical-analysis-2024",
+        "contentType": "blog",
+        "featured": false,
+        "published": true,
+        "body": {
+          "raw": "\n# Tactical Analysis: The Evolution of Modern Roller Hockey\n\nThe landscape of roller hockey has undergone significant tactical evolution over the past few years, with coaches and players adapting to new strategies that are reshaping how the game is played at the highest level.\n\n## The Rise of High-Pressure Systems\n\nOne of the most notable trends in modern roller hockey is the adoption of high-pressure defensive systems. Teams are now pressing higher up the court, forcing turnovers in dangerous areas and creating more scoring opportunities.\n\n### Key Tactical Innovations\n\n**1. The 2-1-1 Formation**\n\n- Allows for quick transitions from defense to attack\n- Creates numerical superiority in key areas\n- Requires exceptional fitness levels from all players\n\n**2. Rotational Marking**\n\n- Players switch defensive assignments fluidly\n- Prevents opponents from establishing rhythm\n- Demands high tactical awareness from the entire team\n\n## Statistical Impact\n\nThe data shows that teams employing these modern tactics have seen:\n\n- 23% increase in ball possession\n- 18% more shots on goal per game\n- 15% reduction in goals conceded\n\n## Future Trends\n\nAs the game continues to evolve, we can expect to see:\n\n- More emphasis on set-piece routines\n- Increased use of data analytics in tactical preparation\n- Greater focus on individual player specialization\n\nThe tactical evolution of roller hockey shows no signs of slowing down, and teams that fail to adapt risk being left behind in this rapidly changing sport.\n",
+          "code": "var Component=(()=>{var u=Object.create;var s=Object.defineProperty;var p=Object.getOwnPropertyDescriptor;var m=Object.getOwnPropertyNames;var g=Object.getPrototypeOf,f=Object.prototype.hasOwnProperty;var y=(i,e)=>()=>(e||i((e={exports:{}}).exports,e),e.exports),v=(i,e)=>{for(var a in e)s(i,a,{get:e[a],enumerable:!0})},o=(i,e,a,r)=>{if(e&&typeof e==\"object\"||typeof e==\"function\")for(let t of m(e))!f.call(i,t)&&t!==a&&s(i,t,{get:()=>e[t],enumerable:!(r=p(e,t))||r.enumerable});return i};var k=(i,e,a)=>(a=i!=null?u(g(i)):{},o(e||!i||!i.__esModule?s(a,\"default\",{value:i,enumerable:!0}):a,i)),w=i=>o(s({},\"__esModule\",{value:!0}),i);var c=y((_,l)=>{l.exports=_jsx_runtime});var x={};v(x,{default:()=>d,frontmatter:()=>T});var n=k(c()),T={title:\"Tactical Analysis: The Evolution of Modern Roller Hockey\",slug:\"tactical-analysis-2024\",summary:\"An in-depth look at how tactical innovations are reshaping the game of roller hockey in 2024.\",date:\"2024-01-12\",locale:\"en\",tags:[\"tactics\",\"analysis\",\"strategy\",\"evolution\"],coverImage:\"https://res.cloudinary.com/rollerstat/image/upload/v1705123456/tactical-analysis.jpg\",author:\"Marco Rodriguez\",translation_key:\"tactical-analysis-2024\",contentType:\"blog\",featured:!1,published:!0};function h(i){let e={a:\"a\",h1:\"h1\",h2:\"h2\",h3:\"h3\",li:\"li\",p:\"p\",strong:\"strong\",ul:\"ul\",...i.components};return(0,n.jsxs)(n.Fragment,{children:[(0,n.jsx)(e.h1,{id:\"tactical-analysis-the-evolution-of-modern-roller-hockey\",children:(0,n.jsx)(e.a,{className:\"anchor\",href:\"#tactical-analysis-the-evolution-of-modern-roller-hockey\",children:\"Tactical Analysis: The Evolution of Modern Roller Hockey\"})}),`\n`,(0,n.jsx)(e.p,{children:\"The landscape of roller hockey has undergone significant tactical evolution over the past few years, with coaches and players adapting to new strategies that are reshaping how the game is played at the highest level.\"}),`\n`,(0,n.jsx)(e.h2,{id:\"the-rise-of-high-pressure-systems\",children:(0,n.jsx)(e.a,{className:\"anchor\",href:\"#the-rise-of-high-pressure-systems\",children:\"The Rise of High-Pressure Systems\"})}),`\n`,(0,n.jsx)(e.p,{children:\"One of the most notable trends in modern roller hockey is the adoption of high-pressure defensive systems. Teams are now pressing higher up the court, forcing turnovers in dangerous areas and creating more scoring opportunities.\"}),`\n`,(0,n.jsx)(e.h3,{id:\"key-tactical-innovations\",children:(0,n.jsx)(e.a,{className:\"anchor\",href:\"#key-tactical-innovations\",children:\"Key Tactical Innovations\"})}),`\n`,(0,n.jsx)(e.p,{children:(0,n.jsx)(e.strong,{children:\"1. The 2-1-1 Formation\"})}),`\n`,(0,n.jsxs)(e.ul,{children:[`\n`,(0,n.jsx)(e.li,{children:\"Allows for quick transitions from defense to attack\"}),`\n`,(0,n.jsx)(e.li,{children:\"Creates numerical superiority in key areas\"}),`\n`,(0,n.jsx)(e.li,{children:\"Requires exceptional fitness levels from all players\"}),`\n`]}),`\n`,(0,n.jsx)(e.p,{children:(0,n.jsx)(e.strong,{children:\"2. Rotational Marking\"})}),`\n`,(0,n.jsxs)(e.ul,{children:[`\n`,(0,n.jsx)(e.li,{children:\"Players switch defensive assignments fluidly\"}),`\n`,(0,n.jsx)(e.li,{children:\"Prevents opponents from establishing rhythm\"}),`\n`,(0,n.jsx)(e.li,{children:\"Demands high tactical awareness from the entire team\"}),`\n`]}),`\n`,(0,n.jsx)(e.h2,{id:\"statistical-impact\",children:(0,n.jsx)(e.a,{className:\"anchor\",href:\"#statistical-impact\",children:\"Statistical Impact\"})}),`\n`,(0,n.jsx)(e.p,{children:\"The data shows that teams employing these modern tactics have seen:\"}),`\n`,(0,n.jsxs)(e.ul,{children:[`\n`,(0,n.jsx)(e.li,{children:\"23% increase in ball possession\"}),`\n`,(0,n.jsx)(e.li,{children:\"18% more shots on goal per game\"}),`\n`,(0,n.jsx)(e.li,{children:\"15% reduction in goals conceded\"}),`\n`]}),`\n`,(0,n.jsx)(e.h2,{id:\"future-trends\",children:(0,n.jsx)(e.a,{className:\"anchor\",href:\"#future-trends\",children:\"Future Trends\"})}),`\n`,(0,n.jsx)(e.p,{children:\"As the game continues to evolve, we can expect to see:\"}),`\n`,(0,n.jsxs)(e.ul,{children:[`\n`,(0,n.jsx)(e.li,{children:\"More emphasis on set-piece routines\"}),`\n`,(0,n.jsx)(e.li,{children:\"Increased use of data analytics in tactical preparation\"}),`\n`,(0,n.jsx)(e.li,{children:\"Greater focus on individual player specialization\"}),`\n`]}),`\n`,(0,n.jsx)(e.p,{children:\"The tactical evolution of roller hockey shows no signs of slowing down, and teams that fail to adapt risk being left behind in this rapidly changing sport.\"})]})}function d(i={}){let{wrapper:e}=i.components||{};return e?(0,n.jsx)(e,{...i,children:(0,n.jsx)(h,{...i})}):h(i)}return w(x);})();\n;return Component;"
+        },
+        "_id": "en/blogs/tactical-analysis-2024.mdx",
+        "_raw": {
+          "sourceFilePath": "en/blogs/tactical-analysis-2024.mdx",
+          "sourceFileName": "tactical-analysis-2024.mdx",
+          "sourceFileDir": "en/blogs",
+          "contentType": "mdx",
+          "flattenedPath": "en/blogs/tactical-analysis-2024"
+        },
+        "type": "Post",
+        "readingTime": 2,
+        "url": "/en/blog/tactical-analysis-2024"
+      },
+      "documentHash": "1758688484996",
+      "hasWarnings": false,
+      "documentTypeName": "Post"
+    },
+    "en/news/championship-finals-2024.mdx": {
+      "document": {
+        "title": "European Roller Hockey Championship Finals 2024",
+        "slug": "championship-finals-2024",
+        "summary": "Spain defeats Portugal in a thrilling final match to claim the European Roller Hockey Championship title for 2024.",
+        "date": "2024-01-15T00:00:00.000Z",
+        "locale": "en",
+        "tags": [
+          "championship",
+          "spain",
+          "portugal",
+          "finals"
+        ],
+        "coverImage": "https://res.cloudinary.com/rollerstat/image/upload/v1705123456/championship-2024.jpg",
+        "author": "Rollerstat Editorial Team",
+        "translation_key": "championship-finals-2024",
+        "contentType": "news",
+        "featured": true,
+        "published": true,
+        "body": {
+          "raw": "\n# European Roller Hockey Championship Finals 2024\n\nThe European Roller Hockey Championship came to a spectacular conclusion this weekend as Spain secured a dramatic victory over Portugal in the final match, winning 4-3 in overtime.\n\n## Match Highlights\n\nThe final was a showcase of the highest level of roller hockey, with both teams demonstrating exceptional skill and determination. Spain's captain, Carlos Mendez, scored the winning goal in the 78th minute of overtime, sending the Spanish fans into ecstasy.\n\n### Key Moments\n\n- **First Half**: Portugal took an early 2-0 lead with goals from Silva and Costa\n- **Second Half**: Spain fought back with three consecutive goals from Rodriguez, Mendez, and Garcia\n- **Overtime**: Mendez's decisive goal secured Spain's 15th European Championship title\n\n## Tournament Statistics\n\nThis year's championship saw record attendance numbers and was broadcast to over 50 countries worldwide. The tournament featured 16 teams competing over two weeks of intense matches.\n\nThe victory marks Spain's return to the top of European roller hockey after a three-year drought, while Portugal's strong performance throughout the tournament has positioned them as serious contenders for future competitions.\n\n## Looking Ahead\n\nWith the European Championship concluded, attention now turns to the World Championships scheduled for later this year in Argentina, where both Spain and Portugal will be among the favorites to compete for the ultimate prize in roller hockey.\n",
+          "code": "var Component=(()=>{var p=Object.create;var i=Object.defineProperty;var m=Object.getOwnPropertyDescriptor;var u=Object.getOwnPropertyNames;var g=Object.getPrototypeOf,f=Object.prototype.hasOwnProperty;var y=(a,e)=>()=>(e||a((e={exports:{}}).exports,e),e.exports),k=(a,e)=>{for(var t in e)i(a,t,{get:e[t],enumerable:!0})},h=(a,e,t,r)=>{if(e&&typeof e==\"object\"||typeof e==\"function\")for(let o of u(e))!f.call(a,o)&&o!==t&&i(a,o,{get:()=>e[o],enumerable:!(r=m(e,o))||r.enumerable});return a};var w=(a,e,t)=>(t=a!=null?p(g(a)):{},h(e||!a||!a.__esModule?i(t,\"default\",{value:a,enumerable:!0}):t,a)),v=a=>h(i({},\"__esModule\",{value:!0}),a);var l=y((E,s)=>{s.exports=_jsx_runtime});var S={};k(S,{default:()=>d,frontmatter:()=>C});var n=w(l()),C={title:\"European Roller Hockey Championship Finals 2024\",slug:\"championship-finals-2024\",summary:\"Spain defeats Portugal in a thrilling final match to claim the European Roller Hockey Championship title for 2024.\",date:\"2024-01-15\",locale:\"en\",tags:[\"championship\",\"spain\",\"portugal\",\"finals\"],coverImage:\"https://res.cloudinary.com/rollerstat/image/upload/v1705123456/championship-2024.jpg\",author:\"Rollerstat Editorial Team\",translation_key:\"championship-finals-2024\",contentType:\"news\",featured:!0,published:!0};function c(a){let e={a:\"a\",h1:\"h1\",h2:\"h2\",h3:\"h3\",li:\"li\",p:\"p\",strong:\"strong\",ul:\"ul\",...a.components};return(0,n.jsxs)(n.Fragment,{children:[(0,n.jsx)(e.h1,{id:\"european-roller-hockey-championship-finals-2024\",children:(0,n.jsx)(e.a,{className:\"anchor\",href:\"#european-roller-hockey-championship-finals-2024\",children:\"European Roller Hockey Championship Finals 2024\"})}),`\n`,(0,n.jsx)(e.p,{children:\"The European Roller Hockey Championship came to a spectacular conclusion this weekend as Spain secured a dramatic victory over Portugal in the final match, winning 4-3 in overtime.\"}),`\n`,(0,n.jsx)(e.h2,{id:\"match-highlights\",children:(0,n.jsx)(e.a,{className:\"anchor\",href:\"#match-highlights\",children:\"Match Highlights\"})}),`\n`,(0,n.jsx)(e.p,{children:\"The final was a showcase of the highest level of roller hockey, with both teams demonstrating exceptional skill and determination. Spain's captain, Carlos Mendez, scored the winning goal in the 78th minute of overtime, sending the Spanish fans into ecstasy.\"}),`\n`,(0,n.jsx)(e.h3,{id:\"key-moments\",children:(0,n.jsx)(e.a,{className:\"anchor\",href:\"#key-moments\",children:\"Key Moments\"})}),`\n`,(0,n.jsxs)(e.ul,{children:[`\n`,(0,n.jsxs)(e.li,{children:[(0,n.jsx)(e.strong,{children:\"First Half\"}),\": Portugal took an early 2-0 lead with goals from Silva and Costa\"]}),`\n`,(0,n.jsxs)(e.li,{children:[(0,n.jsx)(e.strong,{children:\"Second Half\"}),\": Spain fought back with three consecutive goals from Rodriguez, Mendez, and Garcia\"]}),`\n`,(0,n.jsxs)(e.li,{children:[(0,n.jsx)(e.strong,{children:\"Overtime\"}),\": Mendez's decisive goal secured Spain's 15th European Championship title\"]}),`\n`]}),`\n`,(0,n.jsx)(e.h2,{id:\"tournament-statistics\",children:(0,n.jsx)(e.a,{className:\"anchor\",href:\"#tournament-statistics\",children:\"Tournament Statistics\"})}),`\n`,(0,n.jsx)(e.p,{children:\"This year's championship saw record attendance numbers and was broadcast to over 50 countries worldwide. The tournament featured 16 teams competing over two weeks of intense matches.\"}),`\n`,(0,n.jsx)(e.p,{children:\"The victory marks Spain's return to the top of European roller hockey after a three-year drought, while Portugal's strong performance throughout the tournament has positioned them as serious contenders for future competitions.\"}),`\n`,(0,n.jsx)(e.h2,{id:\"looking-ahead\",children:(0,n.jsx)(e.a,{className:\"anchor\",href:\"#looking-ahead\",children:\"Looking Ahead\"})}),`\n`,(0,n.jsx)(e.p,{children:\"With the European Championship concluded, attention now turns to the World Championships scheduled for later this year in Argentina, where both Spain and Portugal will be among the favorites to compete for the ultimate prize in roller hockey.\"})]})}function d(a={}){let{wrapper:e}=a.components||{};return e?(0,n.jsx)(e,{...a,children:(0,n.jsx)(c,{...a})}):c(a)}return v(S);})();\n;return Component;"
+        },
+        "_id": "en/news/championship-finals-2024.mdx",
+        "_raw": {
+          "sourceFilePath": "en/news/championship-finals-2024.mdx",
+          "sourceFileName": "championship-finals-2024.mdx",
+          "sourceFileDir": "en/news",
+          "contentType": "mdx",
+          "flattenedPath": "en/news/championship-finals-2024"
+        },
+        "type": "Post",
+        "readingTime": 2,
+        "url": "/en/news/championship-finals-2024"
+      },
+      "documentHash": "1758688484998",
+      "hasWarnings": false,
+      "documentTypeName": "Post"
+    },
+    "es/blogs/analisis-tactico-2024.mdx": {
+      "document": {
+        "title": "Análisis Táctico: La Evolución del Hockey Patines Moderno",
+        "slug": "analisis-tactico-2024",
+        "summary": "Una mirada profunda a cómo las innovaciones tácticas están remodelando el juego del hockey patines en 2024.",
+        "date": "2024-01-12T00:00:00.000Z",
+        "locale": "es",
+        "tags": [
+          "tácticas",
+          "análisis",
+          "estrategia",
+          "evolución"
+        ],
+        "coverImage": "https://res.cloudinary.com/rollerstat/image/upload/v1705123456/tactical-analysis.jpg",
+        "author": "Marco Rodríguez",
+        "translation_key": "tactical-analysis-2024",
+        "contentType": "blog",
+        "featured": false,
+        "published": true,
+        "body": {
+          "raw": "\n# Análisis Táctico: La Evolución del Hockey Patines Moderno\n\nEl panorama del hockey patines ha experimentado una evolución táctica significativa en los últimos años, con entrenadores y jugadores adaptándose a nuevas estrategias que están remodelando cómo se juega el juego al más alto nivel.\n\n## El Auge de los Sistemas de Alta Presión\n\nUna de las tendencias más notables en el hockey patines moderno es la adopción de sistemas defensivos de alta presión. Los equipos ahora están presionando más arriba en la cancha, forzando pérdidas de balón en áreas peligrosas y creando más oportunidades de gol.\n\n### Innovaciones Tácticas Clave\n\n**1. La Formación 2-1-1**\n\n- Permite transiciones rápidas de defensa a ataque\n- Crea superioridad numérica en áreas clave\n- Requiere niveles excepcionales de condición física de todos los jugadores\n\n**2. Marcaje Rotacional**\n\n- Los jugadores cambian asignaciones defensivas de manera fluida\n- Previene que los oponentes establezcan ritmo\n- Demanda alta conciencia táctica de todo el equipo\n\n## Impacto Estadístico\n\nLos datos muestran que los equipos que emplean estas tácticas modernas han visto:\n\n- 23% de aumento en la posesión del balón\n- 18% más tiros a puerta por partido\n- 15% de reducción en goles concedidos\n\n## Tendencias Futuras\n\nA medida que el juego continúa evolucionando, podemos esperar ver:\n\n- Más énfasis en rutinas de jugadas a balón parado\n- Mayor uso de análisis de datos en la preparación táctica\n- Mayor enfoque en la especialización individual de los jugadores\n\nLa evolución táctica del hockey patines no muestra signos de desaceleración, y los equipos que no se adapten corren el riesgo de quedarse atrás en este deporte que cambia rápidamente.\n",
+          "code": "var Component=(()=>{var h=Object.create;var o=Object.defineProperty;var p=Object.getOwnPropertyDescriptor;var m=Object.getOwnPropertyNames;var g=Object.getPrototypeOf,v=Object.prototype.hasOwnProperty;var f=(n,e)=>()=>(e||n((e={exports:{}}).exports,e),e.exports),y=(n,e)=>{for(var i in e)o(n,i,{get:e[i],enumerable:!0})},l=(n,e,i,c)=>{if(e&&typeof e==\"object\"||typeof e==\"function\")for(let s of m(e))!v.call(n,s)&&s!==i&&o(n,s,{get:()=>e[s],enumerable:!(c=p(e,s))||c.enumerable});return n};var j=(n,e,i)=>(i=n!=null?h(g(n)):{},l(e||!n||!n.__esModule?o(i,\"default\",{value:n,enumerable:!0}):i,n)),q=n=>l(o({},\"__esModule\",{value:!0}),n);var t=f((k,r)=>{r.exports=_jsx_runtime});var b={};y(b,{default:()=>u,frontmatter:()=>x});var a=j(t()),x={title:\"An\\xE1lisis T\\xE1ctico: La Evoluci\\xF3n del Hockey Patines Moderno\",slug:\"analisis-tactico-2024\",summary:\"Una mirada profunda a c\\xF3mo las innovaciones t\\xE1cticas est\\xE1n remodelando el juego del hockey patines en 2024.\",date:\"2024-01-12\",locale:\"es\",tags:[\"t\\xE1cticas\",\"an\\xE1lisis\",\"estrategia\",\"evoluci\\xF3n\"],coverImage:\"https://res.cloudinary.com/rollerstat/image/upload/v1705123456/tactical-analysis.jpg\",author:\"Marco Rodr\\xEDguez\",translation_key:\"tactical-analysis-2024\",contentType:\"blog\",featured:!1,published:!0};function d(n){let e={a:\"a\",h1:\"h1\",h2:\"h2\",h3:\"h3\",li:\"li\",p:\"p\",strong:\"strong\",ul:\"ul\",...n.components};return(0,a.jsxs)(a.Fragment,{children:[(0,a.jsx)(e.h1,{id:\"an\\xE1lisis-t\\xE1ctico-la-evoluci\\xF3n-del-hockey-patines-moderno\",children:(0,a.jsx)(e.a,{className:\"anchor\",href:\"#an\\xE1lisis-t\\xE1ctico-la-evoluci\\xF3n-del-hockey-patines-moderno\",children:\"An\\xE1lisis T\\xE1ctico: La Evoluci\\xF3n del Hockey Patines Moderno\"})}),`\n`,(0,a.jsx)(e.p,{children:\"El panorama del hockey patines ha experimentado una evoluci\\xF3n t\\xE1ctica significativa en los \\xFAltimos a\\xF1os, con entrenadores y jugadores adapt\\xE1ndose a nuevas estrategias que est\\xE1n remodelando c\\xF3mo se juega el juego al m\\xE1s alto nivel.\"}),`\n`,(0,a.jsx)(e.h2,{id:\"el-auge-de-los-sistemas-de-alta-presi\\xF3n\",children:(0,a.jsx)(e.a,{className:\"anchor\",href:\"#el-auge-de-los-sistemas-de-alta-presi\\xF3n\",children:\"El Auge de los Sistemas de Alta Presi\\xF3n\"})}),`\n`,(0,a.jsx)(e.p,{children:\"Una de las tendencias m\\xE1s notables en el hockey patines moderno es la adopci\\xF3n de sistemas defensivos de alta presi\\xF3n. Los equipos ahora est\\xE1n presionando m\\xE1s arriba en la cancha, forzando p\\xE9rdidas de bal\\xF3n en \\xE1reas peligrosas y creando m\\xE1s oportunidades de gol.\"}),`\n`,(0,a.jsx)(e.h3,{id:\"innovaciones-t\\xE1cticas-clave\",children:(0,a.jsx)(e.a,{className:\"anchor\",href:\"#innovaciones-t\\xE1cticas-clave\",children:\"Innovaciones T\\xE1cticas Clave\"})}),`\n`,(0,a.jsx)(e.p,{children:(0,a.jsx)(e.strong,{children:\"1. La Formaci\\xF3n 2-1-1\"})}),`\n`,(0,a.jsxs)(e.ul,{children:[`\n`,(0,a.jsx)(e.li,{children:\"Permite transiciones r\\xE1pidas de defensa a ataque\"}),`\n`,(0,a.jsx)(e.li,{children:\"Crea superioridad num\\xE9rica en \\xE1reas clave\"}),`\n`,(0,a.jsx)(e.li,{children:\"Requiere niveles excepcionales de condici\\xF3n f\\xEDsica de todos los jugadores\"}),`\n`]}),`\n`,(0,a.jsx)(e.p,{children:(0,a.jsx)(e.strong,{children:\"2. Marcaje Rotacional\"})}),`\n`,(0,a.jsxs)(e.ul,{children:[`\n`,(0,a.jsx)(e.li,{children:\"Los jugadores cambian asignaciones defensivas de manera fluida\"}),`\n`,(0,a.jsx)(e.li,{children:\"Previene que los oponentes establezcan ritmo\"}),`\n`,(0,a.jsx)(e.li,{children:\"Demanda alta conciencia t\\xE1ctica de todo el equipo\"}),`\n`]}),`\n`,(0,a.jsx)(e.h2,{id:\"impacto-estad\\xEDstico\",children:(0,a.jsx)(e.a,{className:\"anchor\",href:\"#impacto-estad\\xEDstico\",children:\"Impacto Estad\\xEDstico\"})}),`\n`,(0,a.jsx)(e.p,{children:\"Los datos muestran que los equipos que emplean estas t\\xE1cticas modernas han visto:\"}),`\n`,(0,a.jsxs)(e.ul,{children:[`\n`,(0,a.jsx)(e.li,{children:\"23% de aumento en la posesi\\xF3n del bal\\xF3n\"}),`\n`,(0,a.jsx)(e.li,{children:\"18% m\\xE1s tiros a puerta por partido\"}),`\n`,(0,a.jsx)(e.li,{children:\"15% de reducci\\xF3n en goles concedidos\"}),`\n`]}),`\n`,(0,a.jsx)(e.h2,{id:\"tendencias-futuras\",children:(0,a.jsx)(e.a,{className:\"anchor\",href:\"#tendencias-futuras\",children:\"Tendencias Futuras\"})}),`\n`,(0,a.jsx)(e.p,{children:\"A medida que el juego contin\\xFAa evolucionando, podemos esperar ver:\"}),`\n`,(0,a.jsxs)(e.ul,{children:[`\n`,(0,a.jsx)(e.li,{children:\"M\\xE1s \\xE9nfasis en rutinas de jugadas a bal\\xF3n parado\"}),`\n`,(0,a.jsx)(e.li,{children:\"Mayor uso de an\\xE1lisis de datos en la preparaci\\xF3n t\\xE1ctica\"}),`\n`,(0,a.jsx)(e.li,{children:\"Mayor enfoque en la especializaci\\xF3n individual de los jugadores\"}),`\n`]}),`\n`,(0,a.jsx)(e.p,{children:\"La evoluci\\xF3n t\\xE1ctica del hockey patines no muestra signos de desaceleraci\\xF3n, y los equipos que no se adapten corren el riesgo de quedarse atr\\xE1s en este deporte que cambia r\\xE1pidamente.\"})]})}function u(n={}){let{wrapper:e}=n.components||{};return e?(0,a.jsx)(e,{...n,children:(0,a.jsx)(d,{...n})}):d(n)}return q(b);})();\n;return Component;"
+        },
+        "_id": "es/blogs/analisis-tactico-2024.mdx",
+        "_raw": {
+          "sourceFilePath": "es/blogs/analisis-tactico-2024.mdx",
+          "sourceFileName": "analisis-tactico-2024.mdx",
+          "sourceFileDir": "es/blogs",
+          "contentType": "mdx",
+          "flattenedPath": "es/blogs/analisis-tactico-2024"
+        },
+        "type": "Post",
+        "readingTime": 2,
+        "url": "/es/blog/analisis-tactico-2024"
+      },
+      "documentHash": "1758688484997",
+      "hasWarnings": false,
+      "documentTypeName": "Post"
+    },
+    "es/news/finales-campeonato-2024.mdx": {
+      "document": {
+        "title": "Finales del Campeonato Europeo de Hockey Patines 2024",
+        "slug": "finales-campeonato-2024",
+        "summary": "España derrota a Portugal en un emocionante partido final para reclamar el título del Campeonato Europeo de Hockey Patines 2024.",
+        "date": "2024-01-15T00:00:00.000Z",
+        "locale": "es",
+        "tags": [
+          "campeonato",
+          "españa",
+          "portugal",
+          "finales"
+        ],
+        "coverImage": "https://res.cloudinary.com/rollerstat/image/upload/v1705123456/championship-2024.jpg",
+        "author": "Equipo Editorial de Rollerstat",
+        "translation_key": "championship-finals-2024",
+        "contentType": "news",
+        "featured": true,
+        "published": true,
+        "body": {
+          "raw": "\n# Finales del Campeonato Europeo de Hockey Patines 2024\n\nEl Campeonato Europeo de Hockey Patines llegó a una conclusión espectacular este fin de semana cuando España aseguró una victoria dramática sobre Portugal en el partido final, ganando 4-3 en tiempo extra.\n\n## Momentos Destacados del Partido\n\nLa final fue una muestra del más alto nivel de hockey patines, con ambos equipos demostrando habilidad excepcional y determinación. El capitán de España, Carlos Méndez, anotó el gol ganador en el minuto 78 del tiempo extra, enviando a los aficionados españoles al éxtasis.\n\n### Momentos Clave\n\n- **Primera Mitad**: Portugal tomó una ventaja temprana de 2-0 con goles de Silva y Costa\n- **Segunda Mitad**: España luchó de vuelta con tres goles consecutivos de Rodríguez, Méndez y García\n- **Tiempo Extra**: El gol decisivo de Méndez aseguró el 15º título del Campeonato Europeo de España\n\n## Estadísticas del Torneo\n\nEl campeonato de este año vio números récord de asistencia y fue transmitido a más de 50 países en todo el mundo. El torneo contó con 16 equipos compitiendo durante dos semanas de partidos intensos.\n\nLa victoria marca el regreso de España a la cima del hockey patines europeo después de una sequía de tres años, mientras que el fuerte rendimiento de Portugal durante todo el torneo los ha posicionado como serios contendientes para futuras competiciones.\n\n## Mirando Hacia Adelante\n\nCon el Campeonato Europeo concluido, la atención ahora se dirige al Campeonato Mundial programado para más tarde este año en Argentina, donde tanto España como Portugal estarán entre los favoritos para competir por el premio máximo en hockey patines.\n",
+          "code": "var Component=(()=>{var m=Object.create;var r=Object.defineProperty;var u=Object.getOwnPropertyDescriptor;var h=Object.getOwnPropertyNames;var g=Object.getPrototypeOf,f=Object.prototype.hasOwnProperty;var E=(o,e)=>()=>(e||o((e={exports:{}}).exports,e),e.exports),y=(o,e)=>{for(var n in e)r(o,n,{get:e[n],enumerable:!0})},i=(o,e,n,s)=>{if(e&&typeof e==\"object\"||typeof e==\"function\")for(let t of h(e))!f.call(o,t)&&t!==n&&r(o,t,{get:()=>e[t],enumerable:!(s=u(e,t))||s.enumerable});return o};var v=(o,e,n)=>(n=o!=null?m(g(o)):{},i(e||!o||!o.__esModule?r(n,\"default\",{value:o,enumerable:!0}):n,o)),x=o=>i(r({},\"__esModule\",{value:!0}),o);var l=E((k,d)=>{d.exports=_jsx_runtime});var M={};y(M,{default:()=>p,frontmatter:()=>C});var a=v(l()),C={title:\"Finales del Campeonato Europeo de Hockey Patines 2024\",slug:\"finales-campeonato-2024\",summary:\"Espa\\xF1a derrota a Portugal en un emocionante partido final para reclamar el t\\xEDtulo del Campeonato Europeo de Hockey Patines 2024.\",date:\"2024-01-15\",locale:\"es\",tags:[\"campeonato\",\"espa\\xF1a\",\"portugal\",\"finales\"],coverImage:\"https://res.cloudinary.com/rollerstat/image/upload/v1705123456/championship-2024.jpg\",author:\"Equipo Editorial de Rollerstat\",translation_key:\"championship-finals-2024\",contentType:\"news\",featured:!0,published:!0};function c(o){let e={a:\"a\",h1:\"h1\",h2:\"h2\",h3:\"h3\",li:\"li\",p:\"p\",strong:\"strong\",ul:\"ul\",...o.components};return(0,a.jsxs)(a.Fragment,{children:[(0,a.jsx)(e.h1,{id:\"finales-del-campeonato-europeo-de-hockey-patines-2024\",children:(0,a.jsx)(e.a,{className:\"anchor\",href:\"#finales-del-campeonato-europeo-de-hockey-patines-2024\",children:\"Finales del Campeonato Europeo de Hockey Patines 2024\"})}),`\n`,(0,a.jsx)(e.p,{children:\"El Campeonato Europeo de Hockey Patines lleg\\xF3 a una conclusi\\xF3n espectacular este fin de semana cuando Espa\\xF1a asegur\\xF3 una victoria dram\\xE1tica sobre Portugal en el partido final, ganando 4-3 en tiempo extra.\"}),`\n`,(0,a.jsx)(e.h2,{id:\"momentos-destacados-del-partido\",children:(0,a.jsx)(e.a,{className:\"anchor\",href:\"#momentos-destacados-del-partido\",children:\"Momentos Destacados del Partido\"})}),`\n`,(0,a.jsx)(e.p,{children:\"La final fue una muestra del m\\xE1s alto nivel de hockey patines, con ambos equipos demostrando habilidad excepcional y determinaci\\xF3n. El capit\\xE1n de Espa\\xF1a, Carlos M\\xE9ndez, anot\\xF3 el gol ganador en el minuto 78 del tiempo extra, enviando a los aficionados espa\\xF1oles al \\xE9xtasis.\"}),`\n`,(0,a.jsx)(e.h3,{id:\"momentos-clave\",children:(0,a.jsx)(e.a,{className:\"anchor\",href:\"#momentos-clave\",children:\"Momentos Clave\"})}),`\n`,(0,a.jsxs)(e.ul,{children:[`\n`,(0,a.jsxs)(e.li,{children:[(0,a.jsx)(e.strong,{children:\"Primera Mitad\"}),\": Portugal tom\\xF3 una ventaja temprana de 2-0 con goles de Silva y Costa\"]}),`\n`,(0,a.jsxs)(e.li,{children:[(0,a.jsx)(e.strong,{children:\"Segunda Mitad\"}),\": Espa\\xF1a luch\\xF3 de vuelta con tres goles consecutivos de Rodr\\xEDguez, M\\xE9ndez y Garc\\xEDa\"]}),`\n`,(0,a.jsxs)(e.li,{children:[(0,a.jsx)(e.strong,{children:\"Tiempo Extra\"}),\": El gol decisivo de M\\xE9ndez asegur\\xF3 el 15\\xBA t\\xEDtulo del Campeonato Europeo de Espa\\xF1a\"]}),`\n`]}),`\n`,(0,a.jsx)(e.h2,{id:\"estad\\xEDsticas-del-torneo\",children:(0,a.jsx)(e.a,{className:\"anchor\",href:\"#estad\\xEDsticas-del-torneo\",children:\"Estad\\xEDsticas del Torneo\"})}),`\n`,(0,a.jsx)(e.p,{children:\"El campeonato de este a\\xF1o vio n\\xFAmeros r\\xE9cord de asistencia y fue transmitido a m\\xE1s de 50 pa\\xEDses en todo el mundo. El torneo cont\\xF3 con 16 equipos compitiendo durante dos semanas de partidos intensos.\"}),`\n`,(0,a.jsx)(e.p,{children:\"La victoria marca el regreso de Espa\\xF1a a la cima del hockey patines europeo despu\\xE9s de una sequ\\xEDa de tres a\\xF1os, mientras que el fuerte rendimiento de Portugal durante todo el torneo los ha posicionado como serios contendientes para futuras competiciones.\"}),`\n`,(0,a.jsx)(e.h2,{id:\"mirando-hacia-adelante\",children:(0,a.jsx)(e.a,{className:\"anchor\",href:\"#mirando-hacia-adelante\",children:\"Mirando Hacia Adelante\"})}),`\n`,(0,a.jsx)(e.p,{children:\"Con el Campeonato Europeo concluido, la atenci\\xF3n ahora se dirige al Campeonato Mundial programado para m\\xE1s tarde este a\\xF1o en Argentina, donde tanto Espa\\xF1a como Portugal estar\\xE1n entre los favoritos para competir por el premio m\\xE1ximo en hockey patines.\"})]})}function p(o={}){let{wrapper:e}=o.components||{};return e?(0,a.jsx)(e,{...o,children:(0,a.jsx)(c,{...o})}):c(o)}return x(M);})();\n;return Component;"
+        },
+        "_id": "es/news/finales-campeonato-2024.mdx",
+        "_raw": {
+          "sourceFilePath": "es/news/finales-campeonato-2024.mdx",
+          "sourceFileName": "finales-campeonato-2024.mdx",
+          "sourceFileDir": "es/news",
+          "contentType": "mdx",
+          "flattenedPath": "es/news/finales-campeonato-2024"
+        },
+        "type": "Post",
+        "readingTime": 2,
+        "url": "/es/news/finales-campeonato-2024"
+      },
+      "documentHash": "1758688484996",
+      "hasWarnings": false,
+      "documentTypeName": "Post"
+    }
+  }
+}

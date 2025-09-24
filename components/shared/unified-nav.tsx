@@ -16,9 +16,10 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
-import { navigationItems, mobileDrawerWidth } from "@/lib/navigation";
+import { getNavigationItems, mobileDrawerWidth } from "@/lib/navigation";
 import { useUIStore } from "@/lib/stores";
 import { useHydration } from "@/lib/hooks";
+import { useTranslations, useLocale } from "next-intl";
 
 export function UnifiedNav() {
   const { 
@@ -28,6 +29,10 @@ export function UnifiedNav() {
     setActiveMenuItem 
   } = useUIStore();
   const isHydrated = useHydration();
+  const t = useTranslations("nav");
+  const locale = useLocale() as "en" | "es" | "fr" | "de" | "it";
+  
+  const navigationItems = getNavigationItems(locale);
 
   const handleDesktopNavClick = (href: string) => {
     if (isHydrated) {
@@ -76,7 +81,7 @@ export function UnifiedNav() {
                     fontStyle: 'normal'
                   }}
                 >
-                  {item.label}
+                  {item.translationKey ? t(item.translationKey) : item.label}
                 </Link>
               </NavigationMenuItem>
             ))}
@@ -114,7 +119,7 @@ export function UnifiedNav() {
                   fontStyle: 'normal'
                 }}
               >
-                {item.label}
+                {item.translationKey ? t(item.translationKey) : item.label}
               </Link>
             </NavigationMenuItem>
           ))}
@@ -156,7 +161,7 @@ export function UnifiedNav() {
                         fontStyle: 'normal'
                       }}
                     >
-                        {item.label}
+                        {item.translationKey ? t(item.translationKey) : item.label}
                       </Link>
                     </li>
                   ))}

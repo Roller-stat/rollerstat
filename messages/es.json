@@ -1,0 +1,49 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "news": "Noticias",
+    "blogs": "Blogs",
+    "about": "Acerca de",
+    "contact": "Contacto"
+  },
+  "cta": {
+    "subscribe": "Suscribirse",
+    "signin": "Iniciar Sesión",
+    "readMore": "Leer Más",
+    "viewAll": "Ver Todo"
+  },
+  "content": {
+    "latestEdition": "Última Edición",
+    "topStories": "Historias Destacadas",
+    "readingTime": "min de lectura",
+    "publishedOn": "Publicado el",
+    "updatedOn": "Actualizado el",
+    "by": "por",
+    "tags": "Etiquetas",
+    "relatedPosts": "Publicaciones Relacionadas"
+  },
+  "interactions": {
+    "like": "Me Gusta",
+    "liked": "Te Gusta",
+    "comments": "Comentarios",
+    "share": "Compartir",
+    "bookmark": "Marcador"
+  },
+  "seo": {
+    "title": "Rollerstat - Tu Fuente de Noticias de Hockey Patines",
+    "description": "Mantente actualizado con las últimas noticias, análisis e historias del mundo del hockey patines en Europa.",
+    "keywords": "hockey patines, campeonato europeo, noticias, blogs, análisis"
+  },
+  "footer": {
+    "socialMedia": "Síguenos",
+    "contact": "Contacto",
+    "license": "Licencia",
+    "privacyPolicy": "Política de Privacidad",
+    "termsOfService": "Términos de Servicio"
+  },
+  "errors": {
+    "notFound": "Página no encontrada",
+    "serverError": "Algo salió mal",
+    "loading": "Cargando..."
+  }
+}
