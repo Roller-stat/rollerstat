@@ -45,5 +45,11 @@
     "notFound": "Page not found",
     "serverError": "Something went wrong",
     "loading": "Loading..."
+  },
+  "hero": {
+    "title": "Rollerstat",
+    "subtitle": "Stay updated with the latest news, insights, and stories from the world of roller hockey across Europe.",
+    "subscribeButton": "Subscribe to Newsletter",
+    "readNewsButton": "Read Latest News"
   }
 }

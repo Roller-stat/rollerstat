@@ -25,7 +25,7 @@ export async function generateMetadata({
     notFound();
   }
 
-  const messages = await getMessages();
+  const messages = await getMessages({ locale });
   const t = (key: string) => {
     const keys = key.split(".");
     let value: any = messages;
@@ -56,7 +56,7 @@ export default async function LocaleLayout({
   }
 
   // Get messages for the locale
-  const messages = await getMessages();
+  const messages = await getMessages({ locale });
 
   return (
     <html lang={locale} suppressHydrationWarning>

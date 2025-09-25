@@ -5,10 +5,13 @@ import { getLatestBlogs, getTimeAgo } from "@/lib/content";
 import { useTranslations, useLocale } from "next-intl";
 import Link from "next/link";
 
-export function TopStories() {
+interface TopStoriesProps {
+  locale: "en" | "es" | "fr" | "de" | "it";
+}
+
+export function TopStories({ locale }: TopStoriesProps) {
   const t = useTranslations("content");
   const tCta = useTranslations("cta");
-  const locale = useLocale() as "en" | "es" | "fr" | "de" | "it";
   
   const blogs = getLatestBlogs(locale, 4);
 

@@ -45,5 +45,11 @@
     "notFound": "Página no encontrada",
     "serverError": "Algo salió mal",
     "loading": "Cargando..."
+  },
+  "hero": {
+    "title": "Rollerstat",
+    "subtitle": "Mantente actualizado con las últimas noticias, análisis e historias del mundo del hockey patines en Europa.",
+    "subscribeButton": "Suscribirse al Boletín",
+    "readNewsButton": "Leer Últimas Noticias"
   }
 }

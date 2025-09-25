@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: NewsPageProps) {
     notFound();
   }
 
-  const t = await getTranslations("nav");
+  const t = await getTranslations({ locale, namespace: "nav" });
   
   return {
     title: `${t("news")} - Rollerstat`,
@@ -35,8 +35,8 @@ export default async function NewsPage({ params }: NewsPageProps) {
     notFound();
   }
 
-  const t = await getTranslations("nav");
-  const tCta = await getTranslations("cta");
+  const t = await getTranslations({ locale, namespace: "nav" });
+  const tCta = await getTranslations({ locale, namespace: "cta" });
   const news = getPostsByType("news", locale);
 
   return (

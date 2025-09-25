@@ -29,8 +29,8 @@ export default async function HomePage({ params }: HomePageProps) {
         {/* Content Section - Latest Edition (75%) and Top Stories (25%) */}
         <section className="container mx-auto px-4 py-12">
           <div className="flex flex-col lg:flex-row gap-8">
-            <LatestEdition />
-            <TopStories />
+            <LatestEdition locale={locale} />
+            <TopStories locale={locale} />
           </div>
         </section>
         

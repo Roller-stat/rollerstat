@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: BlogsPageProps) {
     notFound();
   }
 
-  const t = await getTranslations("nav");
+  const t = await getTranslations({ locale, namespace: "nav" });
 
   return {
     title: `${t("blogs")} - Rollerstat`,
@@ -35,9 +35,9 @@ export default async function BlogsPage({ params }: BlogsPageProps) {
     notFound();
   }
 
-  const t = await getTranslations("nav");
-  const tCta = await getTranslations("cta");
-  const tContent = await getTranslations("content");
+  const t = await getTranslations({ locale, namespace: "nav" });
+  const tCta = await getTranslations({ locale, namespace: "cta" });
+  const tContent = await getTranslations({ locale, namespace: "content" });
   const blogs = getPostsByType("blog", locale);
 
   return (

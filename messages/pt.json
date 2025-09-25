@@ -1,0 +1,55 @@
+{
+  "nav": {
+    "home": "Início",
+    "news": "Notícias",
+    "blogs": "Blogs",
+    "about": "Sobre",
+    "contact": "Contacto"
+  },
+  "cta": {
+    "subscribe": "Subscrever",
+    "signin": "Entrar",
+    "readMore": "Ler mais",
+    "viewAll": "Ver tudo"
+  },
+  "content": {
+    "latestEdition": "Última edição",
+    "topStories": "Histórias principais",
+    "readingTime": "min de leitura",
+    "publishedOn": "Publicado em",
+    "updatedOn": "Atualizado em",
+    "by": "por",
+    "tags": "Etiquetas",
+    "relatedPosts": "Posts relacionados"
+  },
+  "interactions": {
+    "like": "Gosto",
+    "liked": "Gostei",
+    "comments": "Comentários",
+    "share": "Partilhar",
+    "bookmark": "Marcador"
+  },
+  "seo": {
+    "title": "Rollerstat - A sua fonte de notícias sobre hóquei em patins",
+    "description": "Mantenha-se atualizado com as últimas notícias, análises e histórias do mundo do hóquei em patins na Europa.",
+    "keywords": "hóquei em patins, campeonato europeu, notícias, blogs, análise"
+  },
+  "footer": {
+    "socialMedia": "Siga-nos",
+    "contact": "Contacto",
+    "license": "Licença",
+    "privacyPolicy": "Política de privacidade",
+    "termsOfService": "Termos de serviço"
+  },
+  "errors": {
+    "notFound": "Página não encontrada",
+    "serverError": "Algo correu mal",
+    "loading": "A carregar..."
+  },
+  "hero": {
+    "title": "Rollerstat",
+    "subtitle": "Mantenha-se atualizado com as últimas notícias, análises e histórias do mundo do hóquei em patins na Europa.",
+    "subscribeButton": "Subscrever Newsletter",
+    "readNewsButton": "Ler Últimas Notícias"
+  }
+}

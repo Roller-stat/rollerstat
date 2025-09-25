@@ -1,0 +1,55 @@
+{
+  "nav": {
+    "home": "Home",
+    "news": "Notizie",
+    "blogs": "Blog",
+    "about": "Chi siamo",
+    "contact": "Contatti"
+  },
+  "cta": {
+    "subscribe": "Iscriviti",
+    "signin": "Accedi",
+    "readMore": "Leggi di più",
+    "viewAll": "Visualizza tutto"
+  },
+  "content": {
+    "latestEdition": "Ultima edizione",
+    "topStories": "Storie principali",
+    "readingTime": "min di lettura",
+    "publishedOn": "Pubblicato il",
+    "updatedOn": "Aggiornato il",
+    "by": "di",
+    "tags": "Tag",
+    "relatedPosts": "Post correlati"
+  },
+  "interactions": {
+    "like": "Mi piace",
+    "liked": "Mi è piaciuto",
+    "comments": "Commenti",
+    "share": "Condividi",
+    "bookmark": "Segnalibro"
+  },
+  "seo": {
+    "title": "Rollerstat - La tua fonte di notizie sull'hockey su pista",
+    "description": "Rimani aggiornato con le ultime notizie, approfondimenti e storie dal mondo dell'hockey su pista in Europa.",
+    "keywords": "hockey su pista, campionato europeo, notizie, blog, analisi"
+  },
+  "footer": {
+    "socialMedia": "Seguici",
+    "contact": "Contatti",
+    "license": "Licenza",
+    "privacyPolicy": "Informativa sulla privacy",
+    "termsOfService": "Termini di servizio"
+  },
+  "errors": {
+    "notFound": "Pagina non trovata",
+    "serverError": "Qualcosa è andato storto",
+    "loading": "Caricamento..."
+  },
+  "hero": {
+    "title": "Rollerstat",
+    "subtitle": "Rimani aggiornato con le ultime notizie, approfondimenti e storie dal mondo dell'hockey su pista in Europa.",
+    "subscribeButton": "Iscriviti alla Newsletter",
+    "readNewsButton": "Leggi le Ultime Notizie"
+  }
+}

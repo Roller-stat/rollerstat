@@ -7,10 +7,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { ErrorBoundary } from "@/components/shared/error-boundary";
 
-export function LatestEdition() {
+interface LatestEditionProps {
+  locale: "en" | "es" | "fr" | "de" | "it";
+}
+
+export function LatestEdition({ locale }: LatestEditionProps) {
   const t = useTranslations("content");
+  const tNav = useTranslations("nav");
   const tCta = useTranslations("cta");
-  const locale = useLocale() as "en" | "es" | "fr" | "de" | "it";
   
   const latestPost = getLatestPost(locale);
 
@@ -50,7 +54,7 @@ export function LatestEdition() {
           <CardHeader>
             <div className="flex items-center gap-2 mb-2">
               <Badge variant={latestPost.contentType === "news" ? "default" : "secondary"}>
-                {latestPost.contentType === "news" ? t("nav.news") : t("nav.blogs")}
+                {latestPost.contentType === "news" ? tNav("news") : tNav("blogs")}
               </Badge>
               <span className="text-sm text-muted-foreground">
                 {getTimeAgo(latestPost.date, locale)}

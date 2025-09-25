@@ -3,8 +3,11 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useVideoRotation } from "@/lib/hooks";
+import { useTranslations } from "next-intl";
 
 export function HeroSection() {
+  const t = useTranslations("hero");
+  
   // Array of video URLs - replace with your actual video URLs
   const videos = [
     "/videos/testclip1.mp4",
@@ -50,19 +53,19 @@ export function HeroSection() {
           <div className="w-full max-w-lg px-4 sm:px-6 lg:px-8 text-center">
             <div className="flex flex-col justify-center items-center h-full gap-[clamp(1rem,1vh,3rem)]">
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight font-barlow-condensed">
-                <span className="text-primary">Rollerstat</span>
+                <span className="text-primary">{t("title")}</span>
               </h1>
               
               <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground font-barlow-condensed">
-                Stay updated with the latest news, insights, and stories from the world of roller hockey across Europe.
+                {t("subtitle")}
               </p>
               
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
                 <Button size="sm" className="sm:size-lg">
-                  Subscribe to Newsletter
+                  {t("subscribeButton")}
                 </Button>
                 <Button variant="outline" size="sm" className="sm:size-lg">
-                  Read Latest News
+                  {t("readNewsButton")}
                 </Button>
               </div>
             </div>
@@ -75,19 +78,19 @@ export function HeroSection() {
           {/* Text Content - Top */}
           <div className="flex-1 flex flex-col justify-center text-center space-y-6 mb-8 py-8 px-6">
             <h1 className="text-3xl font-bold tracking-tight font-barlow-condensed">
-              <span className="text-primary">Rollerstat</span>
+              <span className="text-primary">{t("title")}</span>
             </h1>
             
             <p className="text-lg text-muted-foreground font-barlow-condensed">
-              Stay updated with the latest news, insights, and stories from the world of roller hockey across Europe.
+              {t("subtitle")}
             </p>
             
             <div className="flex flex-col gap-4">
               <Button size="lg">
-                Subscribe to Newsletter
+                {t("subscribeButton")}
               </Button>
               <Button variant="outline" size="lg">
-                Read Latest News
+                {t("readNewsButton")}
               </Button>
             </div>
           </div>
