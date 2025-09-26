@@ -28,17 +28,53 @@ export async function generateMetadata({
   const messages = await getMessages({ locale });
   const t = (key: string) => {
     const keys = key.split(".");
-    let value: any = messages;
+    let value: unknown = messages;
     for (const k of keys) {
-      value = value?.[k];
+      value = (value as Record<string, unknown>)?.[k];
     }
     return value || key;
   };
 
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+  
   return {
     title: t("seo.title"),
     description: t("seo.description"),
     keywords: t("seo.keywords"),
+    alternates: {
+      languages: {
+        ...locales.reduce((acc, loc) => {
+          acc[loc] = `${baseUrl}/${loc}`;
+          return acc;
+        }, {} as Record<string, string>),
+        'x-default': `${baseUrl}/${defaultLocale}`,
+      },
+    },
+    openGraph: {
+      title: t("seo.ogTitle"),
+      description: t("seo.ogDescription"),
+      locale: locale,
+      alternateLocale: locales.filter(loc => loc !== locale),
+      url: `${baseUrl}/${locale}`,
+      siteName: "Rollerstat",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: t("seo.twitterTitle"),
+      description: t("seo.twitterDescription"),
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
   };
 }
 

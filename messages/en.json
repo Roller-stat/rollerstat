@@ -32,7 +32,11 @@
   "seo": {
     "title": "Rollerstat - Your Source for Roller Hockey News",
     "description": "Stay updated with the latest news, insights, and stories from the world of roller hockey across Europe.",
-    "keywords": "roller hockey, hockey patines, european championship, news, blogs, analysis"
+    "keywords": "roller hockey, hockey patines, european championship, news, blogs, analysis",
+    "ogTitle": "Rollerstat - Your Source for Roller Hockey News",
+    "ogDescription": "Stay updated with the latest news, insights, and stories from the world of roller hockey across Europe.",
+    "twitterTitle": "Rollerstat - Your Source for Roller Hockey News",
+    "twitterDescription": "Stay updated with the latest news, insights, and stories from the world of roller hockey across Europe."
   },
   "footer": {
     "socialMedia": "Follow Us",

@@ -8,7 +8,7 @@ import Image from "next/image";
 import { ErrorBoundary } from "@/components/shared/error-boundary";
 
 interface LatestEditionProps {
-  locale: "en" | "es" | "fr" | "de" | "it";
+  locale: "en" | "es" | "fr" | "it" | "pt";
 }
 
 export function LatestEdition({ locale }: LatestEditionProps) {
@@ -43,6 +43,8 @@ export function LatestEdition({ locale }: LatestEditionProps) {
                 src={latestPost.coverImage}
                 alt={latestPost.title}
                 fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw"
+                priority
                 className="object-cover"
               />
             </div>

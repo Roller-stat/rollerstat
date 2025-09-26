@@ -30,7 +30,7 @@ export function UnifiedNav() {
   } = useUIStore();
   const isHydrated = useHydration();
   const t = useTranslations("nav");
-  const locale = useLocale() as "en" | "es" | "fr" | "de" | "it";
+  const locale = useLocale() as "en" | "es" | "fr" | "it" | "pt";
   
   const navigationItems = getNavigationItems(locale);
 

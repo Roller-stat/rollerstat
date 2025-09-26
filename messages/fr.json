@@ -32,7 +32,11 @@
   "seo": {
     "title": "Rollerstat - Votre source d'actualités sur le hockey sur patins",
     "description": "Restez informé des dernières actualités, analyses et histoires du monde du hockey sur patins en Europe.",
-    "keywords": "hockey sur patins, championnat européen, actualités, blogs, analyse"
+    "keywords": "hockey sur patins, championnat européen, actualités, blogs, analyse",
+    "ogTitle": "Rollerstat - Votre source d'actualités sur le hockey sur patins",
+    "ogDescription": "Restez informé des dernières actualités, analyses et histoires du monde du hockey sur patins en Europe.",
+    "twitterTitle": "Rollerstat - Votre source d'actualités sur le hockey sur patins",
+    "twitterDescription": "Restez informé des dernières actualités, analyses et histoires du monde du hockey sur patins en Europe."
   },
   "footer": {
     "socialMedia": "Suivez-nous",

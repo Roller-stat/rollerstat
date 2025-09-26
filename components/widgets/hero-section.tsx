@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { useVideoRotation } from "@/lib/hooks";
 import { useTranslations } from "next-intl";
 

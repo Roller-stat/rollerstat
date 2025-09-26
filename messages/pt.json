@@ -32,7 +32,11 @@
   "seo": {
     "title": "Rollerstat - A sua fonte de notícias sobre hóquei em patins",
     "description": "Mantenha-se atualizado com as últimas notícias, análises e histórias do mundo do hóquei em patins na Europa.",
-    "keywords": "hóquei em patins, campeonato europeu, notícias, blogs, análise"
+    "keywords": "hóquei em patins, campeonato europeu, notícias, blogs, análise",
+    "ogTitle": "Rollerstat - A sua fonte de notícias sobre hóquei em patins",
+    "ogDescription": "Mantenha-se atualizado com as últimas notícias, análises e histórias do mundo do hóquei em patins na Europa.",
+    "twitterTitle": "Rollerstat - A sua fonte de notícias sobre hóquei em patins",
+    "twitterDescription": "Mantenha-se atualizado com as últimas notícias, análises e histórias do mundo do hóquei em patins na Europa."
   },
   "footer": {
     "socialMedia": "Siga-nos",

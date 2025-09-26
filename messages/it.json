@@ -32,7 +32,11 @@
   "seo": {
     "title": "Rollerstat - La tua fonte di notizie sull'hockey su pista",
     "description": "Rimani aggiornato con le ultime notizie, approfondimenti e storie dal mondo dell'hockey su pista in Europa.",
-    "keywords": "hockey su pista, campionato europeo, notizie, blog, analisi"
+    "keywords": "hockey su pista, campionato europeo, notizie, blog, analisi",
+    "ogTitle": "Rollerstat - La tua fonte di notizie sull'hockey su pista",
+    "ogDescription": "Rimani aggiornato con le ultime notizie, approfondimenti e storie dal mondo dell'hockey su pista in Europa.",
+    "twitterTitle": "Rollerstat - La tua fonte di notizie sull'hockey su pista",
+    "twitterDescription": "Rimani aggiornato con le ultime notizie, approfondimenti e storie dal mondo dell'hockey su pista in Europa."
   },
   "footer": {
     "socialMedia": "Seguici",

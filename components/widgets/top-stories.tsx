@@ -6,7 +6,7 @@ import { useTranslations, useLocale } from "next-intl";
 import Link from "next/link";
 
 interface TopStoriesProps {
-  locale: "en" | "es" | "fr" | "de" | "it";
+  locale: "en" | "es" | "fr" | "it" | "pt";
 }
 
 export function TopStories({ locale }: TopStoriesProps) {

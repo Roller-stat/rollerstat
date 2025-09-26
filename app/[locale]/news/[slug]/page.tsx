@@ -1,13 +1,13 @@
 import { getPostBySlug, getRelatedPosts, formatDate } from "@/lib/content";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { isValidLocale } from "@/lib/i18n";
 import Link from "next/link";
 import Image from "next/image";
-import { useMDXComponent } from "next-contentlayer2/hooks";
+import { MDXContent } from "@/components/shared/mdx-content";
 
 interface NewsDetailPageProps {
   params: Promise<{
@@ -58,7 +58,6 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
 
   const t = await getTranslations("content");
   const relatedPosts = getRelatedPosts(post, 3);
-  const MDXContent = useMDXComponent(post.body.code);
 
   // JSON-LD for SEO
   const jsonLd = {
@@ -137,7 +136,7 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
 
             {/* Content */}
             <div className="prose prose-lg max-w-none mb-8">
-              <MDXContent />
+              <MDXContent code={post.body.code} />
             </div>
 
             {/* Tags */}
