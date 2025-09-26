@@ -1,0 +1,59 @@
+{
+  "nav": {
+    "home": "Home",
+    "news": "News",
+    "blogs": "Blogs",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "cta": {
+    "subscribe": "Subscribe",
+    "signin": "Sign In",
+    "readMore": "Read More",
+    "viewAll": "View All"
+  },
+  "content": {
+    "latestEdition": "Latest Edition",
+    "topStories": "Top Stories",
+    "readingTime": "min read",
+    "publishedOn": "Published on",
+    "updatedOn": "Updated on",
+    "by": "by",
+    "tags": "Tags",
+    "relatedPosts": "Related Posts"
+  },
+  "interactions": {
+    "like": "Like",
+    "liked": "Liked",
+    "comments": "Comments",
+    "share": "Share",
+    "bookmark": "Bookmark"
+  },
+  "seo": {
+    "title": "Rollerstat - Your Source for Roller Hockey News",
+    "description": "Stay updated with the latest news, insights, and stories from the world of roller hockey across Europe.",
+    "keywords": "roller hockey, hockey patines, european championship, news, blogs, analysis",
+    "ogTitle": "Rollerstat - Your Source for Roller Hockey News",
+    "ogDescription": "Stay updated with the latest news, insights, and stories from the world of roller hockey across Europe.",
+    "twitterTitle": "Rollerstat - Your Source for Roller Hockey News",
+    "twitterDescription": "Stay updated with the latest news, insights, and stories from the world of roller hockey across Europe."
+  },
+  "footer": {
+    "socialMedia": "Follow Us",
+    "contact": "Contact",
+    "license": "License",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service"
+  },
+  "errors": {
+    "notFound": "Page not found",
+    "serverError": "Something went wrong",
+    "loading": "Loading..."
+  },
+  "hero": {
+    "title": "Rollerstat",
+    "subtitle": "Stay updated with the latest news, insights, and stories from the world of roller hockey across Europe.",
+    "subscribeButton": "Subscribe to Newsletter",
+    "readNewsButton": "Read Latest News"
+  }
+}
