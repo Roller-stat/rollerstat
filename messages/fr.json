@@ -36,7 +36,8 @@
     "ogTitle": "Rollerstat - Votre source d'actualités sur le hockey sur patins",
     "ogDescription": "Restez informé des dernières actualités, analyses et histoires du monde du hockey sur patins en Europe.",
     "twitterTitle": "Rollerstat - Votre source d'actualités sur le hockey sur patins",
-    "twitterDescription": "Restez informé des dernières actualités, analyses et histoires du monde du hockey sur patins en Europe."
+    "twitterDescription": "Restez informé des dernières actualités, analyses et histoires du monde du hockey sur patins en Europe.",
+    "imageAlt": "Rollerstat - Votre source d'actualités sur le hockey sur patins"
   },
   "footer": {
     "socialMedia": "Suivez-nous",
