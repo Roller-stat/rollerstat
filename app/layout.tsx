@@ -16,6 +16,11 @@ export const metadata: Metadata = {
     template: "%s | Rollerstat",
   },
   description: "Stay updated with the latest news, insights, and stories from the world of roller hockey across Europe.",
+  robots: {
+    index: true,
+    follow: true,
+  },
+  viewport: "width=device-width, initial-scale=1",
 };
 
 export default async function RootLayout({
