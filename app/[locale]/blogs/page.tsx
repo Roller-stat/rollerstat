@@ -43,12 +43,13 @@ export async function generateMetadata({ params }: BlogsPageProps) {
       type: "website",
       locale: getOpenGraphLocale(locale),
       siteName: "Rollerstat",
+      url: `https://rollerstat.com/${locale}/blogs`,
       images: [
         {
           url: "https://rollerstat.com/og-image.jpg",
           width: 1200,
           height: 630,
-          alt: "Rollerstat Blogs - Roller Hockey Analysis & Insights",
+          alt: `${t("blogs")} - Rollerstat`,
         },
       ],
     },
@@ -60,6 +61,7 @@ export async function generateMetadata({ params }: BlogsPageProps) {
     alternates: {
       canonical: `https://rollerstat.com/${locale}/blogs`,
       languages: {
+        'x-default': 'https://rollerstat.com/en/blogs',
         'en': 'https://rollerstat.com/en/blogs',
         'es': 'https://rollerstat.com/es/blogs',
         'fr': 'https://rollerstat.com/fr/blogs',

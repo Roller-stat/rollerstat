@@ -49,12 +49,13 @@ export async function generateMetadata({
       type: "website",
       locale: getOpenGraphLocale(locale),
       siteName: "Rollerstat",
+      url: `https://rollerstat.com/${locale}`,
       images: [
         {
           url: "https://rollerstat.com/og-image.jpg",
           width: 1200,
           height: 630,
-          alt: "Rollerstat - Your Source for Roller Hockey News",
+          alt: t("seo.imageAlt"),
         },
       ],
     },
@@ -66,6 +67,7 @@ export async function generateMetadata({
     alternates: {
       canonical: `https://rollerstat.com/${locale}`,
       languages: {
+        'x-default': 'https://rollerstat.com/en',
         'en': 'https://rollerstat.com/en',
         'es': 'https://rollerstat.com/es',
         'fr': 'https://rollerstat.com/fr',
