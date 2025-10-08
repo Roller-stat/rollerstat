@@ -6,11 +6,36 @@ import { QuotesCarousel } from "@/components/widgets/quotes-carousel";
 import { Footer } from "@/components/shared/footer";
 import { notFound } from "next/navigation";
 import { isValidLocale } from "@/lib/i18n";
+import { getMessages } from "next-intl/server";
+import type { Metadata } from "next";
 
 interface HomePageProps {
   params: Promise<{
     locale: string;
   }>;
+}
+
+export async function generateMetadata({
+  params,
+}: HomePageProps): Promise<Metadata> {
+  const { locale } = await params;
+  if (!isValidLocale(locale)) {
+    notFound();
+  }
+
+  const messages = await getMessages({ locale });
+  const t = (key: string): string => {
+    const keys = key.split(".");
+    let value: unknown = messages;
+    for (const k of keys) {
+      value = (value as Record<string, unknown>)?.[k];
+    }
+    return (value as string) || key;
+  };
+
+  return {
+    title: t("seo.title"),
+  };
 }
 
 export default async function HomePage({ params }: HomePageProps) {
