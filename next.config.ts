@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
-import { withContentlayer } from "next-contentlayer2";
 import createNextIntlPlugin from 'next-intl/plugin';
+import { withContentlayer } from "next-contentlayer2";
 
 const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 

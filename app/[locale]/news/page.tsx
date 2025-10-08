@@ -36,6 +36,7 @@ export default async function NewsPage({ params }: NewsPageProps) {
   }
 
   const t = await getTranslations({ locale, namespace: "nav" });
+  const tContent = await getTranslations({ locale, namespace: "content" });
   const tCta = await getTranslations({ locale, namespace: "cta" });
   const news = getPostsByType("news", locale);
 
@@ -80,11 +81,11 @@ export default async function NewsPage({ params }: NewsPageProps) {
                 <CardContent>
                   <div className="flex items-center justify-between">
                     <div className="text-sm text-muted-foreground">
-                      {t("by")} {article.author} • {article.readingTime} {t("readingTime")}
+                      {tContent("by")} {article.author} • {article.readingTime} {tContent("readingTime")}
                     </div>
                     <Button asChild>
                       <Link href={article.url}>
-                        {t("cta.readMore")}
+                        {tCta("readMore")}
                       </Link>
                     </Button>
                   </div>
