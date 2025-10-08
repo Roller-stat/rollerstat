@@ -4,6 +4,17 @@ import { notFound } from "next/navigation";
 import { locales, isValidLocale } from "@/lib/i18n";
 import type { Metadata } from "next";
 
+function getOpenGraphLocale(locale: string): string {
+  const localeMap: Record<string, string> = {
+    'en': 'en_US',
+    'es': 'es_ES',
+    'fr': 'fr_FR',
+    'it': 'it_IT',
+    'pt': 'pt_PT',
+  };
+  return localeMap[locale] || 'en_US';
+}
+
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
@@ -32,13 +43,20 @@ export async function generateMetadata({
   return {
     title: t("seo.title"),
     description: t("seo.description"),
-    keywords: t("seo.keywords"),
     openGraph: {
       title: t("seo.ogTitle"),
       description: t("seo.ogDescription"),
       type: "website",
-      locale: locale,
+      locale: getOpenGraphLocale(locale),
       siteName: "Rollerstat",
+      images: [
+        {
+          url: "https://rollerstat.com/og-image.jpg",
+          width: 1200,
+          height: 630,
+          alt: "Rollerstat - Your Source for Roller Hockey News",
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
@@ -46,13 +64,13 @@ export async function generateMetadata({
       description: t("seo.twitterDescription"),
     },
     alternates: {
-      canonical: `/${locale}`,
+      canonical: `https://rollerstat.com/${locale}`,
       languages: {
-        'en': '/en',
-        'es': '/es',
-        'fr': '/fr',
-        'it': '/it',
-        'pt': '/pt',
+        'en': 'https://rollerstat.com/en',
+        'es': 'https://rollerstat.com/es',
+        'fr': 'https://rollerstat.com/fr',
+        'it': 'https://rollerstat.com/it',
+        'pt': 'https://rollerstat.com/pt',
       },
     },
   };

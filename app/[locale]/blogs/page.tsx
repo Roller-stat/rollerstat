@@ -9,6 +9,17 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { isValidLocale } from "@/lib/i18n";
 
+function getOpenGraphLocale(locale: string): string {
+  const localeMap: Record<string, string> = {
+    'en': 'en_US',
+    'es': 'es_ES',
+    'fr': 'fr_FR',
+    'it': 'it_IT',
+    'pt': 'pt_PT',
+  };
+  return localeMap[locale] || 'en_US';
+}
+
 interface BlogsPageProps {
   params: Promise<{
     locale: string;
@@ -22,18 +33,24 @@ export async function generateMetadata({ params }: BlogsPageProps) {
   }
 
   const t = await getTranslations({ locale, namespace: "nav" });
-  const tSeo = await getTranslations({ locale, namespace: "seo" });
 
   return {
     title: `${t("blogs")} - Rollerstat`,
     description: `Latest roller hockey analysis, insights, and stories in ${locale.toUpperCase()}`,
-    keywords: tSeo("keywords"),
     openGraph: {
       title: `${t("blogs")} - Rollerstat`,
       description: `Latest roller hockey analysis, insights, and stories in ${locale.toUpperCase()}`,
       type: "website",
-      locale: locale,
+      locale: getOpenGraphLocale(locale),
       siteName: "Rollerstat",
+      images: [
+        {
+          url: "https://rollerstat.com/og-image.jpg",
+          width: 1200,
+          height: 630,
+          alt: "Rollerstat Blogs - Roller Hockey Analysis & Insights",
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
@@ -41,13 +58,13 @@ export async function generateMetadata({ params }: BlogsPageProps) {
       description: `Latest roller hockey analysis, insights, and stories in ${locale.toUpperCase()}`,
     },
     alternates: {
-      canonical: `/${locale}/blogs`,
+      canonical: `https://rollerstat.com/${locale}/blogs`,
       languages: {
-        'en': '/en/blogs',
-        'es': '/es/blogs',
-        'fr': '/fr/blogs',
-        'it': '/it/blogs',
-        'pt': '/pt/blogs',
+        'en': 'https://rollerstat.com/en/blogs',
+        'es': 'https://rollerstat.com/es/blogs',
+        'fr': 'https://rollerstat.com/fr/blogs',
+        'it': 'https://rollerstat.com/it/blogs',
+        'pt': 'https://rollerstat.com/pt/blogs',
       },
     },
   };
