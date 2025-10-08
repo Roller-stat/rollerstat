@@ -23,9 +23,34 @@ export async function generateMetadata({ params }: NewsPageProps) {
 
   const t = await getTranslations({ locale, namespace: "nav" });
   
+  const tSeo = await getTranslations({ locale, namespace: "seo" });
+  
   return {
     title: `${t("news")} - Rollerstat`,
     description: `Latest roller hockey news and updates in ${locale.toUpperCase()}`,
+    keywords: tSeo("keywords"),
+    openGraph: {
+      title: `${t("news")} - Rollerstat`,
+      description: `Latest roller hockey news and updates in ${locale.toUpperCase()}`,
+      type: "website",
+      locale: locale,
+      siteName: "Rollerstat",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${t("news")} - Rollerstat`,
+      description: `Latest roller hockey news and updates in ${locale.toUpperCase()}`,
+    },
+    alternates: {
+      canonical: `/${locale}/news`,
+      languages: {
+        'en': '/en/news',
+        'es': '/es/news',
+        'fr': '/fr/news',
+        'it': '/it/news',
+        'pt': '/pt/news',
+      },
+    },
   };
 }
 
@@ -36,6 +61,7 @@ export default async function NewsPage({ params }: NewsPageProps) {
   }
 
   const t = await getTranslations({ locale, namespace: "nav" });
+  const tContent = await getTranslations({ locale, namespace: "content" });
   const tCta = await getTranslations({ locale, namespace: "cta" });
   const news = getPostsByType("news", locale);
 
@@ -80,11 +106,11 @@ export default async function NewsPage({ params }: NewsPageProps) {
                 <CardContent>
                   <div className="flex items-center justify-between">
                     <div className="text-sm text-muted-foreground">
-                      {t("by")} {article.author} • {article.readingTime} {t("readingTime")}
+                      {tContent("by")} {article.author} • {article.readingTime} {tContent("readingTime")}
                     </div>
                     <Button asChild>
                       <Link href={article.url}>
-                        {t("cta.readMore")}
+                        {tCta("readMore")}
                       </Link>
                     </Button>
                   </div>

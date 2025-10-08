@@ -22,10 +22,34 @@ export async function generateMetadata({ params }: BlogsPageProps) {
   }
 
   const t = await getTranslations({ locale, namespace: "nav" });
+  const tSeo = await getTranslations({ locale, namespace: "seo" });
 
   return {
     title: `${t("blogs")} - Rollerstat`,
     description: `Latest roller hockey analysis, insights, and stories in ${locale.toUpperCase()}`,
+    keywords: tSeo("keywords"),
+    openGraph: {
+      title: `${t("blogs")} - Rollerstat`,
+      description: `Latest roller hockey analysis, insights, and stories in ${locale.toUpperCase()}`,
+      type: "website",
+      locale: locale,
+      siteName: "Rollerstat",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${t("blogs")} - Rollerstat`,
+      description: `Latest roller hockey analysis, insights, and stories in ${locale.toUpperCase()}`,
+    },
+    alternates: {
+      canonical: `/${locale}/blogs`,
+      languages: {
+        'en': '/en/blogs',
+        'es': '/es/blogs',
+        'fr': '/fr/blogs',
+        'it': '/it/blogs',
+        'pt': '/pt/blogs',
+      },
+    },
   };
 }
 

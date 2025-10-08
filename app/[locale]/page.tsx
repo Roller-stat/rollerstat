@@ -13,6 +13,8 @@ interface HomePageProps {
   }>;
 }
 
+// Metadata is handled by the locale layout
+
 export default async function HomePage({ params }: HomePageProps) {
   const { locale } = await params;
   if (!isValidLocale(locale)) {
