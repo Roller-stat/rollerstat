@@ -50,6 +50,7 @@ export async function generateMetadata({ params }: NewsDetailPageProps) {
       type: "article",
       locale: getOpenGraphLocale(locale),
       siteName: "Rollerstat",
+      url: `https://rollerstat.com${post.url}`,
       images: [
         ...(post.coverImage ? [{
           url: post.coverImage,
@@ -61,7 +62,7 @@ export async function generateMetadata({ params }: NewsDetailPageProps) {
           url: "https://rollerstat.com/og-image.jpg",
           width: 1200,
           height: 630,
-          alt: "Rollerstat - Your Source for Roller Hockey News",
+          alt: post.title,
         },
       ],
       publishedTime: post.date,
@@ -77,6 +78,7 @@ export async function generateMetadata({ params }: NewsDetailPageProps) {
     alternates: {
       canonical: `https://rollerstat.com${post.url}`,
       languages: {
+        'x-default': `https://rollerstat.com${post.url.replace(`/${locale}/`, '/en/')}`,
         'en': `https://rollerstat.com${post.url.replace(`/${locale}/`, '/en/')}`,
         'es': `https://rollerstat.com${post.url.replace(`/${locale}/`, '/es/')}`,
         'fr': `https://rollerstat.com${post.url.replace(`/${locale}/`, '/fr/')}`,
