@@ -36,7 +36,8 @@
     "ogTitle": "Rollerstat - A sua fonte de notícias sobre hóquei em patins",
     "ogDescription": "Mantenha-se atualizado com as últimas notícias, análises e histórias do mundo do hóquei em patins na Europa.",
     "twitterTitle": "Rollerstat - A sua fonte de notícias sobre hóquei em patins",
-    "twitterDescription": "Mantenha-se atualizado com as últimas notícias, análises e histórias do mundo do hóquei em patins na Europa."
+    "twitterDescription": "Mantenha-se atualizado com as últimas notícias, análises e histórias do mundo do hóquei em patins na Europa.",
+    "imageAlt": "Rollerstat - A sua fonte de notícias sobre hóquei em patins"
   },
   "footer": {
     "socialMedia": "Siga-nos",
