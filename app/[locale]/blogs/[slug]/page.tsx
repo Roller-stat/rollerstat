@@ -116,9 +116,9 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
               <p className="text-xl text-muted-foreground mb-6">{post.summary}</p>
               
               <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                <span>{t("by")} {post.author}</span>
+                <span>{t("content.by")} {post.author}</span>
                 <span>•</span>
-                <span>{post.readingTime} {t("readingTime")}</span>
+                <span>{post.readingTime} {t("content.readingTime")}</span>
               </div>
             </header>
 

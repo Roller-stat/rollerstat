@@ -1,39 +1,5 @@
 [
   {
-    "title": "European Roller Hockey Championship Finals 2024",
-    "slug": "championship-finals-2024",
-    "summary": "Spain defeats Portugal in a thrilling final match to claim the European Roller Hockey Championship title for 2024.",
-    "date": "2024-01-15T00:00:00.000Z",
-    "locale": "en",
-    "tags": [
-      "championship",
-      "spain",
-      "portugal",
-      "finals"
-    ],
-    "coverImage": "https://res.cloudinary.com/dj9xnzggs/image/upload/v1758838906/testpostimage_zhljsz.jpg",
-    "author": "Rollerstat Editorial Team",
-    "translation_key": "championship-finals-2024",
-    "contentType": "news",
-    "featured": true,
-    "published": true,
-    "body": {
-      "raw": "\n# European Roller Hockey Championship Finals 2024\n\nThe European Roller Hockey Championship came to a spectacular conclusion this weekend as Spain secured a dramatic victory over Portugal in the final match, winning 4-3 in overtime.\n\n## Match Highlights\n\nThe final was a showcase of the highest level of roller hockey, with both teams demonstrating exceptional skill and determination. Spain's captain, Carlos Mendez, scored the winning goal in the 78th minute of overtime, sending the Spanish fans into ecstasy.\n\n### Key Moments\n\n- **First Half**: Portugal took an early 2-0 lead with goals from Silva and Costa\n- **Second Half**: Spain fought back with three consecutive goals from Rodriguez, Mendez, and Garcia\n- **Overtime**: Mendez's decisive goal secured Spain's 15th European Championship title\n\n## Tournament Statistics\n\nThis year's championship saw record attendance numbers and was broadcast to over 50 countries worldwide. The tournament featured 16 teams competing over two weeks of intense matches.\n\nThe victory marks Spain's return to the top of European roller hockey after a three-year drought, while Portugal's strong performance throughout the tournament has positioned them as serious contenders for future competitions.\n\n## Looking Ahead\n\nWith the European Championship concluded, attention now turns to the World Championships scheduled for later this year in Argentina, where both Spain and Portugal will be among the favorites to compete for the ultimate prize in roller hockey.\n",
-      "code": "var Component=(()=>{var m=Object.create;var i=Object.defineProperty;var p=Object.getOwnPropertyDescriptor;var u=Object.getOwnPropertyNames;var g=Object.getPrototypeOf,f=Object.prototype.hasOwnProperty;var y=(a,e)=>()=>(e||a((e={exports:{}}).exports,e),e.exports),k=(a,e)=>{for(var t in e)i(a,t,{get:e[t],enumerable:!0})},h=(a,e,t,r)=>{if(e&&typeof e==\"object\"||typeof e==\"function\")for(let o of u(e))!f.call(a,o)&&o!==t&&i(a,o,{get:()=>e[o],enumerable:!(r=p(e,o))||r.enumerable});return a};var w=(a,e,t)=>(t=a!=null?m(g(a)):{},h(e||!a||!a.__esModule?i(t,\"default\",{value:a,enumerable:!0}):t,a)),v=a=>h(i({},\"__esModule\",{value:!0}),a);var l=y((_,s)=>{s.exports=_jsx_runtime});var C={};k(C,{default:()=>d,frontmatter:()=>x});var n=w(l()),x={title:\"European Roller Hockey Championship Finals 2024\",slug:\"championship-finals-2024\",summary:\"Spain defeats Portugal in a thrilling final match to claim the European Roller Hockey Championship title for 2024.\",date:\"2024-01-15\",locale:\"en\",tags:[\"championship\",\"spain\",\"portugal\",\"finals\"],coverImage:\"https://res.cloudinary.com/dj9xnzggs/image/upload/v1758838906/testpostimage_zhljsz.jpg\",author:\"Rollerstat Editorial Team\",translation_key:\"championship-finals-2024\",contentType:\"news\",featured:!0,published:!0};function c(a){let e={a:\"a\",h1:\"h1\",h2:\"h2\",h3:\"h3\",li:\"li\",p:\"p\",strong:\"strong\",ul:\"ul\",...a.components};return(0,n.jsxs)(n.Fragment,{children:[(0,n.jsx)(e.h1,{id:\"european-roller-hockey-championship-finals-2024\",children:(0,n.jsx)(e.a,{className:\"anchor\",href:\"#european-roller-hockey-championship-finals-2024\",children:\"European Roller Hockey Championship Finals 2024\"})}),`\n`,(0,n.jsx)(e.p,{children:\"The European Roller Hockey Championship came to a spectacular conclusion this weekend as Spain secured a dramatic victory over Portugal in the final match, winning 4-3 in overtime.\"}),`\n`,(0,n.jsx)(e.h2,{id:\"match-highlights\",children:(0,n.jsx)(e.a,{className:\"anchor\",href:\"#match-highlights\",children:\"Match Highlights\"})}),`\n`,(0,n.jsx)(e.p,{children:\"The final was a showcase of the highest level of roller hockey, with both teams demonstrating exceptional skill and determination. Spain's captain, Carlos Mendez, scored the winning goal in the 78th minute of overtime, sending the Spanish fans into ecstasy.\"}),`\n`,(0,n.jsx)(e.h3,{id:\"key-moments\",children:(0,n.jsx)(e.a,{className:\"anchor\",href:\"#key-moments\",children:\"Key Moments\"})}),`\n`,(0,n.jsxs)(e.ul,{children:[`\n`,(0,n.jsxs)(e.li,{children:[(0,n.jsx)(e.strong,{children:\"First Half\"}),\": Portugal took an early 2-0 lead with goals from Silva and Costa\"]}),`\n`,(0,n.jsxs)(e.li,{children:[(0,n.jsx)(e.strong,{children:\"Second Half\"}),\": Spain fought back with three consecutive goals from Rodriguez, Mendez, and Garcia\"]}),`\n`,(0,n.jsxs)(e.li,{children:[(0,n.jsx)(e.strong,{children:\"Overtime\"}),\": Mendez's decisive goal secured Spain's 15th European Championship title\"]}),`\n`]}),`\n`,(0,n.jsx)(e.h2,{id:\"tournament-statistics\",children:(0,n.jsx)(e.a,{className:\"anchor\",href:\"#tournament-statistics\",children:\"Tournament Statistics\"})}),`\n`,(0,n.jsx)(e.p,{children:\"This year's championship saw record attendance numbers and was broadcast to over 50 countries worldwide. The tournament featured 16 teams competing over two weeks of intense matches.\"}),`\n`,(0,n.jsx)(e.p,{children:\"The victory marks Spain's return to the top of European roller hockey after a three-year drought, while Portugal's strong performance throughout the tournament has positioned them as serious contenders for future competitions.\"}),`\n`,(0,n.jsx)(e.h2,{id:\"looking-ahead\",children:(0,n.jsx)(e.a,{className:\"anchor\",href:\"#looking-ahead\",children:\"Looking Ahead\"})}),`\n`,(0,n.jsx)(e.p,{children:\"With the European Championship concluded, attention now turns to the World Championships scheduled for later this year in Argentina, where both Spain and Portugal will be among the favorites to compete for the ultimate prize in roller hockey.\"})]})}function d(a={}){let{wrapper:e}=a.components||{};return e?(0,n.jsx)(e,{...a,children:(0,n.jsx)(c,{...a})}):c(a)}return v(C);})();\n;return Component;"
-    },
-    "_id": "en/news/championship-finals-2024.mdx",
-    "_raw": {
-      "sourceFilePath": "en/news/championship-finals-2024.mdx",
-      "sourceFileName": "championship-finals-2024.mdx",
-      "sourceFileDir": "en/news",
-      "contentType": "mdx",
-      "flattenedPath": "en/news/championship-finals-2024"
-    },
-    "type": "Post",
-    "readingTime": 2,
-    "url": "/en/news/championship-finals-2024"
-  },
-  {
     "title": "Tactical Analysis: The Evolution of Modern Roller Hockey",
     "slug": "tactical-analysis-2024",
     "summary": "An in-depth look at how tactical innovations are reshaping the game of roller hockey in 2024.",
@@ -66,6 +32,40 @@
     "type": "Post",
     "readingTime": 2,
     "url": "/en/blog/tactical-analysis-2024"
+  },
+  {
+    "title": "European Roller Hockey Championship Finals 2024",
+    "slug": "championship-finals-2024",
+    "summary": "Spain defeats Portugal in a thrilling final match to claim the European Roller Hockey Championship title for 2024.",
+    "date": "2024-01-15T00:00:00.000Z",
+    "locale": "en",
+    "tags": [
+      "championship",
+      "spain",
+      "portugal",
+      "finals"
+    ],
+    "coverImage": "https://res.cloudinary.com/dj9xnzggs/image/upload/v1758838906/testpostimage_zhljsz.jpg",
+    "author": "Rollerstat Editorial Team",
+    "translation_key": "championship-finals-2024",
+    "contentType": "news",
+    "featured": true,
+    "published": true,
+    "body": {
+      "raw": "\n# European Roller Hockey Championship Finals 2024\n\nThe European Roller Hockey Championship came to a spectacular conclusion this weekend as Spain secured a dramatic victory over Portugal in the final match, winning 4-3 in overtime.\n\n## Match Highlights\n\nThe final was a showcase of the highest level of roller hockey, with both teams demonstrating exceptional skill and determination. Spain's captain, Carlos Mendez, scored the winning goal in the 78th minute of overtime, sending the Spanish fans into ecstasy.\n\n### Key Moments\n\n- **First Half**: Portugal took an early 2-0 lead with goals from Silva and Costa\n- **Second Half**: Spain fought back with three consecutive goals from Rodriguez, Mendez, and Garcia\n- **Overtime**: Mendez's decisive goal secured Spain's 15th European Championship title\n\n## Tournament Statistics\n\nThis year's championship saw record attendance numbers and was broadcast to over 50 countries worldwide. The tournament featured 16 teams competing over two weeks of intense matches.\n\nThe victory marks Spain's return to the top of European roller hockey after a three-year drought, while Portugal's strong performance throughout the tournament has positioned them as serious contenders for future competitions.\n\n## Looking Ahead\n\nWith the European Championship concluded, attention now turns to the World Championships scheduled for later this year in Argentina, where both Spain and Portugal will be among the favorites to compete for the ultimate prize in roller hockey.\n",
+      "code": "var Component=(()=>{var m=Object.create;var i=Object.defineProperty;var p=Object.getOwnPropertyDescriptor;var u=Object.getOwnPropertyNames;var g=Object.getPrototypeOf,f=Object.prototype.hasOwnProperty;var y=(a,e)=>()=>(e||a((e={exports:{}}).exports,e),e.exports),k=(a,e)=>{for(var t in e)i(a,t,{get:e[t],enumerable:!0})},h=(a,e,t,r)=>{if(e&&typeof e==\"object\"||typeof e==\"function\")for(let o of u(e))!f.call(a,o)&&o!==t&&i(a,o,{get:()=>e[o],enumerable:!(r=p(e,o))||r.enumerable});return a};var w=(a,e,t)=>(t=a!=null?m(g(a)):{},h(e||!a||!a.__esModule?i(t,\"default\",{value:a,enumerable:!0}):t,a)),v=a=>h(i({},\"__esModule\",{value:!0}),a);var l=y((_,s)=>{s.exports=_jsx_runtime});var C={};k(C,{default:()=>d,frontmatter:()=>x});var n=w(l()),x={title:\"European Roller Hockey Championship Finals 2024\",slug:\"championship-finals-2024\",summary:\"Spain defeats Portugal in a thrilling final match to claim the European Roller Hockey Championship title for 2024.\",date:\"2024-01-15\",locale:\"en\",tags:[\"championship\",\"spain\",\"portugal\",\"finals\"],coverImage:\"https://res.cloudinary.com/dj9xnzggs/image/upload/v1758838906/testpostimage_zhljsz.jpg\",author:\"Rollerstat Editorial Team\",translation_key:\"championship-finals-2024\",contentType:\"news\",featured:!0,published:!0};function c(a){let e={a:\"a\",h1:\"h1\",h2:\"h2\",h3:\"h3\",li:\"li\",p:\"p\",strong:\"strong\",ul:\"ul\",...a.components};return(0,n.jsxs)(n.Fragment,{children:[(0,n.jsx)(e.h1,{id:\"european-roller-hockey-championship-finals-2024\",children:(0,n.jsx)(e.a,{className:\"anchor\",href:\"#european-roller-hockey-championship-finals-2024\",children:\"European Roller Hockey Championship Finals 2024\"})}),`\n`,(0,n.jsx)(e.p,{children:\"The European Roller Hockey Championship came to a spectacular conclusion this weekend as Spain secured a dramatic victory over Portugal in the final match, winning 4-3 in overtime.\"}),`\n`,(0,n.jsx)(e.h2,{id:\"match-highlights\",children:(0,n.jsx)(e.a,{className:\"anchor\",href:\"#match-highlights\",children:\"Match Highlights\"})}),`\n`,(0,n.jsx)(e.p,{children:\"The final was a showcase of the highest level of roller hockey, with both teams demonstrating exceptional skill and determination. Spain's captain, Carlos Mendez, scored the winning goal in the 78th minute of overtime, sending the Spanish fans into ecstasy.\"}),`\n`,(0,n.jsx)(e.h3,{id:\"key-moments\",children:(0,n.jsx)(e.a,{className:\"anchor\",href:\"#key-moments\",children:\"Key Moments\"})}),`\n`,(0,n.jsxs)(e.ul,{children:[`\n`,(0,n.jsxs)(e.li,{children:[(0,n.jsx)(e.strong,{children:\"First Half\"}),\": Portugal took an early 2-0 lead with goals from Silva and Costa\"]}),`\n`,(0,n.jsxs)(e.li,{children:[(0,n.jsx)(e.strong,{children:\"Second Half\"}),\": Spain fought back with three consecutive goals from Rodriguez, Mendez, and Garcia\"]}),`\n`,(0,n.jsxs)(e.li,{children:[(0,n.jsx)(e.strong,{children:\"Overtime\"}),\": Mendez's decisive goal secured Spain's 15th European Championship title\"]}),`\n`]}),`\n`,(0,n.jsx)(e.h2,{id:\"tournament-statistics\",children:(0,n.jsx)(e.a,{className:\"anchor\",href:\"#tournament-statistics\",children:\"Tournament Statistics\"})}),`\n`,(0,n.jsx)(e.p,{children:\"This year's championship saw record attendance numbers and was broadcast to over 50 countries worldwide. The tournament featured 16 teams competing over two weeks of intense matches.\"}),`\n`,(0,n.jsx)(e.p,{children:\"The victory marks Spain's return to the top of European roller hockey after a three-year drought, while Portugal's strong performance throughout the tournament has positioned them as serious contenders for future competitions.\"}),`\n`,(0,n.jsx)(e.h2,{id:\"looking-ahead\",children:(0,n.jsx)(e.a,{className:\"anchor\",href:\"#looking-ahead\",children:\"Looking Ahead\"})}),`\n`,(0,n.jsx)(e.p,{children:\"With the European Championship concluded, attention now turns to the World Championships scheduled for later this year in Argentina, where both Spain and Portugal will be among the favorites to compete for the ultimate prize in roller hockey.\"})]})}function d(a={}){let{wrapper:e}=a.components||{};return e?(0,n.jsx)(e,{...a,children:(0,n.jsx)(c,{...a})}):c(a)}return v(C);})();\n;return Component;"
+    },
+    "_id": "en/news/championship-finals-2024.mdx",
+    "_raw": {
+      "sourceFilePath": "en/news/championship-finals-2024.mdx",
+      "sourceFileName": "championship-finals-2024.mdx",
+      "sourceFileDir": "en/news",
+      "contentType": "mdx",
+      "flattenedPath": "en/news/championship-finals-2024"
+    },
+    "type": "Post",
+    "readingTime": 2,
+    "url": "/en/news/championship-finals-2024"
   },
   {
     "title": "Análisis Táctico: La Evolución del Hockey Patines Moderno",
