@@ -9,6 +9,17 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { isValidLocale } from "@/lib/i18n";
 
+function getOpenGraphLocale(locale: string): string {
+  const localeMap: Record<string, string> = {
+    'en': 'en_US',
+    'es': 'es_ES',
+    'fr': 'fr_FR',
+    'it': 'it_IT',
+    'pt': 'pt_PT',
+  };
+  return localeMap[locale] || 'en_US';
+}
+
 interface NewsPageProps {
   params: Promise<{
     locale: string;
@@ -23,18 +34,23 @@ export async function generateMetadata({ params }: NewsPageProps) {
 
   const t = await getTranslations({ locale, namespace: "nav" });
   
-  const tSeo = await getTranslations({ locale, namespace: "seo" });
-  
   return {
     title: `${t("news")} - Rollerstat`,
     description: `Latest roller hockey news and updates in ${locale.toUpperCase()}`,
-    keywords: tSeo("keywords"),
     openGraph: {
       title: `${t("news")} - Rollerstat`,
       description: `Latest roller hockey news and updates in ${locale.toUpperCase()}`,
       type: "website",
-      locale: locale,
+      locale: getOpenGraphLocale(locale),
       siteName: "Rollerstat",
+      images: [
+        {
+          url: "https://rollerstat.com/og-image.jpg",
+          width: 1200,
+          height: 630,
+          alt: "Rollerstat News - Latest Roller Hockey Updates",
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
@@ -42,13 +58,13 @@ export async function generateMetadata({ params }: NewsPageProps) {
       description: `Latest roller hockey news and updates in ${locale.toUpperCase()}`,
     },
     alternates: {
-      canonical: `/${locale}/news`,
+      canonical: `https://rollerstat.com/${locale}/news`,
       languages: {
-        'en': '/en/news',
-        'es': '/es/news',
-        'fr': '/fr/news',
-        'it': '/it/news',
-        'pt': '/pt/news',
+        'en': 'https://rollerstat.com/en/news',
+        'es': 'https://rollerstat.com/es/news',
+        'fr': 'https://rollerstat.com/fr/news',
+        'it': 'https://rollerstat.com/it/news',
+        'pt': 'https://rollerstat.com/pt/news',
       },
     },
   };
