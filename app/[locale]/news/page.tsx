@@ -23,9 +23,34 @@ export async function generateMetadata({ params }: NewsPageProps) {
 
   const t = await getTranslations({ locale, namespace: "nav" });
   
+  const tSeo = await getTranslations({ locale, namespace: "seo" });
+  
   return {
     title: `${t("news")} - Rollerstat`,
     description: `Latest roller hockey news and updates in ${locale.toUpperCase()}`,
+    keywords: tSeo("keywords"),
+    openGraph: {
+      title: `${t("news")} - Rollerstat`,
+      description: `Latest roller hockey news and updates in ${locale.toUpperCase()}`,
+      type: "website",
+      locale: locale,
+      siteName: "Rollerstat",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${t("news")} - Rollerstat`,
+      description: `Latest roller hockey news and updates in ${locale.toUpperCase()}`,
+    },
+    alternates: {
+      canonical: `/${locale}/news`,
+      languages: {
+        'en': '/en/news',
+        'es': '/es/news',
+        'fr': '/fr/news',
+        'it': '/it/news',
+        'pt': '/pt/news',
+      },
+    },
   };
 }
 

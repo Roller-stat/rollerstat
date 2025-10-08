@@ -28,13 +28,38 @@ export async function generateMetadata({ params }: NewsDetailPageProps) {
     notFound();
   }
 
+  const tSeo = await getTranslations({ locale, namespace: "seo" });
+
   return {
     title: `${post.title} - Rollerstat`,
     description: post.summary,
+    keywords: tSeo("keywords"),
     openGraph: {
       title: post.title,
       description: post.summary,
+      type: "article",
+      locale: locale,
+      siteName: "Rollerstat",
       images: post.coverImage ? [post.coverImage] : [],
+      publishedTime: post.date,
+      modifiedTime: post.updated || post.date,
+      authors: [post.author],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.summary,
+      images: post.coverImage ? [post.coverImage] : [],
+    },
+    alternates: {
+      canonical: post.url,
+      languages: {
+        'en': post.url.replace(`/${locale}/`, '/en/'),
+        'es': post.url.replace(`/${locale}/`, '/es/'),
+        'fr': post.url.replace(`/${locale}/`, '/fr/'),
+        'it': post.url.replace(`/${locale}/`, '/it/'),
+        'pt': post.url.replace(`/${locale}/`, '/pt/'),
+      },
     },
   };
 }
