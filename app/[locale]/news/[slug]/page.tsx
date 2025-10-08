@@ -9,6 +9,17 @@ import Link from "next/link";
 import Image from "next/image";
 import { MDXContent } from "@/components/shared/mdx-content";
 
+function getOpenGraphLocale(locale: string): string {
+  const localeMap: Record<string, string> = {
+    'en': 'en_US',
+    'es': 'es_ES',
+    'fr': 'fr_FR',
+    'it': 'it_IT',
+    'pt': 'pt_PT',
+  };
+  return localeMap[locale] || 'en_US';
+}
+
 interface NewsDetailPageProps {
   params: Promise<{
     locale: string;
@@ -28,19 +39,31 @@ export async function generateMetadata({ params }: NewsDetailPageProps) {
     notFound();
   }
 
-  const tSeo = await getTranslations({ locale, namespace: "seo" });
+  // SEO metadata handled by locale layout
 
   return {
     title: `${post.title} - Rollerstat`,
     description: post.summary,
-    keywords: tSeo("keywords"),
     openGraph: {
       title: post.title,
       description: post.summary,
       type: "article",
-      locale: locale,
+      locale: getOpenGraphLocale(locale),
       siteName: "Rollerstat",
-      images: post.coverImage ? [post.coverImage] : [],
+      images: [
+        ...(post.coverImage ? [{
+          url: post.coverImage,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        }] : []),
+        {
+          url: "https://rollerstat.com/og-image.jpg",
+          width: 1200,
+          height: 630,
+          alt: "Rollerstat - Your Source for Roller Hockey News",
+        },
+      ],
       publishedTime: post.date,
       modifiedTime: post.updated || post.date,
       authors: [post.author],
@@ -49,16 +72,16 @@ export async function generateMetadata({ params }: NewsDetailPageProps) {
       card: "summary_large_image",
       title: post.title,
       description: post.summary,
-      images: post.coverImage ? [post.coverImage] : [],
+      images: post.coverImage ? [post.coverImage] : ["https://rollerstat.com/og-image.jpg"],
     },
     alternates: {
-      canonical: post.url,
+      canonical: `https://rollerstat.com${post.url}`,
       languages: {
-        'en': post.url.replace(`/${locale}/`, '/en/'),
-        'es': post.url.replace(`/${locale}/`, '/es/'),
-        'fr': post.url.replace(`/${locale}/`, '/fr/'),
-        'it': post.url.replace(`/${locale}/`, '/it/'),
-        'pt': post.url.replace(`/${locale}/`, '/pt/'),
+        'en': `https://rollerstat.com${post.url.replace(`/${locale}/`, '/en/')}`,
+        'es': `https://rollerstat.com${post.url.replace(`/${locale}/`, '/es/')}`,
+        'fr': `https://rollerstat.com${post.url.replace(`/${locale}/`, '/fr/')}`,
+        'it': `https://rollerstat.com${post.url.replace(`/${locale}/`, '/it/')}`,
+        'pt': `https://rollerstat.com${post.url.replace(`/${locale}/`, '/pt/')}`,
       },
     },
   };
