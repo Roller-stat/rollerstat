@@ -54,7 +54,8 @@
   "hero": {
     "title": "Rollerstat",
     "subtitle": "Rimani aggiornato con le ultime notizie, approfondimenti e storie dal mondo dell'hockey su pista in Europa.",
-    "subscribeButton": "Iscriviti alla Newsletter"
+    "emailPlaceholder": "Inserisci il tuo indirizzo email",
+    "subscribeButton": "Iscriviti"
   },
   "quotes": {
     "quote1": {
