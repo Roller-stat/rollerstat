@@ -37,7 +37,7 @@ export const Post = defineDocumentType(() => ({
     },
     locale: {
       type: "enum",
-      options: ["en", "es", "fr", "de", "it"],
+      options: ["en", "es", "fr", "it", "pt"],
       description: "The locale of the post",
       required: true,
     },
