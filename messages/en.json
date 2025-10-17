@@ -40,8 +40,16 @@
     "imageAlt": "Rollerstat - Your Source for Roller Hockey News"
   },
   "footer": {
+    "description": "Your premier source for roller hockey news, insights, and community across Europe.",
+    "quickLinks": "Quick Links",
+    "latestNews": "Latest News",
+    "blogPosts": "Blog Posts",
+    "contactUs": "Contact Us",
     "socialMedia": "Follow Us",
     "contact": "Contact",
+    "email": "Email: rollerstat@rollerstat.com",
+    "phone": "Phone: +1 (555) 123-4567",
+    "copyright": "© 2024 Rollerstat. All rights reserved.",
     "license": "License",
     "privacyPolicy": "Privacy Policy",
     "termsOfService": "Terms of Service"
