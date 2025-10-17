@@ -8,6 +8,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { isValidLocale } from "@/lib/i18n";
+import { Navbar } from "@/components/shared/navbar";
+import { Footer } from "@/components/shared/footer";
 
 function getOpenGraphLocale(locale: string): string {
   const localeMap: Record<string, string> = {
@@ -80,14 +82,14 @@ export default async function NewsPage({ params }: NewsPageProps) {
 
   const t = await getTranslations({ locale, namespace: "nav" });
   const tContent = await getTranslations({ locale, namespace: "content" });
-  const tCta = await getTranslations({ locale, namespace: "cta" });
   const news = getPostsByType("news", locale);
 
   return (
-    <div className="min-h-screen">
-      <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
+      <main className="flex-1">
+        <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-4">{t("news")}</h1>
           <p className="text-muted-foreground text-lg">
             Stay updated with the latest roller hockey news and events
           </p>
@@ -96,53 +98,48 @@ export default async function NewsPage({ params }: NewsPageProps) {
         {news.length > 0 ? (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {news.map((article) => (
-              <Card key={article._id} className="overflow-hidden hover:shadow-lg transition-shadow">
-                {article.coverImage && (
-                  <div className="aspect-video relative">
-                    <Image
-                      src={article.coverImage}
-                      alt={article.title}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                )}
-                <CardHeader>
-                  <div className="flex items-center gap-2 mb-2">
-                    <Badge variant="default">{t("news")}</Badge>
-                    <span className="text-sm text-muted-foreground">
-                      {getTimeAgo(article.date, locale)}
-                    </span>
-                  </div>
-                  <CardTitle className="text-xl leading-tight">
-                    {article.title}
-                  </CardTitle>
-                  <CardDescription className="text-base">
-                    {article.summary}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center justify-between">
+              <Link key={article._id} href={article.url} className="block">
+                <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
+                  {article.coverImage && (
+                    <div className="aspect-video relative">
+                      <Image
+                        src={article.coverImage}
+                        alt={article.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        className="object-cover"
+                      />
+                    </div>
+                  )}
+                  <CardHeader>
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-sm text-muted-foreground">
+                        {getTimeAgo(article.date, locale)}
+                      </span>
+                    </div>
+                    <CardTitle className="text-xl leading-tight">
+                      {article.title}
+                    </CardTitle>
+                    <CardDescription className="text-base">
+                      {article.summary}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
                     <div className="text-sm text-muted-foreground">
                       {tContent("by")} {article.author} • {article.readingTime} {tContent("readingTime")}
                     </div>
-                    <Button asChild>
-                      <Link href={article.url}>
-                        {tCta("readMore")}
-                      </Link>
-                    </Button>
-                  </div>
-                  {article.tags && article.tags.length > 0 && (
-                    <div className="flex flex-wrap gap-1 mt-3">
-                      {article.tags.map((tag: string) => (
-                        <Badge key={tag} variant="outline" className="text-xs">
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
+                    {article.tags && article.tags.length > 0 && (
+                      <div className="flex flex-wrap gap-1 mt-3">
+                        {article.tags.map((tag: string) => (
+                          <Badge key={tag} variant="outline" className="text-xs">
+                            {tag}
+                          </Badge>
+                        ))}
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
           </div>
         ) : (
@@ -154,7 +151,9 @@ export default async function NewsPage({ params }: NewsPageProps) {
             </CardContent>
           </Card>
         )}
-      </div>
+        </div>
+      </main>
+      <Footer />
     </div>
   );
 }
