@@ -1,11 +1,14 @@
 "use client";
 
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useVideoRotation } from "@/lib/hooks";
 import { useTranslations } from "next-intl";
 
 export function HeroSection() {
   const t = useTranslations("hero");
+  const [email, setEmail] = useState("");
   
   // Array of video URLs - replace with your actual video URLs
   const videos = [
@@ -14,6 +17,14 @@ export function HeroSection() {
   ];
 
   const { currentVideoIndex, setCurrentVideoIndex } = useVideoRotation(videos);
+
+  const handleSubscribe = () => {
+    if (email && email.includes("@")) {
+      // TODO: Implement actual subscription logic
+      console.log("Subscribing email:", email);
+      setEmail(""); // Clear the input after subscription
+    }
+  };
 
   return (
     <section className="relative w-full bg-gradient-to-br from-primary/20 via-background to-secondary/20 overflow-hidden">
@@ -59,12 +70,20 @@ export function HeroSection() {
                 {t("subtitle")}
               </p>
               
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-                <Button size="sm" className="sm:size-lg">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center max-w-md mx-auto">
+                <Input
+                  type="email"
+                  placeholder={t("emailPlaceholder")}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="flex-1"
+                />
+                <Button 
+                  size="sm" 
+                  className="sm:size-lg whitespace-nowrap"
+                  onClick={handleSubscribe}
+                >
                   {t("subscribeButton")}
-                </Button>
-                <Button variant="outline" size="sm" className="sm:size-lg">
-                  {t("readNewsButton")}
                 </Button>
               </div>
             </div>
@@ -84,12 +103,19 @@ export function HeroSection() {
               {t("subtitle")}
             </p>
             
-            <div className="flex flex-col gap-4">
-              <Button size="lg">
+            <div className="flex flex-col gap-4 max-w-sm mx-auto">
+              <Input
+                type="email"
+                placeholder={t("emailPlaceholder")}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full"
+              />
+              <Button 
+                size="lg"
+                onClick={handleSubscribe}
+              >
                 {t("subscribeButton")}
-              </Button>
-              <Button variant="outline" size="lg">
-                {t("readNewsButton")}
               </Button>
             </div>
           </div>

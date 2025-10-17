@@ -8,6 +8,8 @@ import { isValidLocale } from "@/lib/i18n";
 import Link from "next/link";
 import Image from "next/image";
 import { MDXContent } from "@/components/shared/mdx-content";
+import { Navbar } from "@/components/shared/navbar";
+import { Footer } from "@/components/shared/footer";
 
 function getOpenGraphLocale(locale: string): string {
   const localeMap: Record<string, string> = {
@@ -107,6 +109,8 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
   }
 
   const t = await getTranslations("content");
+  const tNav = await getTranslations("nav");
+  const tInteractions = await getTranslations("interactions");
   const relatedPosts = getRelatedPosts(post, 3);
 
   // JSON-LD for SEO
@@ -144,13 +148,15 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       
-      <div className="min-h-screen">
-        <div className="container mx-auto px-4 py-8">
+      <div className="min-h-screen flex flex-col">
+        <Navbar />
+        <main className="flex-1">
+          <div className="container mx-auto px-4 py-8">
           <article className="max-w-4xl mx-auto">
             {/* Header */}
             <header className="mb-8">
               <div className="flex items-center gap-2 mb-4">
-                <Badge variant="secondary">{t("nav.blogs")}</Badge>
+                <Badge variant="secondary">{tNav("blogs")}</Badge>
                 <span className="text-sm text-muted-foreground">
                   {formatDate(post.date, locale)}
                 </span>
@@ -166,9 +172,9 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
               <p className="text-xl text-muted-foreground mb-6">{post.summary}</p>
               
               <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                <span>{t("content.by")} {post.author}</span>
+                <span>{t("by")} {post.author}</span>
                 <span>•</span>
-                <span>{post.readingTime} {t("content.readingTime")}</span>
+                <span>{post.readingTime} {t("readingTime")}</span>
               </div>
             </header>
 
@@ -179,6 +185,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
                   src={post.coverImage}
                   alt={post.title}
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 60vw"
                   className="object-cover"
                 />
               </div>
@@ -207,13 +214,13 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
             <div className="border-t pt-8 mb-8">
               <div className="flex items-center gap-4 mb-6">
                 <Button variant="outline" size="sm">
-                  👍 {t("interactions.like")}
+                  👍 {tInteractions("like")}
                 </Button>
                 <Button variant="outline" size="sm">
-                  💬 {t("interactions.comments")}
+                  💬 {tInteractions("comments")}
                 </Button>
                 <Button variant="outline" size="sm">
-                  📤 {t("interactions.share")}
+                  📤 {tInteractions("share")}
                 </Button>
               </div>
               <div className="bg-muted/50 p-6 rounded-lg text-center">
@@ -236,6 +243,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
                             src={relatedPost.coverImage}
                             alt={relatedPost.title}
                             fill
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
                             className="object-cover"
                           />
                         </div>
@@ -258,7 +266,9 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
               </section>
             )}
           </article>
-        </div>
+          </div>
+        </main>
+        <Footer />
       </div>
     </>
   );
