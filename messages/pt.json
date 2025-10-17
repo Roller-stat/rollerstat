@@ -40,8 +40,16 @@
     "imageAlt": "Rollerstat - A sua fonte de notícias sobre hóquei em patins"
   },
   "footer": {
+    "description": "A sua fonte principal de notícias, análises e comunidade sobre hóquei em patins na Europa.",
+    "quickLinks": "Links Rápidos",
+    "latestNews": "Últimas Notícias",
+    "blogPosts": "Posts do Blog",
+    "contactUs": "Contacte-nos",
     "socialMedia": "Siga-nos",
     "contact": "Contacto",
+    "email": "Email: rollerstat@rollerstat.com",
+    "phone": "Telefone: +1 (555) 123-4567",
+    "copyright": "© 2024 Rollerstat. Todos os direitos reservados.",
     "license": "Licença",
     "privacyPolicy": "Política de privacidade",
     "termsOfService": "Termos de serviço"

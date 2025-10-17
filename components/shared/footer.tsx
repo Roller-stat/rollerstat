@@ -1,8 +1,12 @@
+"use client";
+
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { Logo } from "./logo";
+import { useTranslations } from "next-intl";
 
 export function Footer() {
+  const t = useTranslations("footer");
   return (
     <footer className="bg-background border-t">
       <div className="container mx-auto px-4 py-12">
@@ -11,27 +15,27 @@ export function Footer() {
           <div className="space-y-4">
             <Logo size="md" showText={true} href="/" loop={true} loopDelay={2000} />
             <p className="text-sm text-muted-foreground">
-              Your premier source for roller hockey news, insights, and community across Europe.
+              {t("description")}
             </p>
           </div>
 
           {/* Quick Links */}
           <div className="space-y-4">
-            <h3 className="font-semibold">Quick Links</h3>
+            <h3 className="font-semibold">{t("quickLinks")}</h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link href="/news" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Latest News
+                  {t("latestNews")}
                 </Link>
               </li>
               <li>
                 <Link href="/blogs" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Blog Posts
+                  {t("blogPosts")}
                 </Link>
               </li>
               <li>
                 <Link href="/contact" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Contact Us
+                  {t("contactUs")}
                 </Link>
               </li>
             </ul>
@@ -39,7 +43,7 @@ export function Footer() {
 
           {/* Social Media */}
           <div className="space-y-4">
-            <h3 className="font-semibold">Follow Us</h3>
+            <h3 className="font-semibold">{t("socialMedia")}</h3>
             <div className="flex space-x-4">
               <a href="#" className="text-muted-foreground hover:text-foreground transition-colors" aria-label="Twitter">
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -66,10 +70,10 @@ export function Footer() {
 
           {/* Contact */}
           <div className="space-y-4">
-            <h3 className="font-semibold">Contact</h3>
+            <h3 className="font-semibold">{t("contact")}</h3>
             <div className="space-y-2 text-sm text-muted-foreground">
-              <p>Email: info@rollerstat.com</p>
-              <p>Phone: +1 (555) 123-4567</p>
+              <p>{t("email")}</p>
+              <p>{t("phone")}</p>
             </div>
           </div>
         </div>
@@ -77,16 +81,16 @@ export function Footer() {
         <Separator className="my-8" />
 
         <div className="flex flex-col md:flex-row justify-between items-center text-sm text-muted-foreground">
-          <p>&copy; 2024 Rollerstat. All rights reserved.</p>
+          <p>{t("copyright")}</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <Link href="/privacy" className="hover:text-foreground transition-colors">
-              Privacy Policy
+              {t("privacyPolicy")}
             </Link>
             <Link href="/license" className="hover:text-foreground transition-colors">
-              License
+              {t("license")}
             </Link>
             <Link href="/terms" className="hover:text-foreground transition-colors">
-              Terms of Service
+              {t("termsOfService")}
             </Link>
           </div>
         </div>
