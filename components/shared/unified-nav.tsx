@@ -149,7 +149,7 @@ export function UnifiedNav() {
               <nav className="flex-1 flex flex-col justify-center items-center">
                 <ul className="space-y-6 text-center">
                   {navigationItems.map((item) => (
-                    <li key={item.href}>
+                    <li key={item.href} className="flex justify-center">
                     <Link
                       href={item.href}
                       onClick={() => handleMobileNavClick(item.href)}
@@ -158,7 +158,11 @@ export function UnifiedNav() {
                         fontFamily: 'var(--font-barlow-condensed), "Barlow Condensed", Arial, sans-serif',
                         color: '#057ec8',
                         fontWeight: '600',
-                        fontStyle: 'normal'
+                        fontStyle: 'normal',
+                        textAlign: 'center',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
                       }}
                     >
                         {item.translationKey ? t(item.translationKey) : item.label}
