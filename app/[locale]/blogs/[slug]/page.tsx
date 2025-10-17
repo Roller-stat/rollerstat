@@ -111,6 +111,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
   const t = await getTranslations("content");
   const tNav = await getTranslations("nav");
   const tInteractions = await getTranslations("interactions");
+  const tCta = await getTranslations("cta");
   const relatedPosts = getRelatedPosts(post, 3);
 
   // JSON-LD for SEO
@@ -199,7 +200,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
             {/* Tags */}
             {post.tags && post.tags.length > 0 && (
               <div className="mb-8">
-                <h3 className="text-lg font-semibold mb-3">{t("content.tags")}</h3>
+                <h3 className="text-lg font-semibold mb-3">{t("tags")}</h3>
                 <div className="flex flex-wrap gap-2">
                   {post.tags.map((tag: string) => (
                     <Badge key={tag} variant="outline">
@@ -233,7 +234,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
             {/* Related Posts */}
             {relatedPosts.length > 0 && (
               <section className="border-t pt-8">
-                <h2 className="text-2xl font-bold mb-6">{t("content.relatedPosts")}</h2>
+                <h2 className="text-2xl font-bold mb-6">{t("relatedPosts")}</h2>
                 <div className="grid gap-4 md:grid-cols-3">
                   {relatedPosts.map((relatedPost) => (
                     <Card key={relatedPost._id} className="hover:shadow-md transition-shadow">
@@ -256,7 +257,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
                       <CardContent className="pt-0">
                         <Button variant="ghost" size="sm" asChild>
                           <Link href={relatedPost.url}>
-                            {t("cta.readMore")} →
+                            {tCta("readMore")} →
                           </Link>
                         </Button>
                       </CardContent>

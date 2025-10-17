@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { getLatestPost, getTimeAgo } from "@/lib/content";
+import { getPostsByType, getTimeAgo } from "@/lib/content";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import Image from "next/image";
@@ -14,9 +14,9 @@ export async function LatestEdition({ locale }: LatestEditionProps) {
   const t = await getTranslations({ locale, namespace: "content" });
   const tNav = await getTranslations({ locale, namespace: "nav" });
   
-  const latestPost = getLatestPost(locale);
+  const latestNews = getPostsByType("news", locale)[0];
 
-  if (!latestPost) {
+  if (!latestNews) {
     return (
       <div className="w-full lg:w-3/4 space-y-4">
         <h2 className="text-2xl font-bold mb-6">{t("latestEdition")}</h2>
@@ -34,13 +34,13 @@ export async function LatestEdition({ locale }: LatestEditionProps) {
       <div className="w-full lg:w-3/4 space-y-4">
         <h2 className="text-2xl font-bold mb-6">{t("latestEdition")}</h2>
         
-        <Link href={latestPost.url} className="block">
+        <Link href={latestNews.url} className="block">
           <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
-            {latestPost.coverImage ? (
+            {latestNews.coverImage ? (
               <div className="aspect-video relative">
                 <Image
-                  src={latestPost.coverImage}
-                  alt={latestPost.title}
+                  src={latestNews.coverImage}
+                  alt={latestNews.title}
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw"
                   priority
@@ -54,23 +54,23 @@ export async function LatestEdition({ locale }: LatestEditionProps) {
             )}
             <CardHeader>
               <div className="flex items-center gap-2 mb-2">
-                <Badge variant={latestPost.contentType === "news" ? "default" : "secondary"}>
-                  {latestPost.contentType === "news" ? tNav("news") : tNav("blogs")}
+                <Badge variant="default">
+                  {tNav("news")}
                 </Badge>
                 <span className="text-sm text-muted-foreground">
-                  {getTimeAgo(latestPost.date, locale)}
+                  {getTimeAgo(latestNews.date, locale)}
                 </span>
               </div>
               <CardTitle className="text-2xl">
-                {latestPost.title}
+                {latestNews.title}
               </CardTitle>
               <CardDescription className="text-base">
-                {latestPost.summary}
+                {latestNews.summary}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="text-sm text-muted-foreground">
-                {t("by")} {latestPost.author} • {latestPost.readingTime} {t("readingTime")}
+                {t("by")} {latestNews.author} • {latestNews.readingTime} {t("readingTime")}
               </div>
             </CardContent>
           </Card>

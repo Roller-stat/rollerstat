@@ -111,6 +111,7 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
   const t = await getTranslations("content");
   const tNav = await getTranslations("nav");
   const tInteractions = await getTranslations("interactions");
+  const tCta = await getTranslations("cta");
   const relatedPosts = getRelatedPosts(post, 3);
 
   // JSON-LD for SEO
@@ -162,7 +163,7 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
                 </span>
                 {post.updated && (
                   <span className="text-sm text-muted-foreground">
-                    • {t("content.updatedOn")} {formatDate(post.updated, locale)}
+                    • {t("updatedOn")} {formatDate(post.updated, locale)}
                   </span>
                 )}
               </div>
@@ -233,7 +234,7 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
             {/* Related Posts */}
             {relatedPosts.length > 0 && (
               <section className="border-t pt-8">
-                <h2 className="text-2xl font-bold mb-6">{t("content.relatedPosts")}</h2>
+                <h2 className="text-2xl font-bold mb-6">{t("relatedPosts")}</h2>
                 <div className="grid gap-4 md:grid-cols-3">
                   {relatedPosts.map((relatedPost) => (
                     <Card key={relatedPost._id} className="hover:shadow-md transition-shadow">
@@ -256,7 +257,7 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
                       <CardContent className="pt-0">
                         <Button variant="ghost" size="sm" asChild>
                           <Link href={relatedPost.url}>
-                            {t("cta.readMore")} →
+                            {tCta("readMore")} →
                           </Link>
                         </Button>
                       </CardContent>
