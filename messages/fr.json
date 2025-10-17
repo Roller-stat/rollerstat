@@ -54,7 +54,28 @@
   "hero": {
     "title": "Rollerstat",
     "subtitle": "Restez informé des dernières actualités, analyses et histoires du monde du hockey sur patins en Europe.",
-    "subscribeButton": "S'abonner à la Newsletter",
-    "readNewsButton": "Lire les Dernières Actualités"
+    "subscribeButton": "S'abonner à la Newsletter"
+  },
+  "quotes": {
+    "quote1": {
+      "text": "Le hockey sur patins n'est pas seulement un sport, c'est un mode de vie qui rassemble les communautés à travers l'Europe.",
+      "author": "Marco Silva",
+      "role": "Entraîneur du Championnat Européen"
+    },
+    "quote2": {
+      "text": "La vitesse, l'habileté et la stratégie du hockey sur patins en font l'un des sports les plus passionnants à regarder et à jouer.",
+      "author": "Elena Rodriguez",
+      "role": "Joueuse Professionnelle"
+    },
+    "quote3": {
+      "text": "Chaque match nous apprend quelque chose de nouveau sur le travail d'équipe, la persévérance et le beau jeu du hockey sur patins.",
+      "author": "Thomas Müller",
+      "role": "Commissaire de la Ligue"
+    },
+    "quote4": {
+      "text": "La passion pour le hockey sur patins coule profondément dans nos veines, reliant joueurs et fans à travers les frontières.",
+      "author": "Sophie Dubois",
+      "role": "Capitaine d'Équipe"
+    }
   }
 }
