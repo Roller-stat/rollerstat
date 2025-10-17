@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Menu } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
@@ -16,7 +16,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
-import { getNavigationItems, mobileDrawerWidth } from "@/lib/navigation";
+import { getNavigationItems } from "@/lib/navigation";
 import { useUIStore } from "@/lib/stores";
 import { useHydration } from "@/lib/hooks";
 import { useTranslations, useLocale } from "next-intl";
@@ -139,11 +139,17 @@ export function UnifiedNav() {
               <Menu className="h-5 w-5" />
             </Button>
           </SheetTrigger>
-          <SheetContent side="left" className="w-full bg-background/50 backdrop-blur-md" aria-describedby={undefined}>
+          <SheetContent side="left" className="w-full bg-background/50 backdrop-blur-md [&>button]:hidden" aria-describedby={undefined}>
             <div className="flex flex-col h-full">
-              <SheetHeader className="flex-shrink-0">
-                <SheetTitle>
-                </SheetTitle>
+              <SheetHeader className="flex-shrink-0 h-20 flex items-center justify-end p-0 pr-9 pt-4">
+                <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+                <button
+                  onClick={toggleMobileMenu}
+                  className="h-7 w-7 flex items-center justify-center rounded-md bg-background/90 backdrop-blur-sm border border-border/50 hover:bg-background transition-colors shadow-lg"
+                  aria-label="Close navigation menu"
+                >
+                  <X className="h-3 w-3" />
+                </button>
               </SheetHeader>
               
               <nav className="flex-1 flex flex-col justify-center items-center">
