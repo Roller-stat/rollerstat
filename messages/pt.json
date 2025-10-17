@@ -54,7 +54,28 @@
   "hero": {
     "title": "Rollerstat",
     "subtitle": "Mantenha-se atualizado com as últimas notícias, análises e histórias do mundo do hóquei em patins na Europa.",
-    "subscribeButton": "Subscrever Newsletter",
-    "readNewsButton": "Ler Últimas Notícias"
+    "subscribeButton": "Subscrever Newsletter"
+  },
+  "quotes": {
+    "quote1": {
+      "text": "O hóquei em patins não é apenas um desporto, é uma forma de vida que une comunidades em toda a Europa.",
+      "author": "Marco Silva",
+      "role": "Treinador do Campeonato Europeu"
+    },
+    "quote2": {
+      "text": "A velocidade, habilidade e estratégia do hóquei em patins tornam-no um dos desportos mais emocionantes de ver e jogar.",
+      "author": "Elena Rodriguez",
+      "role": "Jogadora Profissional"
+    },
+    "quote3": {
+      "text": "Cada jogo ensina-nos algo novo sobre trabalho em equipa, perseverança e o belo jogo do hóquei em patins.",
+      "author": "Thomas Müller",
+      "role": "Comissário da Liga"
+    },
+    "quote4": {
+      "text": "A paixão pelo hóquei em patins corre profundo nas nossas veias, conectando jogadores e fãs através das fronteiras.",
+      "author": "Sophie Dubois",
+      "role": "Capitã da Equipa"
+    }
   }
 }

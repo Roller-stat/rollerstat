@@ -54,7 +54,28 @@
   "hero": {
     "title": "Rollerstat",
     "subtitle": "Rimani aggiornato con le ultime notizie, approfondimenti e storie dal mondo dell'hockey su pista in Europa.",
-    "subscribeButton": "Iscriviti alla Newsletter",
-    "readNewsButton": "Leggi le Ultime Notizie"
+    "subscribeButton": "Iscriviti alla Newsletter"
+  },
+  "quotes": {
+    "quote1": {
+      "text": "L'hockey su pista non è solo uno sport, è uno stile di vita che unisce le comunità in tutta Europa.",
+      "author": "Marco Silva",
+      "role": "Allenatore del Campionato Europeo"
+    },
+    "quote2": {
+      "text": "La velocità, l'abilità e la strategia dell'hockey su pista lo rendono uno degli sport più emozionanti da guardare e giocare.",
+      "author": "Elena Rodriguez",
+      "role": "Giocatrice Professionista"
+    },
+    "quote3": {
+      "text": "Ogni partita ci insegna qualcosa di nuovo sul lavoro di squadra, la perseveranza e il bel gioco dell'hockey su pista.",
+      "author": "Thomas Müller",
+      "role": "Commissario della Lega"
+    },
+    "quote4": {
+      "text": "La passione per l'hockey su pista scorre profonda nelle nostre vene, collegando giocatori e tifosi attraverso i confini.",
+      "author": "Sophie Dubois",
+      "role": "Capitano della Squadra"
+    }
   }
 }
