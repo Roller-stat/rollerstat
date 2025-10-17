@@ -38,6 +38,9 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning>
+      <head>
+        <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
+      </head>
       <body
         className={`${barlowCondensed.variable} antialiased`}
         suppressHydrationWarning
