@@ -13,8 +13,6 @@ interface HomePageProps {
   }>;
 }
 
-// Metadata is handled by the locale layout
-
 export default async function HomePage({ params }: HomePageProps) {
   const { locale } = await params;
   if (!isValidLocale(locale)) {
@@ -28,11 +26,10 @@ export default async function HomePage({ params }: HomePageProps) {
       <main className="flex-1">
         <HeroSection />
         
-        {/* Content Section - Latest Edition (75%) and Top Stories (25%) */}
         <section className="container mx-auto px-4 py-12">
           <div className="flex flex-col lg:flex-row gap-8">
-            <LatestEdition locale={locale} />
-            <TopStories locale={locale} />
+            {await LatestEdition({ locale })}
+            {await TopStories({ locale })}
           </div>
         </section>
         
