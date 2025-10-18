@@ -36,10 +36,11 @@ type PostFormValues = z.infer<typeof postSchema>
 interface PostFormProps {
   initialData?: Partial<PostFormValues> & { content?: string }
   onSubmit: (data: PostFormValues & { content: string }) => void
-  isLoading?: boolean
+  isSubmitting?: boolean
+  submitButtonText?: string
 }
 
-export function PostForm({ initialData, onSubmit, isLoading = false }: PostFormProps) {
+export function PostForm({ initialData, onSubmit, isSubmitting = false, submitButtonText = "Save Post" }: PostFormProps) {
   const [tags, setTags] = useState<string[]>(initialData?.tags || [])
   const [tagInput, setTagInput] = useState("")
   const [content, setContent] = useState(initialData?.content || "")
@@ -389,14 +390,14 @@ export function PostForm({ initialData, onSubmit, isLoading = false }: PostFormP
               <Button type="button" variant="outline">
                 Save Draft
               </Button>
-              <Button type="submit" disabled={isLoading}>
-                {isLoading ? (
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Publishing...
+                    {submitButtonText}...
                   </>
                 ) : (
-                  "Publish Post"
+                  submitButtonText
                 )}
               </Button>
             </div>
