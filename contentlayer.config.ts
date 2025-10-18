@@ -37,7 +37,7 @@ export const Post = defineDocumentType(() => ({
     },
     locale: {
       type: "enum",
-      options: ["en", "es", "fr", "de", "it"],
+      options: ["en", "es", "fr", "it", "pt"],
       description: "The locale of the post",
       required: true,
     },
@@ -90,7 +90,7 @@ export const Post = defineDocumentType(() => ({
     readingTime: {
       type: "number",
       description: "Reading time in minutes",
-      resolve: (doc: any) => {
+      resolve: (doc: { body?: { raw?: string } }) => {
         try {
           const wordsPerMinute = 200;
           const text = doc.body?.raw || "";
@@ -105,7 +105,10 @@ export const Post = defineDocumentType(() => ({
     url: {
       type: "string",
       description: "The URL of the post",
-      resolve: (doc: any) => `/${doc.locale}/${doc.contentType}/${doc.slug}`,
+      resolve: (doc: { locale: string; contentType: string; slug: string }) => {
+        const pluralType = doc.contentType === "news" ? "news" : `${doc.contentType}s`;
+        return `/${doc.locale}/${pluralType}/${doc.slug}`;
+      },
     },
   },
 }));
