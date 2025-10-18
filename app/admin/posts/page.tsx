@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Plus, Search, Filter } from "lucide-react"
+import { Card, CardContent } from "@/components/ui/card"
+import { Plus, Search } from "lucide-react"
 import Link from "next/link"
 
 interface Post {
@@ -91,8 +92,9 @@ export default function PostsPage() {
         </div>
 
         {/* Filters */}
-        <div className="bg-white p-6 rounded-lg border">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
             {/* Search */}
             <div className="relative flex-1 max-w-md">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -106,7 +108,7 @@ export default function PostsPage() {
 
             {/* Filters */}
             <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
-              <Select value={typeFilter} onValueChange={(value: any) => setTypeFilter(value)}>
+              <Select value={typeFilter} onValueChange={(value: "all" | "news" | "blog") => setTypeFilter(value)}>
                 <SelectTrigger className="w-full sm:w-32">
                   <SelectValue placeholder="Type" />
                 </SelectTrigger>
@@ -117,7 +119,7 @@ export default function PostsPage() {
                 </SelectContent>
               </Select>
 
-              <Select value={localeFilter} onValueChange={(value: any) => setLocaleFilter(value)}>
+              <Select value={localeFilter} onValueChange={(value: "all" | "en" | "es" | "fr" | "de" | "it") => setLocaleFilter(value)}>
                 <SelectTrigger className="w-full sm:w-32">
                   <SelectValue placeholder="Language" />
                 </SelectTrigger>
@@ -131,7 +133,7 @@ export default function PostsPage() {
                 </SelectContent>
               </Select>
 
-              <Select value={statusFilter} onValueChange={(value: any) => setStatusFilter(value)}>
+              <Select value={statusFilter} onValueChange={(value: "all" | "published" | "draft") => setStatusFilter(value)}>
                 <SelectTrigger className="w-full sm:w-32">
                   <SelectValue placeholder="Status" />
                 </SelectTrigger>
@@ -143,7 +145,8 @@ export default function PostsPage() {
               </Select>
             </div>
           </div>
-        </div>
+          </CardContent>
+        </Card>
 
         {/* Posts Tabs */}
         <Tabs defaultValue="all" className="w-full">

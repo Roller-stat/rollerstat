@@ -16,19 +16,38 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Loader2, X, Plus, Bold, Italic, List, Link as LinkIcon, Image as ImageIcon } from "lucide-react"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Separator } from "@/components/ui/separator"
+import { Loader2, X, Plus, Bold, Italic, List, Link as LinkIcon, Image as ImageIcon, AlertCircle, CheckCircle } from "lucide-react"
 
 const postSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  author: z.string().min(1, "Author is required"),
-  summary: z.string().min(1, "Summary is required"),
+  title: z.string()
+    .min(1, "Title is required")
+    .min(3, "Title must be at least 3 characters")
+    .max(100, "Title must be less than 100 characters"),
+  author: z.string()
+    .min(1, "Author is required")
+    .min(2, "Author name must be at least 2 characters")
+    .max(50, "Author name must be less than 50 characters"),
+  summary: z.string()
+    .min(1, "Summary is required")
+    .min(10, "Summary must be at least 10 characters")
+    .max(300, "Summary must be less than 300 characters"),
   type: z.enum(["news", "blog"]),
   locale: z.enum(["en", "es", "fr", "de", "it"]),
-  coverImage: z.string().optional(),
-  heroVideo: z.string().optional(),
+  coverImage: z.string()
+    .url("Please enter a valid image URL")
+    .optional()
+    .or(z.literal("")),
+  heroVideo: z.string()
+    .url("Please enter a valid video URL")
+    .optional()
+    .or(z.literal("")),
   featured: z.boolean(),
   published: z.boolean(),
   tags: z.array(z.string())
+    .min(1, "At least one tag is required")
+    .max(10, "Maximum 10 tags allowed")
 })
 
 type PostFormValues = z.infer<typeof postSchema>
@@ -44,6 +63,8 @@ export function PostForm({ initialData, onSubmit, isSubmitting = false, submitBu
   const [tags, setTags] = useState<string[]>(initialData?.tags || [])
   const [tagInput, setTagInput] = useState("")
   const [content, setContent] = useState(initialData?.content || "")
+  const [formErrors, setFormErrors] = useState<string[]>([])
+  const [isValidating, setIsValidating] = useState(false)
 
   const form = useForm<PostFormValues>({
     resolver: zodResolver(postSchema),
@@ -100,8 +121,55 @@ export function PostForm({ initialData, onSubmit, isSubmitting = false, submitBu
     form.setValue("tags", newTags)
   }
 
-  const handleSubmit = (values: PostFormValues) => {
-    onSubmit({ ...values, content })
+  const handleSubmit = async (values: PostFormValues) => {
+    setIsValidating(true)
+    setFormErrors([])
+
+    try {
+      // Validate content
+      if (!content || content.trim().length < 10) {
+        setFormErrors(["Content must be at least 10 characters long"])
+        setIsValidating(false)
+        return
+      }
+
+      // Validate tags
+      if (tags.length === 0) {
+        setFormErrors(["At least one tag is required"])
+        setIsValidating(false)
+        return
+      }
+
+      // Validate URLs if provided
+      const errors: string[] = []
+      if (values.coverImage && values.coverImage.trim() !== "") {
+        try {
+          new URL(values.coverImage)
+        } catch {
+          errors.push("Please enter a valid cover image URL")
+        }
+      }
+      if (values.heroVideo && values.heroVideo.trim() !== "") {
+        try {
+          new URL(values.heroVideo)
+        } catch {
+          errors.push("Please enter a valid hero video URL")
+        }
+      }
+
+      if (errors.length > 0) {
+        setFormErrors(errors)
+        setIsValidating(false)
+        return
+      }
+
+      // All validations passed
+      onSubmit({ ...values, content })
+    } catch {
+      setFormErrors(["An unexpected error occurred. Please try again."])
+    } finally {
+      setIsValidating(false)
+    }
   }
 
   const insertImage = () => {
@@ -129,6 +197,20 @@ export function PostForm({ initialData, onSubmit, isSubmitting = false, submitBu
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+            {/* Form Validation Errors */}
+            {formErrors.length > 0 && (
+              <Alert variant="destructive">
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>
+                  <ul className="list-disc list-inside space-y-1">
+                    {formErrors.map((error, index) => (
+                      <li key={index}>{error}</li>
+                    ))}
+                  </ul>
+                </AlertDescription>
+              </Alert>
+            )}
+
             {/* Basic Information */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
@@ -289,6 +371,8 @@ export function PostForm({ initialData, onSubmit, isSubmitting = false, submitBu
               </div>
             </div>
 
+            <Separator />
+
             {/* Rich Text Editor */}
             <div className="space-y-2">
               <FormLabel>Content *</FormLabel>
@@ -385,19 +469,24 @@ export function PostForm({ initialData, onSubmit, isSubmitting = false, submitBu
               />
             </div>
 
+            <Separator />
+
             {/* Submit Button */}
             <div className="flex justify-end gap-4">
               <Button type="button" variant="outline">
                 Save Draft
               </Button>
-              <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? (
+              <Button type="submit" disabled={isSubmitting || isValidating}>
+                {isSubmitting || isValidating ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    {submitButtonText}...
+                    {isValidating ? "Validating..." : `${submitButtonText}...`}
                   </>
                 ) : (
-                  submitButtonText
+                  <>
+                    <CheckCircle className="mr-2 h-4 w-4" />
+                    {submitButtonText}
+                  </>
                 )}
               </Button>
             </div>

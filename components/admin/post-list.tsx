@@ -8,8 +8,8 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Skeleton } from "@/components/ui/skeleton"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Edit, Trash2, Eye, Calendar, User, Globe } from "lucide-react"
+import { Edit, Trash2, Eye, Calendar, User, Globe, FileText, Plus } from "lucide-react"
+import Link from "next/link"
 
 interface Post {
   id: string
@@ -62,9 +62,9 @@ export function PostList({ posts, loading = false, onPostUpdate, onEdit, onDelet
       }
       setDeleteDialogOpen(false)
       setPostToDelete(null)
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error deleting post:", error)
-      toast.error(error.message || "Failed to delete post")
+      toast.error(error instanceof Error ? error.message : "Failed to delete post")
     }
   }
 
@@ -97,11 +97,18 @@ export function PostList({ posts, loading = false, onPostUpdate, onEdit, onDelet
         <CardContent>
           <div className="space-y-4">
             {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="flex items-center space-x-4">
-                <Skeleton className="h-4 w-[250px]" />
-                <Skeleton className="h-4 w-[100px]" />
-                <Skeleton className="h-4 w-[80px]" />
-                <Skeleton className="h-4 w-[60px]" />
+              <div key={i} className="flex items-center justify-between p-4 border rounded-lg">
+                <div className="flex items-center space-x-4">
+                  <Skeleton className="h-4 w-4" />
+                  <div className="space-y-2">
+                    <Skeleton className="h-4 w-48" />
+                    <Skeleton className="h-3 w-32" />
+                  </div>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Skeleton className="h-6 w-16" />
+                  <Skeleton className="h-8 w-12" />
+                </div>
               </div>
             ))}
           </div>
@@ -118,11 +125,19 @@ export function PostList({ posts, loading = false, onPostUpdate, onEdit, onDelet
           <CardDescription>No posts found</CardDescription>
         </CardHeader>
         <CardContent>
-          <Alert>
-            <AlertDescription>
-              No posts have been created yet. Create your first post to get started.
-            </AlertDescription>
-          </Alert>
+          <div className="text-center py-12">
+            <div className="w-16 h-16 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-4">
+              <FileText className="h-8 w-8 text-gray-400" />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">No posts found</h3>
+            <p className="text-gray-500 mb-6">Get started by creating your first post to engage your audience.</p>
+            <Button asChild>
+              <Link href="/admin/posts/new">
+                <Plus className="h-4 w-4 mr-2" />
+                Create Your First Post
+              </Link>
+            </Button>
+          </div>
         </CardContent>
       </Card>
     )
