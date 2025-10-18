@@ -1,7 +1,5 @@
 import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
-import type { JWT } from "next-auth/jwt"
-import type { Session, User } from "next-auth"
 
 // Extend the built-in session types
 declare module "next-auth" {
@@ -22,7 +20,7 @@ declare module "next-auth" {
   }
 }
 
-export const authOptions = {
+export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
     CredentialsProvider({
       name: "credentials",
@@ -55,20 +53,18 @@ export const authOptions = {
     signIn: "/admin/login"
   },
   callbacks: {
-    async jwt({ token, user }: { token: JWT; user: User }) {
+    async jwt({ token, user }) {
       if (user) {
         token.role = user.role
       }
       return token
     },
-    async session({ session, token }: { session: Session; token: JWT }) {
+    async session({ session, token }) {
       if (token) {
         session.user.id = token.sub || ""
-        session.user.role = (token as JWT & { role: string }).role || ""
+        session.user.role = (token as { role?: string }).role || ""
       }
       return session
     }
   }
-}
-
-export default NextAuth(authOptions)
+})

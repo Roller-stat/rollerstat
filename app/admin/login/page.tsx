@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { signIn, getSession } from "next-auth/react"
+import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -47,13 +47,8 @@ export default function LoginPage() {
       if (result?.error) {
         setError("Invalid email or password")
       } else {
-        // Check if user is admin
-        const session = await getSession()
-        if (session?.user?.role === "admin") {
-          router.push("/admin")
-        } else {
-          setError("You don't have admin access")
-        }
+        // Redirect to admin dashboard on successful login
+        router.push("/admin")
       }
     } catch (error) {
       setError("An error occurred. Please try again.")
