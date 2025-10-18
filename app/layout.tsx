@@ -3,6 +3,7 @@ import { Barlow_Condensed } from "next/font/google";
 import { headers } from "next/headers";
 import { getLocaleFromPathname, defaultLocale } from "@/lib/i18n";
 import { AuthSessionProvider } from "@/components/auth/session-provider";
+import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
 const barlowCondensed = Barlow_Condensed({
@@ -48,6 +49,7 @@ export default async function RootLayout({
       >
         <AuthSessionProvider>
           {children}
+          <Toaster />
         </AuthSessionProvider>
       </body>
     </html>

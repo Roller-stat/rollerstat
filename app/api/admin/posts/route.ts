@@ -42,24 +42,21 @@ export async function GET(request: NextRequest) {
       type || undefined
     )
 
-    return NextResponse.json({
-      success: true,
-      posts: posts.map(post => ({
-        id: post.id,
-        slug: post.slug,
-        title: post.data.title,
-        author: post.data.author,
-        type: post.data.type,
-        locale: post.data.locale,
-        summary: post.data.summary,
-        date: new Date().toISOString().split("T")[0], // This would come from frontmatter in real implementation
-        featured: post.data.featured,
-        published: post.data.published,
-        tags: post.data.tags,
-        coverImage: post.data.coverImage,
-        heroVideo: post.data.heroVideo,
-      }))
-    })
+    return NextResponse.json(posts.map(post => ({
+      id: post.id,
+      slug: post.slug,
+      title: post.data.title,
+      author: post.data.author,
+      type: post.data.type,
+      locale: post.data.locale,
+      summary: post.data.summary,
+      date: new Date().toISOString().split("T")[0], // This would come from frontmatter in real implementation
+      featured: post.data.featured,
+      published: post.data.published,
+      tags: post.data.tags,
+      coverImage: post.data.coverImage,
+      heroVideo: post.data.heroVideo,
+    })))
   } catch (error) {
     console.error("Error listing posts:", error)
     return NextResponse.json(

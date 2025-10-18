@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { toast } from "sonner"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
@@ -26,13 +27,14 @@ interface Post {
 
 interface PostListProps {
   posts: Post[]
-  isLoading?: boolean
+  loading?: boolean
+  onPostUpdate?: () => void
   onEdit?: (post: Post) => void
   onDelete?: (postId: string) => void
   onView?: (post: Post) => void
 }
 
-export function PostList({ posts, isLoading = false, onEdit, onDelete, onView }: PostListProps) {
+export function PostList({ posts, loading = false, onPostUpdate, onEdit, onDelete, onView }: PostListProps) {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [postToDelete, setPostToDelete] = useState<Post | null>(null)
 
@@ -41,11 +43,28 @@ export function PostList({ posts, isLoading = false, onEdit, onDelete, onView }:
     setDeleteDialogOpen(true)
   }
 
-  const handleDeleteConfirm = () => {
-    if (postToDelete && onDelete) {
-      onDelete(postToDelete.id)
+  const handleDeleteConfirm = async () => {
+    if (!postToDelete) return
+
+    try {
+      const response = await fetch(`/api/admin/posts/${postToDelete.locale}/${postToDelete.type}/${postToDelete.id}`, {
+        method: "DELETE",
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || "Failed to delete post")
+      }
+
+      toast.success("Post deleted successfully!")
+      if (onPostUpdate) {
+        onPostUpdate()
+      }
       setDeleteDialogOpen(false)
       setPostToDelete(null)
+    } catch (error: any) {
+      console.error("Error deleting post:", error)
+      toast.error(error.message || "Failed to delete post")
     }
   }
 
@@ -68,7 +87,7 @@ export function PostList({ posts, isLoading = false, onEdit, onDelete, onView }:
     return flags[locale] || "🌐"
   }
 
-  if (isLoading) {
+  if (loading) {
     return (
       <Card>
         <CardHeader>
