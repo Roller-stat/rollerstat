@@ -24,7 +24,6 @@ import {
   Home, 
   FileText, 
   Plus, 
-  Settings, 
   LogOut,
   ChevronRight
 } from "lucide-react"
@@ -61,17 +60,12 @@ export function AdminLayout({ children, breadcrumbs = [] }: AdminLayoutProps) {
       href: "/admin/posts/new",
       icon: Plus,
     },
-    {
-      title: "Settings",
-      href: "/admin/settings",
-      icon: Settings,
-    },
   ]
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200">
+      <header className="bg-white border-b border-gray-200 shadow-sm">
         <div className="px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo and Title */}

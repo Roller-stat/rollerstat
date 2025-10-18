@@ -180,7 +180,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Statistics Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
           {loading ? (
             <>
               <StatSkeleton />
@@ -220,7 +220,7 @@ export default function DashboardPage() {
 
         {/* Content Type Breakdown */}
         {stats && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
             <Card>
               <CardHeader>
                 <CardTitle>Content Types</CardTitle>
@@ -331,13 +331,16 @@ export default function DashboardPage() {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-8 text-gray-500">
-                <FileText className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-                <p>No posts found. Create your first post to get started!</p>
-                <Button className="mt-4" asChild>
+              <div className="text-center py-12">
+                <div className="w-16 h-16 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                  <FileText className="h-8 w-8 text-gray-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">No posts yet</h3>
+                <p className="text-gray-500 mb-6">Create your first post to start building your content library.</p>
+                <Button asChild>
                   <Link href="/admin/posts/new">
                     <Plus className="h-4 w-4 mr-2" />
-                    Create Post
+                    Create Your First Post
                   </Link>
                 </Button>
               </div>
