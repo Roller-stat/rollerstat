@@ -14,7 +14,9 @@ export async function LatestEdition({ locale }: LatestEditionProps) {
   const t = await getTranslations({ locale, namespace: "content" });
   const tNav = await getTranslations({ locale, namespace: "nav" });
   
-  const latestNews = getPostsByType("news", locale)[0];
+  const newsPosts = getPostsByType("news", locale);
+  const latestNews = newsPosts[0];
+  const secondLatestNews = newsPosts[1];
 
   if (!latestNews) {
     return (
@@ -34,6 +36,7 @@ export async function LatestEdition({ locale }: LatestEditionProps) {
       <div className="w-full lg:w-3/4 space-y-4">
         <h2 className="text-2xl font-bold mb-6">{t("latestEdition")}</h2>
         
+        {/* Latest News Post */}
         <Link href={latestNews.url} className="block">
           <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
             {latestNews.coverImage ? (
@@ -75,6 +78,50 @@ export async function LatestEdition({ locale }: LatestEditionProps) {
             </CardContent>
           </Card>
         </Link>
+
+        {/* Second Latest News Post */}
+        {secondLatestNews && (
+          <Link href={secondLatestNews.url} className="block">
+            <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
+              {secondLatestNews.coverImage ? (
+                <div className="aspect-video relative">
+                  <Image
+                    src={secondLatestNews.coverImage}
+                    alt={secondLatestNews.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw"
+                    className="object-cover"
+                  />
+                </div>
+              ) : (
+                <div className="aspect-video bg-gradient-to-r from-primary/20 to-secondary/20 flex items-center justify-center">
+                  <span className="text-muted-foreground">Featured Image</span>
+                </div>
+              )}
+              <CardHeader>
+                <div className="flex items-center gap-2 mb-2">
+                  <Badge variant="default">
+                    {tNav("news")}
+                  </Badge>
+                  <span className="text-sm text-muted-foreground">
+                    {getTimeAgo(secondLatestNews.date, locale)}
+                  </span>
+                </div>
+                <CardTitle className="text-xl">
+                  {secondLatestNews.title}
+                </CardTitle>
+                <CardDescription className="text-sm">
+                  {secondLatestNews.summary}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="text-sm text-muted-foreground">
+                  {t("by")} {secondLatestNews.author} • {secondLatestNews.readingTime} {t("readingTime")}
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
+        )}
       </div>
     </ErrorBoundary>
   );
