@@ -1,17 +1,16 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { getLatestBlogs, getTimeAgo } from "@/lib/content";
-import { useTranslations, useLocale } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import Link from "next/link";
+import Image from "next/image";
 
 interface TopStoriesProps {
   locale: "en" | "es" | "fr" | "it" | "pt";
 }
 
-export function TopStories({ locale }: TopStoriesProps) {
-  const t = useTranslations("content");
-  const tCta = useTranslations("cta");
+export async function TopStories({ locale }: TopStoriesProps) {
+  const t = await getTranslations({ locale, namespace: "content" });
   
   const blogs = getLatestBlogs(locale, 4);
 
@@ -22,31 +21,39 @@ export function TopStories({ locale }: TopStoriesProps) {
       <div className="space-y-4">
         {blogs.length > 0 ? (
           blogs.map((blog) => (
-            <Card key={blog._id} className="hover:shadow-md transition-shadow">
-              <CardHeader className="pb-3">
-                <div className="flex items-center gap-2 mb-2">
-                  <Badge variant="outline" className="text-xs">
-                    {blog.tags?.[0] || "Blog"}
-                  </Badge>
-                  <span className="text-xs text-muted-foreground">
-                    {getTimeAgo(blog.date, locale)}
-                  </span>
-                </div>
-                <CardTitle className="text-sm leading-tight">
-                  {blog.title}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <CardDescription className="text-xs mb-3">
-                  {blog.summary}
-                </CardDescription>
-                <Button variant="ghost" size="sm" className="p-0 h-auto text-xs" asChild>
-                  <Link href={blog.url}>
-                    {tCta("readMore")} →
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
+            <Link key={blog._id} href={blog.url} className="block">
+              <Card className="hover:shadow-md transition-shadow cursor-pointer">
+                {blog.coverImage && (
+                  <div className="aspect-[4/3] relative overflow-hidden rounded-t-xl">
+                    <Image
+                      src={blog.coverImage}
+                      alt={blog.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 25vw, 20vw"
+                      className="object-cover"
+                    />
+                  </div>
+                )}
+                <CardHeader>
+                  <div className="flex items-center gap-2 mb-2">
+                    <Badge variant="outline" className="text-xs">
+                      {blog.tags?.[0] || "Blog"}
+                    </Badge>
+                    <span className="text-xs text-muted-foreground">
+                      {getTimeAgo(blog.date, locale)}
+                    </span>
+                  </div>
+                  <CardTitle className="text-sm leading-tight">
+                    {blog.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <CardDescription className="text-xs">
+                    {blog.summary}
+                  </CardDescription>
+                </CardContent>
+              </Card>
+            </Link>
           ))
         ) : (
           <Card>
