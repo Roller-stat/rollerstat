@@ -1,5 +1,6 @@
 import { defineDocumentType, makeSource } from "contentlayer2/source-files";
 import remarkGfm from "remark-gfm";
+import remarkBreaks from "remark-breaks";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypePrettyCode from "rehype-pretty-code";
@@ -118,7 +119,10 @@ export default makeSource({
   documentTypes: [Post],
   disableImportAliasWarning: true,
   mdx: {
-    remarkPlugins: [remarkGfm],
+    remarkPlugins: [
+      // Use remark-breaks to preserve line breaks as <br> tags (standard MDX)
+      remarkBreaks,
+    ],
     rehypePlugins: [
       rehypeSlug,
       [
