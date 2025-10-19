@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { getPostsByLocale, getTimeAgo } from "@/lib/content";
+import { getPostsByType, getTimeAgo } from "@/lib/content";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import Image from "next/image";
@@ -14,10 +14,10 @@ export async function LatestEdition({ locale }: LatestEditionProps) {
   const t = await getTranslations({ locale, namespace: "content" });
   const tNav = await getTranslations({ locale, namespace: "nav" });
   
-  // Get all posts (news and blogs) sorted by date, most recent first
-  const allPosts = getPostsByLocale(locale);
-  const latestPost = allPosts[0];
-  const secondLatestPost = allPosts[1];
+  // Get only news posts sorted by date, most recent first
+  const newsPosts = getPostsByType("news", locale);
+  const latestPost = newsPosts[0];
+  const secondLatestPost = newsPosts[1];
 
   if (!latestPost) {
     return (
@@ -59,7 +59,7 @@ export async function LatestEdition({ locale }: LatestEditionProps) {
             <CardHeader>
               <div className="flex items-center gap-2 mb-2">
                 <Badge variant="default">
-                  {latestPost.contentType === "news" ? tNav("news") : tNav("blogs")}
+                  {tNav("news")}
                 </Badge>
                 <span className="text-sm text-muted-foreground">
                   {getTimeAgo(latestPost.date, locale)}
@@ -102,7 +102,7 @@ export async function LatestEdition({ locale }: LatestEditionProps) {
               <CardHeader>
                 <div className="flex items-center gap-2 mb-2">
                   <Badge variant="default">
-                    {secondLatestPost.contentType === "news" ? tNav("news") : tNav("blogs")}
+                    {tNav("news")}
                   </Badge>
                   <span className="text-sm text-muted-foreground">
                     {getTimeAgo(secondLatestPost.date, locale)}
