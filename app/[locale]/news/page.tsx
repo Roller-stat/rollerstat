@@ -11,6 +11,10 @@ import { isValidLocale } from "@/lib/i18n";
 import { Navbar } from "@/components/shared/navbar";
 import { Footer } from "@/components/shared/footer";
 
+// Force dynamic rendering to always show latest posts
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 function getOpenGraphLocale(locale: string): string {
   const localeMap: Record<string, string> = {
     'en': 'en_US',

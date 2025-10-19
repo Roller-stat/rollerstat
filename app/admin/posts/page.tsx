@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { AdminLayout } from "@/components/admin/admin-layout"
 import { PostList } from "@/components/admin/post-list"
 import { Button } from "@/components/ui/button"
@@ -13,6 +14,7 @@ import Link from "next/link"
 
 interface Post {
   id: string
+  slug: string
   title: string
   author: string
   type: "news" | "blog"
@@ -20,12 +22,12 @@ interface Post {
   summary: string
   date: string
   updated?: string
-  featured: boolean
   published: boolean
   tags: string[]
 }
 
 export default function PostsPage() {
+  const router = useRouter()
   const [posts, setPosts] = useState<Post[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
@@ -45,6 +47,8 @@ export default function PostsPage() {
         throw new Error("Failed to fetch posts")
       }
       const data = await response.json()
+      console.log("Fetched posts data:", data)
+      console.log("First post structure:", data[0])
       // Ensure we have an array of posts
       setPosts(Array.isArray(data) ? data : [])
     } catch (error) {
@@ -67,6 +71,13 @@ export default function PostsPage() {
     
     return matchesSearch && matchesType && matchesLocale && matchesStatus
   })
+
+  const handleEditPost = (post: Post) => {
+    console.log("🚀 EDIT BUTTON CLICKED - NEW CODE VERSION 🚀")
+    console.log("Edit post data:", { id: post.id, slug: post.slug, locale: post.locale, type: post.type })
+    console.log("URL being navigated to:", `/admin/posts/${post.locale}/${post.type}/${post.slug}`)
+    router.push(`/admin/posts/${post.locale}/${post.type}/${post.slug}`)
+  }
 
   const breadcrumbs = [
     { label: "Posts" }
@@ -158,9 +169,6 @@ export default function PostsPage() {
             <TabsTrigger value="blog">
               Blog ({filteredPosts.filter(p => p.type === "blog").length})
             </TabsTrigger>
-            <TabsTrigger value="featured">
-              Featured ({filteredPosts.filter(p => p.featured).length})
-            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="all" className="mt-6">
@@ -168,6 +176,7 @@ export default function PostsPage() {
               posts={filteredPosts} 
               loading={loading}
               onPostUpdate={fetchPosts}
+              onEdit={handleEditPost}
             />
           </TabsContent>
 
@@ -176,6 +185,7 @@ export default function PostsPage() {
               posts={filteredPosts.filter(p => p.type === "news")} 
               loading={loading}
               onPostUpdate={fetchPosts}
+              onEdit={handleEditPost}
             />
           </TabsContent>
 
@@ -184,16 +194,10 @@ export default function PostsPage() {
               posts={filteredPosts.filter(p => p.type === "blog")} 
               loading={loading}
               onPostUpdate={fetchPosts}
+              onEdit={handleEditPost}
             />
           </TabsContent>
 
-          <TabsContent value="featured" className="mt-6">
-            <PostList 
-              posts={filteredPosts.filter(p => p.featured)} 
-              loading={loading}
-              onPostUpdate={fetchPosts}
-            />
-          </TabsContent>
         </Tabs>
       </div>
     </AdminLayout>

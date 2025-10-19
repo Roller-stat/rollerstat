@@ -9,7 +9,6 @@ export interface PostData {
   locale: string
   coverImage?: string
   heroVideo?: string
-  featured: boolean
   published: boolean
   tags: string[]
   content: string
@@ -51,7 +50,7 @@ export function generateFrontmatter(data: PostData, slug: string): string {
     title: data.title,
     slug: slug,
     summary: data.summary,
-    date: new Date().toISOString().split("T")[0], // YYYY-MM-DD format
+    date: new Date().toISOString(), // Full ISO string with time
     locale: data.locale,
     tags: data.tags,
     coverImage: data.coverImage || undefined,
@@ -59,13 +58,13 @@ export function generateFrontmatter(data: PostData, slug: string): string {
     author: data.author,
     translation_key: data.translation_key || generateTranslationKey(data.title),
     contentType: data.type,
-    featured: data.featured,
+    featured: false, // Always set to false
     published: data.published,
   }
 
   // Remove undefined values
   const cleanFrontmatter = Object.fromEntries(
-    Object.entries(frontmatter).filter(([_, value]) => value !== undefined)
+    Object.entries(frontmatter).filter(([, value]) => value !== undefined)
   )
 
   return `---\n${Object.entries(cleanFrontmatter)
@@ -82,11 +81,24 @@ export function generateFrontmatter(data: PostData, slug: string): string {
 }
 
 /**
+ * Clean MDX content (minimal processing since we're now using raw MDX)
+ */
+export function cleanContentForMDX(content: string): string {
+  return content
+    // Just ensure proper line breaks
+    .replace(/\n\s*\n\s*\n/g, '\n\n')
+    // Trim whitespace
+    .trim()
+}
+
+
+/**
  * Generate complete MDX content
  */
 export function generateMDXContent(data: PostData, slug: string): string {
   const frontmatter = generateFrontmatter(data, slug)
-  return frontmatter + data.content
+  const cleanedContent = cleanContentForMDX(data.content)
+  return frontmatter + cleanedContent
 }
 
 /**
@@ -198,7 +210,7 @@ export async function updatePost(
     const [, frontmatterContent, bodyContent] = frontmatterMatch
     
     // Parse existing frontmatter
-    const existingData: any = {}
+    const existingData: Record<string, string | boolean | string[]> = {}
     frontmatterContent.split("\n").forEach(line => {
       const [key, ...valueParts] = line.split(":")
       if (key && valueParts.length > 0) {
@@ -231,18 +243,17 @@ export async function updatePost(
 
     // Merge with new data
     const updatedData: PostData = {
-      title: data.title || existingData.title,
-      author: data.author || existingData.author,
-      summary: data.summary || existingData.summary,
-      type: data.type || existingData.contentType,
-      locale: data.locale || existingData.locale,
-      coverImage: data.coverImage !== undefined ? data.coverImage : existingData.coverImage,
-      heroVideo: data.heroVideo !== undefined ? data.heroVideo : existingData.heroVideo,
-      featured: data.featured !== undefined ? data.featured : existingData.featured,
-      published: data.published !== undefined ? data.published : existingData.published,
-      tags: data.tags || existingData.tags || [],
+      title: data.title || (existingData.title as string),
+      author: data.author || (existingData.author as string),
+      summary: data.summary || (existingData.summary as string),
+      type: data.type || (existingData.contentType as "news" | "blog"),
+      locale: data.locale || (existingData.locale as string),
+      coverImage: data.coverImage !== undefined ? data.coverImage : (existingData.coverImage as string | undefined),
+      heroVideo: data.heroVideo !== undefined ? data.heroVideo : (existingData.heroVideo as string | undefined),
+      published: data.published !== undefined ? data.published : (existingData.published as boolean),
+      tags: data.tags || (existingData.tags as string[]) || [],
       content: data.content !== undefined ? data.content : bodyContent,
-      translation_key: data.translation_key || existingData.translation_key,
+      translation_key: data.translation_key || (existingData.translation_key as string | undefined),
     }
 
     // Generate new content
@@ -312,7 +323,7 @@ export async function listPosts(locale?: string, type?: "news" | "blog"): Promis
       const localePath = path.join(contentDir, loc)
       if (!(await fs.stat(localePath)).isDirectory()) continue
       
-      const types = type ? [type] : ["news", "blogs"]
+      const types = type ? [type === "news" ? "news" : "blogs"] : ["news", "blogs"]
       
       for (const contentType of types) {
         const typePath = path.join(localePath, contentType)
@@ -323,7 +334,7 @@ export async function listPosts(locale?: string, type?: "news" | "blog"): Promis
         
         for (const file of mdxFiles) {
           const filePath = path.join(typePath, file)
-          const slug = file.replace(".mdx", "")
+          const filenameSlug = file.replace(".mdx", "")
           
           try {
             const content = await fs.readFile(filePath, "utf8")
@@ -333,7 +344,7 @@ export async function listPosts(locale?: string, type?: "news" | "blog"): Promis
               const [, frontmatterContent, bodyContent] = frontmatterMatch
               
               // Parse frontmatter
-              const data: any = {}
+              const data: Record<string, string | boolean | string[]> = {}
               frontmatterContent.split("\n").forEach(line => {
                 const [key, ...valueParts] = line.split(":")
                 if (key && valueParts.length > 0) {
@@ -361,22 +372,21 @@ export async function listPosts(locale?: string, type?: "news" | "blog"): Promis
               })
               
               posts.push({
-                id: `${loc}-${contentType}-${slug}`,
-                slug,
+                id: `${loc}-${contentType}-${filenameSlug}`,
+                slug: (data.slug as string) || filenameSlug,
                 filePath,
                 data: {
-                  title: data.title || "",
-                  author: data.author || "",
-                  summary: data.summary || "",
-                  type: data.contentType || contentType,
-                  locale: data.locale || loc,
-                  coverImage: data.coverImage,
-                  heroVideo: data.heroVideo,
-                  featured: data.featured || false,
-                  published: data.published !== false,
-                  tags: data.tags || [],
+                  title: (data.title as string) || "",
+                  author: (data.author as string) || "",
+                  summary: (data.summary as string) || "",
+                  type: (data.contentType as "news" | "blog") || contentType,
+                  locale: (data.locale as string) || loc,
+                  coverImage: data.coverImage as string | undefined,
+                  heroVideo: data.heroVideo as string | undefined,
+                  published: (data.published as boolean) !== false,
+                  tags: (data.tags as string[]) || [],
                   content: bodyContent,
-                  translation_key: data.translation_key,
+                  translation_key: data.translation_key as string | undefined,
                 }
               })
             }

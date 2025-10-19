@@ -106,7 +106,7 @@ export const Post = defineDocumentType(() => ({
       type: "string",
       description: "The URL of the post",
       resolve: (doc: { locale: string; contentType: string; slug: string }) => {
-        const pluralType = doc.contentType === "news" ? "news" : `${doc.contentType}s`;
+        const pluralType = doc.contentType === "news" ? "news" : "blogs";
         return `/${doc.locale}/${pluralType}/${doc.slug}`;
       },
     },

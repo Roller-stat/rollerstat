@@ -40,6 +40,35 @@ export default function NewPostPage() {
     }
   }
 
+  const handleSaveDraft = async (data: any) => {
+    setIsSubmitting(true)
+    try {
+      // Ensure it's saved as a draft
+      const draftData = { ...data, published: false }
+      
+      const response = await fetch("/api/admin/posts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(draftData),
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || "Failed to save draft")
+      }
+
+      toast.success("Draft saved successfully!")
+      router.push("/admin/posts")
+    } catch (error: any) {
+      console.error("Error saving draft:", error)
+      toast.error(error.message || "Failed to save draft")
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
   const breadcrumbs = [
     { label: "Posts", href: "/admin/posts" },
     { label: "New Post" }
@@ -67,6 +96,7 @@ export default function NewPostPage() {
         {/* Post Form */}
         <PostForm 
           onSubmit={handleSubmit}
+          onSaveDraft={handleSaveDraft}
           isSubmitting={isSubmitting}
           submitButtonText="Create Post"
         />
