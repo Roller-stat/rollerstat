@@ -13,6 +13,7 @@ import Link from "next/link"
 
 interface Post {
   id: string
+  slug: string
   title: string
   author: string
   type: "news" | "blog"
@@ -20,7 +21,6 @@ interface Post {
   summary: string
   date: string
   updated?: string
-  featured: boolean
   published: boolean
   tags: string[]
 }
@@ -47,7 +47,7 @@ export function PostList({ posts, loading = false, onPostUpdate, onEdit, onDelet
     if (!postToDelete) return
 
     try {
-      const response = await fetch(`/api/admin/posts/${postToDelete.locale}/${postToDelete.type}/${postToDelete.id}`, {
+      const response = await fetch(`/api/admin/posts/${postToDelete.locale}/${postToDelete.type}/${postToDelete.slug}`, {
         method: "DELETE",
       })
 
@@ -170,11 +170,6 @@ export function PostList({ posts, loading = false, onPostUpdate, onEdit, onDelet
                     <TableCell className="font-medium">
                       <div className="flex items-center gap-2">
                         {post.title}
-                        {post.featured && (
-                          <Badge variant="outline" className="text-xs">
-                            Featured
-                          </Badge>
-                        )}
                       </div>
                     </TableCell>
                     <TableCell>

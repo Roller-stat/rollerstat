@@ -9,11 +9,10 @@ const createPostSchema = z.object({
   author: z.string().min(1, "Author is required"),
   summary: z.string().min(1, "Summary is required"),
   type: z.enum(["news", "blog"]),
-  locale: z.enum(["en", "es", "fr", "de", "it"]),
+  locale: z.enum(["en", "es", "fr", "it", "pt"]),
   coverImage: z.string().optional(),
   heroVideo: z.string().optional(),
-  featured: z.boolean().default(false),
-  published: z.boolean().default(false),
+  published: z.boolean(),
   tags: z.array(z.string()).default([]),
   content: z.string().min(1, "Content is required"),
   translation_key: z.string().optional(),
@@ -51,7 +50,6 @@ export async function GET(request: NextRequest) {
       locale: post.data.locale,
       summary: post.data.summary,
       date: new Date().toISOString().split("T")[0], // This would come from frontmatter in real implementation
-      featured: post.data.featured,
       published: post.data.published,
       tags: post.data.tags,
       coverImage: post.data.coverImage,
@@ -92,6 +90,19 @@ export async function POST(request: NextRequest) {
         { error: result.error || "Failed to create post" },
         { status: 400 }
       )
+    }
+
+    // Regenerate contentlayer data to make the new post visible
+    try {
+      const { exec } = await import("child_process")
+      const { promisify } = await import("util")
+      const execAsync = promisify(exec)
+      
+      await execAsync("npx contentlayer2 build")
+      console.log("Contentlayer regenerated after post creation")
+    } catch (regenerateError) {
+      console.warn("Failed to regenerate contentlayer:", regenerateError)
+      // Don't fail the request if regeneration fails
     }
 
     return NextResponse.json({

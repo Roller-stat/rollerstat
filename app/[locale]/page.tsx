@@ -7,6 +7,10 @@ import { Footer } from "@/components/shared/footer";
 import { notFound } from "next/navigation";
 import { isValidLocale } from "@/lib/i18n";
 
+// Force dynamic rendering to always show latest posts
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 interface HomePageProps {
   params: Promise<{
     locale: string;

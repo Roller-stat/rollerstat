@@ -40,17 +40,25 @@ export function getAllPosts(): Post[] {
 }
 
 export function getPostsByLocale(locale: Locale): Post[] {
-  return allPosts
+  const posts = allPosts
     .filter((post: Post) =>
       isValidPost(post) &&
       post.locale === locale &&
       post.published !== false
     )
     .sort((a: Post, b: Post) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  
+  // Debug logging to help troubleshoot
+  console.log(`getPostsByLocale(${locale}): Found ${posts.length} posts`);
+  if (posts.length > 0) {
+    console.log(`Latest post: ${posts[0].title} (${posts[0].date})`);
+  }
+  
+  return posts;
 }
 
 export function getPostsByType(type: "news" | "blog", locale: Locale): Post[] {
-  return allPosts
+  const posts = allPosts
     .filter((post: Post) =>
       isValidPost(post) &&
       post.contentType === type &&
@@ -58,6 +66,14 @@ export function getPostsByType(type: "news" | "blog", locale: Locale): Post[] {
       post.published !== false
     )
     .sort((a: Post, b: Post) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  
+  // Debug logging to help troubleshoot
+  console.log(`getPostsByType(${type}, ${locale}): Found ${posts.length} posts`);
+  if (posts.length > 0) {
+    console.log(`Latest ${type} post: ${posts[0].title} (${posts[0].date})`);
+  }
+  
+  return posts;
 }
 
 export function getLatestPost(locale: Locale): Post | undefined {

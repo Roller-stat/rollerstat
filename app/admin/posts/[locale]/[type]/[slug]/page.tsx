@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, use, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import { AdminLayout } from "@/components/admin/admin-layout"
 import { PostForm } from "@/components/admin/post-form"
@@ -11,27 +11,39 @@ import Link from "next/link"
 import { toast } from "sonner"
 
 interface EditPostPageProps {
-  params: {
+  params: Promise<{
     locale: string
     type: string
     slug: string
-  }
+  }>
 }
 
 export default function EditPostPage({ params }: EditPostPageProps) {
+  const resolvedParams = use(params)
   const router = useRouter()
-  const [post, setPost] = useState<any>(null)
+  const [post, setPost] = useState<{
+    id: string
+    slug: string
+    title: string
+    author: string
+    type: "news" | "blog"
+    locale: "en" | "es" | "fr" | "it" | "pt"
+    summary: string
+    date: string
+    published: boolean
+    tags: string[]
+    coverImage?: string
+    heroVideo?: string
+    content: string
+    translation_key?: string
+  } | null>(null)
   const [loading, setLoading] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  useEffect(() => {
-    fetchPost()
-  }, [params.locale, params.type, params.slug])
-
-  const fetchPost = async () => {
+  const fetchPost = useCallback(async () => {
     try {
       setLoading(true)
-      const response = await fetch(`/api/admin/posts/${params.locale}/${params.type}/${params.slug}`)
+      const response = await fetch(`/api/admin/posts/${resolvedParams.locale}/${resolvedParams.type}/${resolvedParams.slug}`)
       
       if (!response.ok) {
         if (response.status === 404) {
@@ -44,19 +56,35 @@ export default function EditPostPage({ params }: EditPostPageProps) {
 
       const data = await response.json()
       setPost(data)
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error fetching post:", error)
-      toast.error(error.message || "Failed to fetch post")
+      toast.error(error instanceof Error ? error.message : "Failed to fetch post")
       router.push("/admin/posts")
     } finally {
       setLoading(false)
     }
-  }
+  }, [resolvedParams.locale, resolvedParams.type, resolvedParams.slug, router])
 
-  const handleSubmit = async (data: any) => {
+  useEffect(() => {
+    fetchPost()
+  }, [fetchPost])
+
+  const handleSubmit = async (data: {
+    title: string
+    author: string
+    summary: string
+    type: "news" | "blog"
+    locale: "en" | "es" | "fr" | "it" | "pt"
+    coverImage?: string
+    heroVideo?: string
+    featured: boolean
+    published: boolean
+    tags: string[]
+    content: string
+  }) => {
     setIsSubmitting(true)
     try {
-      const response = await fetch(`/api/admin/posts/${params.locale}/${params.type}/${params.slug}`, {
+      const response = await fetch(`/api/admin/posts/${resolvedParams.locale}/${resolvedParams.type}/${resolvedParams.slug}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -71,9 +99,9 @@ export default function EditPostPage({ params }: EditPostPageProps) {
 
       toast.success("Post updated successfully!")
       router.push("/admin/posts")
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error updating post:", error)
-      toast.error(error.message || "Failed to update post")
+      toast.error(error instanceof Error ? error.message : "Failed to update post")
     } finally {
       setIsSubmitting(false)
     }
@@ -81,8 +109,8 @@ export default function EditPostPage({ params }: EditPostPageProps) {
 
   const breadcrumbs = [
     { label: "Posts", href: "/admin/posts" },
-    { label: `${params.type}`, href: `/admin/posts?type=${params.type}` },
-    { label: params.slug }
+    { label: `${resolvedParams.type}`, href: `/admin/posts?type=${resolvedParams.type}` },
+    { label: resolvedParams.slug }
   ]
 
   if (loading) {
@@ -114,7 +142,7 @@ export default function EditPostPage({ params }: EditPostPageProps) {
       <AdminLayout breadcrumbs={breadcrumbs}>
         <div className="text-center py-12">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Post Not Found</h2>
-          <p className="text-gray-600 mb-6">The post you're looking for doesn't exist.</p>
+          <p className="text-gray-600 mb-6">The post you are looking for does not exist.</p>
           <Button asChild>
             <Link href="/admin/posts">Back to Posts</Link>
           </Button>
@@ -137,7 +165,7 @@ export default function EditPostPage({ params }: EditPostPageProps) {
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Edit Post</h1>
             <p className="text-gray-600 mt-2">
-              Update your {params.type} post
+              Update your {resolvedParams.type} post
             </p>
           </div>
         </div>

@@ -4,11 +4,6 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
-import { useEditor, EditorContent } from "@tiptap/react"
-import StarterKit from "@tiptap/starter-kit"
-import Image from "@tiptap/extension-image"
-import Link from "@tiptap/extension-link"
-import Placeholder from "@tiptap/extension-placeholder"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
@@ -18,7 +13,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Separator } from "@/components/ui/separator"
-import { Loader2, X, Plus, Bold, Italic, List, Link as LinkIcon, Image as ImageIcon, AlertCircle, CheckCircle } from "lucide-react"
+import { Loader2, X, Plus, Eye, Edit3, AlertCircle, CheckCircle } from "lucide-react"
 
 const postSchema = z.object({
   title: z.string()
@@ -34,7 +29,7 @@ const postSchema = z.object({
     .min(10, "Summary must be at least 10 characters")
     .max(300, "Summary must be less than 300 characters"),
   type: z.enum(["news", "blog"]),
-  locale: z.enum(["en", "es", "fr", "de", "it"]),
+  locale: z.enum(["en", "es", "fr", "it", "pt"]),
   coverImage: z.string()
     .url("Please enter a valid image URL")
     .optional()
@@ -43,28 +38,28 @@ const postSchema = z.object({
     .url("Please enter a valid video URL")
     .optional()
     .or(z.literal("")),
-  featured: z.boolean(),
-  published: z.boolean(),
   tags: z.array(z.string())
-    .min(1, "At least one tag is required")
     .max(10, "Maximum 10 tags allowed")
+    .default([])
 })
 
 type PostFormValues = z.infer<typeof postSchema>
 
 interface PostFormProps {
   initialData?: Partial<PostFormValues> & { content?: string }
-  onSubmit: (data: PostFormValues & { content: string }) => void
+  onSubmit: (data: PostFormValues & { content: string; featured: boolean; published: boolean }) => void
+  onSaveDraft?: (data: PostFormValues & { content: string; featured: boolean; published: boolean }) => void
   isSubmitting?: boolean
   submitButtonText?: string
 }
 
-export function PostForm({ initialData, onSubmit, isSubmitting = false, submitButtonText = "Save Post" }: PostFormProps) {
+export function PostForm({ initialData, onSubmit, onSaveDraft, isSubmitting = false, submitButtonText = "Save Post" }: PostFormProps) {
   const [tags, setTags] = useState<string[]>(initialData?.tags || [])
   const [tagInput, setTagInput] = useState("")
   const [content, setContent] = useState(initialData?.content || "")
   const [formErrors, setFormErrors] = useState<string[]>([])
   const [isValidating, setIsValidating] = useState(false)
+  const [showPreview, setShowPreview] = useState(false)
 
   const form = useForm<PostFormValues>({
     resolver: zodResolver(postSchema),
@@ -76,33 +71,7 @@ export function PostForm({ initialData, onSubmit, isSubmitting = false, submitBu
       locale: initialData?.locale || "en",
       coverImage: initialData?.coverImage || "",
       heroVideo: initialData?.heroVideo || "",
-      featured: initialData?.featured || false,
-      published: initialData?.published || false,
       tags: initialData?.tags || []
-    }
-  })
-
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Image.configure({
-        HTMLAttributes: {
-          class: "max-w-full h-auto rounded-lg"
-        }
-      }),
-      Link.configure({
-        openOnClick: false,
-        HTMLAttributes: {
-          class: "text-blue-600 underline"
-        }
-      }),
-      Placeholder.configure({
-        placeholder: "Write your content here..."
-      })
-    ],
-    content: content,
-    onUpdate: ({ editor }) => {
-      setContent(editor.getHTML())
     }
   })
 
@@ -133,12 +102,18 @@ export function PostForm({ initialData, onSubmit, isSubmitting = false, submitBu
         return
       }
 
-      // Validate tags
-      if (tags.length === 0) {
-        setFormErrors(["At least one tag is required"])
-        setIsValidating(false)
-        return
+      // Check for potential content issues
+      const contentWarnings: string[] = []
+      if (content.includes('<script>') || content.includes('javascript:')) {
+        contentWarnings.push("Content contains JavaScript code - this may cause rendering issues")
       }
+      
+      // Show warnings but don't block submission
+      if (contentWarnings.length > 0) {
+        console.warn("Content warnings:", contentWarnings)
+      }
+
+      // Tags are now optional - no validation needed
 
       // Validate URLs if provided
       const errors: string[] = []
@@ -163,8 +138,8 @@ export function PostForm({ initialData, onSubmit, isSubmitting = false, submitBu
         return
       }
 
-      // All validations passed
-      onSubmit({ ...values, content })
+      // All validations passed - Create Post = Published
+      onSubmit({ ...values, content, featured: false, published: true })
     } catch {
       setFormErrors(["An unexpected error occurred. Please try again."])
     } finally {
@@ -172,19 +147,14 @@ export function PostForm({ initialData, onSubmit, isSubmitting = false, submitBu
     }
   }
 
-  const insertImage = () => {
-    const url = window.prompt("Enter image URL:")
-    if (url) {
-      editor?.chain().focus().setImage({ src: url }).run()
+  const handleSaveDraft = async (values: PostFormValues) => {
+    if (onSaveDraft) {
+      // For drafts, we don't require all validations
+      const draftData = { ...values, content, published: false, featured: false }
+      onSaveDraft(draftData)
     }
   }
 
-  const insertLink = () => {
-    const url = window.prompt("Enter URL:")
-    if (url) {
-      editor?.chain().focus().setLink({ href: url }).run()
-    }
-  }
 
   return (
     <Card className="w-full max-w-4xl mx-auto">
@@ -300,7 +270,7 @@ export function PostForm({ initialData, onSubmit, isSubmitting = false, submitBu
                         <SelectItem value="en">English</SelectItem>
                         <SelectItem value="es">Spanish</SelectItem>
                         <SelectItem value="fr">French</SelectItem>
-                        <SelectItem value="de">German</SelectItem>
+                        <SelectItem value="pt">Portuguese</SelectItem>
                         <SelectItem value="it">Italian</SelectItem>
                       </SelectContent>
                     </Select>
@@ -373,109 +343,95 @@ export function PostForm({ initialData, onSubmit, isSubmitting = false, submitBu
 
             <Separator />
 
-            {/* Rich Text Editor */}
+            {/* MDX Content Editor */}
             <div className="space-y-2">
-              <FormLabel>Content *</FormLabel>
-              <div className="border rounded-lg">
-                {/* Toolbar */}
-                <div className="border-b p-2 flex gap-2">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => editor?.chain().focus().toggleBold().run()}
-                    className={editor?.isActive("bold") ? "bg-gray-100" : ""}
-                  >
-                    <Bold className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => editor?.chain().focus().toggleItalic().run()}
-                    className={editor?.isActive("italic") ? "bg-gray-100" : ""}
-                  >
-                    <Italic className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => editor?.chain().focus().toggleBulletList().run()}
-                    className={editor?.isActive("bulletList") ? "bg-gray-100" : ""}
-                  >
-                    <List className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={insertLink}
-                  >
-                    <LinkIcon className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={insertImage}
-                  >
-                    <ImageIcon className="h-4 w-4" />
-                  </Button>
+              <div className="flex items-center justify-between">
+                <FormLabel>Content (MDX Format) *</FormLabel>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowPreview(!showPreview)}
+                >
+                  {showPreview ? (
+                    <>
+                      <Edit3 className="h-4 w-4 mr-2" />
+                      Edit
+                    </>
+                  ) : (
+                    <>
+                      <Eye className="h-4 w-4 mr-2" />
+                      Preview
+                    </>
+                  )}
+                </Button>
+              </div>
+              
+              {showPreview ? (
+                <div className="border rounded-lg p-4 min-h-[300px] bg-gray-50">
+                  <div className="prose max-w-none">
+                    <h4 className="text-sm font-medium text-gray-600 mb-2">MDX Preview:</h4>
+                    <div className="whitespace-pre-wrap text-sm text-gray-800">
+                      {content || "No content to preview"}
+                    </div>
+                  </div>
                 </div>
-                {/* Editor */}
-                <div className="p-4 min-h-[300px]">
-                  <EditorContent editor={editor} />
-                </div>
+              ) : (
+                <Textarea
+                  placeholder="Write your content in MDX format...
+
+Example:
+# Heading 1
+## Heading 2
+
+**Bold text** and *italic text*
+
+- List item 1
+- List item 2
+
+[Link text](https://example.com)
+
+![Image alt text](https://example.com/image.jpg)
+
+> Blockquote
+
+\`\`\`javascript
+// Code block
+console.log('Hello World');
+\`\`\`"
+                  className="min-h-[300px] font-mono text-sm"
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                />
+              )}
+              
+              <div className="text-xs text-gray-500">
+                <p>💡 <strong>MDX Tips:</strong></p>
+                <ul className="list-disc list-inside ml-4 space-y-1">
+                  <li>Use standard Markdown syntax for formatting</li>
+                  <li>You can include JSX components if needed</li>
+                  <li>Images: <code>![alt](url)</code></li>
+                  <li>Links: <code>[text](url)</code></li>
+                  <li>Code blocks: Use triple backticks with language</li>
+                </ul>
               </div>
             </div>
 
-            {/* Options */}
-            <div className="flex gap-4">
-              <FormField
-                control={form.control}
-                name="featured"
-                render={({ field }) => (
-                  <FormItem className="flex items-center space-x-2">
-                    <FormControl>
-                      <input
-                        type="checkbox"
-                        checked={field.value}
-                        onChange={field.onChange}
-                        className="rounded"
-                      />
-                    </FormControl>
-                    <FormLabel>Featured Post</FormLabel>
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="published"
-                render={({ field }) => (
-                  <FormItem className="flex items-center space-x-2">
-                    <FormControl>
-                      <input
-                        type="checkbox"
-                        checked={field.value}
-                        onChange={field.onChange}
-                        className="rounded"
-                      />
-                    </FormControl>
-                    <FormLabel>Published</FormLabel>
-                  </FormItem>
-                )}
-              />
-            </div>
 
             <Separator />
 
             {/* Submit Button */}
             <div className="flex justify-end gap-4">
-              <Button type="button" variant="outline">
-                Save Draft
-              </Button>
+              {onSaveDraft && (
+                <Button 
+                  type="button" 
+                  variant="outline"
+                  onClick={form.handleSubmit(handleSaveDraft)}
+                  disabled={isSubmitting || isValidating}
+                >
+                  Save Draft
+                </Button>
+              )}
               <Button type="submit" disabled={isSubmitting || isValidating}>
                 {isSubmitting || isValidating ? (
                   <>
