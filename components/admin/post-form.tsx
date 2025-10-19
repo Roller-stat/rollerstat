@@ -40,7 +40,6 @@ const postSchema = z.object({
     .or(z.literal("")),
   tags: z.array(z.string())
     .max(10, "Maximum 10 tags allowed")
-    .default([])
 })
 
 type PostFormValues = z.infer<typeof postSchema>
@@ -90,7 +89,7 @@ export function PostForm({ initialData, onSubmit, onSaveDraft, isSubmitting = fa
     form.setValue("tags", newTags)
   }
 
-  const handleSubmit = async (values: PostFormValues) => {
+  const handleSubmit = (values: PostFormValues) => {
     setIsValidating(true)
     setFormErrors([])
 
@@ -147,7 +146,7 @@ export function PostForm({ initialData, onSubmit, onSaveDraft, isSubmitting = fa
     }
   }
 
-  const handleSaveDraft = async (values: PostFormValues) => {
+  const handleSaveDraft = (values: PostFormValues) => {
     if (onSaveDraft) {
       // For drafts, we don't require all validations
       const draftData = { ...values, content, published: false, featured: false }
@@ -166,7 +165,7 @@ export function PostForm({ initialData, onSubmit, onSaveDraft, isSubmitting = fa
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+          <form onSubmit={form.handleSubmit(handleSubmit as (data: PostFormValues) => void)} className="space-y-6">
             {/* Form Validation Errors */}
             {formErrors.length > 0 && (
               <Alert variant="destructive">
@@ -426,7 +425,7 @@ console.log('Hello World');
                 <Button 
                   type="button" 
                   variant="outline"
-                  onClick={form.handleSubmit(handleSaveDraft)}
+                  onClick={form.handleSubmit(handleSaveDraft as (data: PostFormValues) => void)}
                   disabled={isSubmitting || isValidating}
                 >
                   Save Draft

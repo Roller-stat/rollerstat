@@ -4,11 +4,10 @@ import { useState, useEffect } from "react"
 import { AdminLayout } from "@/components/admin/admin-layout"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { 
-  FileText, 
-  Plus, 
+  FileText,
+  Plus,
   TrendingUp, 
   Eye,
   Calendar,
@@ -25,16 +24,6 @@ interface PostStats {
   postsByLocale: Record<string, number>
 }
 
-interface RecentPost {
-  id: string
-  title: string
-  type: "news" | "blog"
-  locale: string
-  published: boolean
-  featured: boolean
-  date: string
-  author: string
-}
 
 interface PostData {
   id: string
@@ -49,7 +38,6 @@ interface PostData {
 
 export default function DashboardPage() {
   const [stats, setStats] = useState<PostStats | null>(null)
-  const [recentPosts, setRecentPosts] = useState<RecentPost[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -93,12 +81,6 @@ export default function DashboardPage() {
         postsByLocale
       })
       
-      // Get recent posts (last 5)
-      const sortedPosts = posts
-        .sort((a: PostData, b: PostData) => new Date(b.date).getTime() - new Date(a.date).getTime())
-        .slice(0, 5)
-      
-      setRecentPosts(sortedPosts)
     } catch (error) {
       console.error("Error fetching dashboard data:", error)
     } finally {
@@ -272,81 +254,6 @@ export default function DashboardPage() {
           </div>
         )}
 
-        {/* Recent Posts */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent Posts</CardTitle>
-            <CardDescription>
-              Your latest content updates
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {loading ? (
-              <div className="space-y-4">
-                {[...Array(5)].map((_, i) => (
-                  <div key={i} className="flex items-center space-x-4">
-                    <Skeleton className="h-4 w-4" />
-                    <Skeleton className="h-4 w-48" />
-                    <Skeleton className="h-4 w-16" />
-                    <Skeleton className="h-4 w-20" />
-                  </div>
-                ))}
-              </div>
-            ) : recentPosts.length > 0 ? (
-              <div className="space-y-4">
-                {recentPosts.map((post) => (
-                  <div key={post.id} className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="flex items-center space-x-4">
-                      <div className="flex items-center space-x-2">
-                        <Badge variant={post.type === "news" ? "default" : "secondary"}>
-                          {post.type}
-                        </Badge>
-                        <Badge variant="outline" className="text-xs">
-                          {post.locale.toUpperCase()}
-                        </Badge>
-                        {post.featured && (
-                          <Badge variant="destructive" className="text-xs">
-                            Featured
-                          </Badge>
-                        )}
-                      </div>
-                      <div>
-                        <h4 className="font-medium text-sm">{post.title}</h4>
-                        <p className="text-xs text-gray-500">
-                          by {post.author} • {new Date(post.date).toLocaleDateString()}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Badge variant={post.published ? "default" : "secondary"}>
-                        {post.published ? "Published" : "Draft"}
-                      </Badge>
-                      <Button variant="outline" size="sm" asChild>
-                        <Link href={`/admin/posts/${post.locale}/${post.type}/${post.id}`}>
-                          Edit
-                        </Link>
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-12">
-                <div className="w-16 h-16 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-4">
-                  <FileText className="h-8 w-8 text-gray-400" />
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">No posts yet</h3>
-                <p className="text-gray-500 mb-6">Create your first post to start building your content library.</p>
-                <Button asChild>
-                  <Link href="/admin/posts/new">
-                    <Plus className="h-4 w-4 mr-2" />
-                    Create Your First Post
-                  </Link>
-                </Button>
-              </div>
-            )}
-          </CardContent>
-        </Card>
       </div>
     </AdminLayout>
   )
