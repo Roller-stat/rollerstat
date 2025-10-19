@@ -27,6 +27,10 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // Enable file system operations for admin panel
+  experimental: {
+    serverComponentsExternalPackages: ['fs']
+  }
 };
 
 export default withNextIntl(withContentlayer(nextConfig));
