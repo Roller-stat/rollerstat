@@ -193,8 +193,10 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
             )}
 
             {/* Content */}
-            <div className="prose prose-lg max-w-none mb-8">
-              <MDXContent code={post.body.code} />
+            <div className="max-w-none mb-8">
+              <div className="mdx-content">
+                <MDXContent code={post.body.code} />
+              </div>
             </div>
 
             {/* Tags */}
