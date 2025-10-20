@@ -107,6 +107,44 @@ export default function EditPostPage({ params }: EditPostPageProps) {
     }
   }
 
+  const handleSaveDraft = async (data: {
+    title: string
+    author: string
+    summary: string
+    type: "news" | "blog"
+    locale: "en" | "es" | "fr" | "it" | "pt"
+    coverImage?: string
+    heroVideo?: string
+    featured: boolean
+    published: boolean
+    tags: string[]
+    content: string
+  }) => {
+    setIsSubmitting(true)
+    try {
+      const response = await fetch(`/api/admin/posts/${resolvedParams.locale}/${resolvedParams.type}/${resolvedParams.slug}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || "Failed to save draft")
+      }
+
+      toast.success("Draft saved successfully!")
+      router.push("/admin/posts")
+    } catch (error: unknown) {
+      console.error("Error saving draft:", error)
+      toast.error(error instanceof Error ? error.message : "Failed to save draft")
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
   const breadcrumbs = [
     { label: "Posts", href: "/admin/posts" },
     { label: `${resolvedParams.type}`, href: `/admin/posts?type=${resolvedParams.type}` },
@@ -174,8 +212,9 @@ export default function EditPostPage({ params }: EditPostPageProps) {
         <PostForm 
           initialData={post}
           onSubmit={handleSubmit}
+          onSaveDraft={handleSaveDraft}
           isSubmitting={isSubmitting}
-          submitButtonText="Update Post"
+          submitButtonText="Create Post"
         />
       </div>
     </AdminLayout>
