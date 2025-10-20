@@ -370,8 +370,55 @@ export function PostForm({ initialData, onSubmit, onSaveDraft, isSubmitting = fa
                 <div className="border rounded-lg p-4 min-h-[300px] bg-gray-50">
                   <div className="prose max-w-none">
                     <h4 className="text-sm font-medium text-gray-600 mb-2">MDX Preview:</h4>
-                    <div className="whitespace-pre-wrap text-sm text-gray-800">
-                      {content || "No content to preview"}
+                    <div className="text-sm text-gray-800">
+                      {content ? (
+                        <div 
+                          className="max-w-none"
+                          style={{
+                            fontSize: '0.875rem',
+                            lineHeight: '1.5'
+                          }}
+                          dangerouslySetInnerHTML={{
+                            __html: content
+                              // First, split by double line breaks to separate paragraphs
+                              .split('\n\n')
+                              .map(paragraph => paragraph.trim())
+                              .filter(paragraph => paragraph.length > 0)
+                              .map(paragraph => {
+                                // Convert headings with proper spacing (matching website)
+                                if (paragraph.match(/^### (.*$)/)) {
+                                  return paragraph.replace(/^### (.*$)/, '<h3 style="font-size: 1.125rem; font-weight: 600; margin: 1rem 0; line-height: 1.4; color: #000000;">$1</h3>');
+                                }
+                                if (paragraph.match(/^## (.*$)/)) {
+                                  return paragraph.replace(/^## (.*$)/, '<h2 style="font-size: 1.25rem; font-weight: 600; margin: 1rem 0; line-height: 1.3; color: #000000;">$1</h2>');
+                                }
+                                if (paragraph.match(/^# (.*$)/)) {
+                                  return paragraph.replace(/^# (.*$)/, '<h1 style="font-size: 1.5rem; font-weight: 700; margin: 1.5rem 0; line-height: 1.2; color: #000000;">$1</h1>');
+                                }
+                                
+                                // Convert list items
+                                if (paragraph.includes('\n- ')) {
+                                  return paragraph
+                                    .replace(/^\- (.+)$/gim, '<li class="my-1">$1</li>')
+                                    .replace(/(<li.*<\/li>)(\s*<li.*<\/li>)*/g, '<ul class="list-disc list-inside my-4">$&</ul>');
+                                }
+                                
+                                // For regular paragraphs, convert single line breaks to <br> and apply formatting (matching website)
+                                return `<p style="margin: 1rem 0; line-height: 1.6;">${paragraph
+                                  .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                                  .replace(/(?<!\*)\*([^*]+)\*(?!\*)/g, '<em>$1</em>')
+                                  .replace(/`([^`]+)`/g, '<code class="bg-gray-100 px-1 py-0.5 rounded text-sm">$1</code>')
+                                  .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-blue-600 underline hover:text-blue-800">$1</a>')
+                                  .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img alt="$1" src="$2" class="max-w-full h-auto rounded my-2" />')
+                                  .replace(/\n(?!\n)/g, '<br>')
+                                }</p>`;
+                              })
+                              .join('')
+                          }}
+                        />
+                      ) : (
+                        "No content to preview"
+                      )}
                     </div>
                   </div>
                 </div>

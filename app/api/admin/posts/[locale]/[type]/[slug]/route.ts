@@ -21,7 +21,7 @@ const updatePostSchema = z.object({
 // GET /api/admin/posts/[locale]/[type]/[slug] - Get single post
 export async function GET(
   request: NextRequest,
-  { params }: { params: { locale: string; type: string; slug: string } }
+  { params }: { params: Promise<{ locale: string; type: string; slug: string }> }
 ) {
   try {
     // Check authentication
@@ -34,7 +34,7 @@ export async function GET(
     }
 
     // Validate route parameters
-    const { locale, type, slug } = params
+    const { locale, type, slug } = await params
     console.log("API GET request params:", { locale, type, slug })
     
     if (!["en", "es", "fr", "it", "pt"].includes(locale)) {
@@ -94,7 +94,7 @@ export async function GET(
 // PUT /api/admin/posts/[locale]/[type]/[slug] - Update post
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { locale: string; type: string; slug: string } }
+  { params }: { params: Promise<{ locale: string; type: string; slug: string }> }
 ) {
   try {
     // Check authentication
@@ -107,7 +107,7 @@ export async function PUT(
     }
 
     // Validate route parameters
-    const { locale, type, slug } = params
+    const { locale, type, slug } = await params
     
     if (!["en", "es", "fr", "it", "pt"].includes(locale)) {
       return NextResponse.json(
@@ -176,7 +176,7 @@ export async function PUT(
 // DELETE /api/admin/posts/[locale]/[type]/[slug] - Delete post
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { locale: string; type: string; slug: string } }
+  { params }: { params: Promise<{ locale: string; type: string; slug: string }> }
 ) {
   try {
     // Check authentication
@@ -189,7 +189,7 @@ export async function DELETE(
     }
 
     // Validate route parameters
-    const { locale, type, slug } = params
+    const { locale, type, slug } = await params
     
     if (!["en", "es", "fr", "it", "pt"].includes(locale)) {
       return NextResponse.json(
