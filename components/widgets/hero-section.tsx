@@ -32,18 +32,13 @@ export function HeroSection() {
       {/* Desktop Layout: Text Top, Video Bottom */}
       <div className="hidden md:flex flex-col">
         {/* Text Content - Top Section */}
-        <div className="w-full flex items-center justify-center py-24 px-4 sm:px-6 lg:px-8">
-          <div className="w-full max-w-3xl text-center">
+        <div className="w-full flex items-center justify-center py-24 px-8 sm:px-12 md:px-16 lg:px-20 xl:px-24">
+          <div className="w-full max-w-4xl text-center">
             <div className="flex flex-col justify-center items-center space-y-4">
-              {/* Small title text */}
-              <h1 className="text-sm text-gray-500 font-medium tracking-wide uppercase">
-                <span className="text-primary">{t("title")}</span>
+              {/* Main heading */}
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl tracking-tight leading-tight text-muted-foreground uppercase" style={{ fontFamily: '"Castoro Titling", serif' }}>
+                Latest news and insights from the world of <span className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl" style={{ fontFamily: 'var(--font-allura), "Allura", cursive', textTransform: 'capitalize' }}>Roller Hockey</span> across <span className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl" style={{ fontFamily: 'var(--font-allura), "Allura", cursive', textTransform: 'capitalize' }}>Europe</span>.
               </h1>
-              
-              {/* Main subtitle */}
-              <p className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight font-barlow-condensed leading-tight text-muted-foreground">
-                {t("subtitle")}
-              </p>
               
               {/* Spacing before form */}
               <div className="pt-8 w-full">
@@ -102,19 +97,14 @@ export function HeroSection() {
       {/* Mobile Layout: Text Top, Videos Bottom */}
       <div className="md:hidden flex flex-col h-full">
           {/* Text Content - Top */}
-          <div className="flex-1 flex flex-col justify-center text-center space-y-8 mb-8 py-12 px-6">
-            {/* Small title text */}
-            <h1 className="text-sm text-gray-500 font-medium tracking-wide uppercase">
-              <span className="text-primary">{t("title")}</span>
+          <div className="flex-1 flex flex-col justify-center text-center space-y-4 mb-8 py-12 px-8 sm:px-12 md:px-16 lg:px-20 xl:px-24" style={{ paddingLeft: '3rem', paddingRight: '3rem' }}>
+            {/* Main heading */}
+            <h1 className="text-2xl sm:text-3xl tracking-tight leading-relaxed text-muted-foreground uppercase" style={{ fontFamily: '"Castoro Titling", serif', lineHeight: '1.8' }}>
+              Latest news and insights from the world of <span className="text-3xl sm:text-4xl" style={{ fontFamily: 'var(--font-allura), "Allura", cursive', textTransform: 'capitalize' }}>Roller Hockey</span> across <span className="text-3xl sm:text-4xl" style={{ fontFamily: 'var(--font-allura), "Allura", cursive', textTransform: 'capitalize' }}>Europe</span>.
             </h1>
             
-            {/* Main subtitle */}
-            <p className="text-2xl sm:text-3xl font-bold tracking-tight font-barlow-condensed leading-tight text-muted-foreground">
-              {t("subtitle")}
-            </p>
-            
             {/* Spacing before form */}
-            <div className="pt-4">
+            <div className="pt-2">
               <div className="flex justify-center max-w-56 sm:max-w-64 mx-auto">
                 <div className="flex w-full">
                   <Input
@@ -122,11 +112,11 @@ export function HeroSection() {
                     placeholder={t("emailPlaceholder")}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="flex-[5] rounded-none border-r-0 bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus:border-gray-400 focus:ring-0 h-8 sm:h-10 text-xs sm:text-sm"
+                    className="flex-[5] rounded-none border-r-0 bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus:border-gray-400 focus:ring-0 h-8 sm:h-10 text-[10px] sm:text-sm placeholder:text-[10px] sm:placeholder:text-sm"
                   />
                   <Button 
                     onClick={handleSubscribe}
-                    className="flex-[1] rounded-none bg-gray-900 hover:bg-black text-white border border-gray-300 border-l-0 px-1 sm:px-2 h-8 sm:h-10 font-semibold text-[10px] sm:text-[10px] uppercase tracking-wide"
+                    className="flex-[1] rounded-none bg-gray-900 hover:bg-black text-white border border-gray-300 border-l-0 px-2 sm:px-2 h-8 sm:h-10 font-semibold text-[10px] sm:text-sm uppercase tracking-wide"
                   >
                     {t("subscribeButton")}
                   </Button>
