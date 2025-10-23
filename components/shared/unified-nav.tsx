@@ -49,8 +49,8 @@ export function UnifiedNav() {
 
   const getNavLinkClasses = (href: string, isMobile = false) => {
     const baseClasses = isMobile 
-      ? "flex items-center px-3 py-2 text-3xl font-medium rounded-md transition-colors hover:bg-accent hover:text-accent-foreground"
-      : "group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-xl font-medium transition-colors hover:bg-[#057ec8]/10 hover:text-[#057ec8] focus:bg-[#057ec8]/10 focus:text-[#057ec8] focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50";
+      ? "flex items-center px-3 py-2 text-3xl font-medium rounded-md transition-colors hover:bg-accent hover:text-accent-foreground uppercase italic"
+      : "group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-xl font-medium transition-colors hover:bg-[#057ec8]/10 hover:text-[#057ec8] focus:bg-[#057ec8]/10 focus:text-[#057ec8] focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50 uppercase italic";
     
     const activeClasses = isMobile
       ? "bg-accent text-accent-foreground"
@@ -115,7 +115,7 @@ export function UnifiedNav() {
                 style={{ 
                   fontFamily: 'var(--font-barlow-condensed), "Barlow Condensed", Arial, sans-serif',
                   color: '#057ec8',
-                  fontWeight: '600',
+                  fontWeight: '700',
                   fontStyle: 'normal'
                 }}
               >
@@ -163,7 +163,7 @@ export function UnifiedNav() {
                       style={{ 
                         fontFamily: 'var(--font-barlow-condensed), "Barlow Condensed", Arial, sans-serif',
                         color: '#057ec8',
-                        fontWeight: '600',
+                        fontWeight: '700',
                         fontStyle: 'normal',
                         textAlign: 'center',
                         display: 'flex',
