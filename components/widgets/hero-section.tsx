@@ -65,11 +65,11 @@ export function HeroSection() {
         </div>
         
         {/* Video Section - Bottom Section */}
-        <div className="w-full flex justify-center">
-          <div className="relative w-full max-w-4xl">
+        <div className="w-full">
+          <div className="relative w-full">
             <video
               key={currentVideoIndex}
-              className="w-full h-auto max-h-[60vh] object-contain"
+              className="w-full h-auto object-contain"
               autoPlay
               muted
               playsInline
@@ -129,7 +129,7 @@ export function HeroSection() {
           <div className="flex-1 relative w-full">
             <video
               key={currentVideoIndex}
-              className="w-full h-full object-contain"
+              className="w-full h-auto object-contain"
               autoPlay
               muted
               playsInline
