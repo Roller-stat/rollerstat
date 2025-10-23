@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useVideoRotation } from "@/lib/hooks";
 import { useTranslations } from "next-intl";
+import { NewsletterOverlay } from "./newsletter-overlay";
 
 export function HeroSection() {
   const t = useTranslations("hero");
@@ -27,7 +28,7 @@ export function HeroSection() {
   };
 
   return (
-    <section className="relative w-full bg-gradient-to-br from-primary/20 via-background to-secondary/20 overflow-hidden">
+    <section className="relative w-full bg-gradient-to-br from-primary/20 via-background to-secondary/20 overflow-visible pb-16 sm:pb-20 md:pb-28 lg:pb-32 xl:pb-40">
       
       {/* Desktop Layout: Text Top, Video Bottom */}
       <div className="hidden md:flex flex-col">
@@ -78,8 +79,11 @@ export function HeroSection() {
               Your browser does not support the video tag.
             </video>
             
+            {/* Newsletter Overlay */}
+            <NewsletterOverlay />
+            
             {/* Video indicator dots */}
-            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+            <div className="absolute top-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
               {videos.map((_, index) => (
                 <button
                   key={index}
@@ -97,7 +101,7 @@ export function HeroSection() {
       {/* Mobile Layout: Text Top, Videos Bottom */}
       <div className="md:hidden flex flex-col h-full">
           {/* Text Content - Top */}
-          <div className="flex-1 flex flex-col justify-center text-center space-y-4 mb-8 py-12 px-8 sm:px-12 md:px-16 lg:px-20 xl:px-24" style={{ paddingLeft: '3rem', paddingRight: '3rem' }}>
+          <div className="flex-1 flex flex-col justify-center text-center space-y-4 py-12 px-8 sm:px-12 md:px-16 lg:px-20 xl:px-24" style={{ paddingLeft: '3rem', paddingRight: '3rem' }}>
             {/* Main heading */}
             <h1 className="text-2xl sm:text-3xl tracking-tight leading-relaxed text-muted-foreground uppercase" style={{ fontFamily: '"Castoro Titling", serif', lineHeight: '1.8' }}>
               Latest news and insights from the world of <span className="text-3xl sm:text-4xl" style={{ fontFamily: 'var(--font-allura), "Allura", cursive', textTransform: 'capitalize' }}>Roller Hockey</span> across <span className="text-3xl sm:text-4xl" style={{ fontFamily: 'var(--font-allura), "Allura", cursive', textTransform: 'capitalize' }}>Europe</span>.
@@ -138,8 +142,11 @@ export function HeroSection() {
               Your browser does not support the video tag.
             </video>
             
+            {/* Newsletter Overlay */}
+            <NewsletterOverlay />
+            
             {/* Video indicator dots */}
-            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+            <div className="absolute top-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
               {videos.map((_, index) => (
                 <button
                   key={index}
