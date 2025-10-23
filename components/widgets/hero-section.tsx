@@ -47,18 +47,18 @@ export function HeroSection() {
               
               {/* Spacing before form */}
               <div className="pt-8 w-full">
-                <div className="flex justify-center max-w-sm mx-auto">
+                <div className="flex justify-center max-w-64 sm:max-w-72 md:max-w-80 lg:max-w-96 mx-auto">
                   <div className="flex w-full">
                     <Input
                       type="email"
                       placeholder={t("emailPlaceholder")}
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="flex-[4] rounded-none border-r-0 bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus:border-gray-400 focus:ring-0 h-12 text-base"
+                      className="flex-[5] rounded-none border-r-0 bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus:border-gray-400 focus:ring-0 h-8 sm:h-10 md:h-12 lg:h-14 text-xs sm:text-sm md:text-base lg:text-lg"
                     />
                     <Button 
                       onClick={handleSubscribe}
-                      className="flex-[1] rounded-none bg-gray-900 hover:bg-black text-white border border-gray-300 border-l-0 px-3 h-12 font-semibold text-base uppercase tracking-wide"
+                      className="flex-[1] rounded-none bg-gray-900 hover:bg-black text-white border border-gray-300 border-l-0 px-1 sm:px-2 md:px-3 lg:px-4 h-8 sm:h-10 md:h-12 lg:h-14 font-semibold text-xs sm:text-xs md:text-sm lg:text-sm uppercase tracking-wide"
                     >
                       {t("subscribeButton")}
                     </Button>
@@ -115,18 +115,18 @@ export function HeroSection() {
             
             {/* Spacing before form */}
             <div className="pt-4">
-              <div className="flex justify-center max-w-sm mx-auto">
+              <div className="flex justify-center max-w-56 sm:max-w-64 mx-auto">
                 <div className="flex w-full">
                   <Input
                     type="email"
                     placeholder={t("emailPlaceholder")}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="flex-1 rounded-none border-r-0 bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus:border-gray-400 focus:ring-0 h-12 text-base"
+                    className="flex-[5] rounded-none border-r-0 bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus:border-gray-400 focus:ring-0 h-8 sm:h-10 text-xs sm:text-sm"
                   />
                   <Button 
                     onClick={handleSubscribe}
-                    className="flex-1 rounded-none bg-gray-900 hover:bg-black text-white border border-gray-300 border-l-0 px-3 h-12 font-semibold text-base uppercase tracking-wide"
+                    className="flex-[1] rounded-none bg-gray-900 hover:bg-black text-white border border-gray-300 border-l-0 px-1 sm:px-2 h-8 sm:h-10 font-semibold text-[10px] sm:text-[10px] uppercase tracking-wide"
                   >
                     {t("subscribeButton")}
                   </Button>
