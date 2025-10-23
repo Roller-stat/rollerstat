@@ -60,8 +60,10 @@
     "loading": "Loading..."
   },
   "hero": {
-    "title": "Rollerstat",
-    "subtitle": "Stay updated with the latest news, insights, and stories from the world of roller hockey across Europe.",
+    "headingPart1": "Latest news and insights from the world of",
+    "headingPart2": "Roller Hockey",
+    "headingPart3": "across",
+    "headingPart4": "Europe",
     "emailPlaceholder": "Enter your email address",
     "subscribeButton": "Subscribe"
   },

@@ -60,8 +60,10 @@
     "loading": "Cargando..."
   },
   "hero": {
-    "title": "Rollerstat",
-    "subtitle": "Mantente actualizado con las últimas noticias, análisis e historias del mundo del hockey patines en Europa.",
+    "headingPart1": "Últimas noticias y análisis del mundo del",
+    "headingPart2": "Hockey Patines",
+    "headingPart3": "en",
+    "headingPart4": "Europa",
     "emailPlaceholder": "Ingresa tu dirección de correo",
     "subscribeButton": "Suscribirse"
   },
