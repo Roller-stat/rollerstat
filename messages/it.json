@@ -60,8 +60,10 @@
     "loading": "Caricamento..."
   },
   "hero": {
-    "title": "Rollerstat",
-    "subtitle": "Rimani aggiornato con le ultime notizie, approfondimenti e storie dal mondo dell'hockey su pista in Europa.",
+    "headingPart1": "Ultime notizie e approfondimenti dal mondo dell'",
+    "headingPart2": "Hockey su Pista",
+    "headingPart3": "in",
+    "headingPart4": "Europa",
     "emailPlaceholder": "Inserisci il tuo indirizzo email",
     "subscribeButton": "Iscriviti"
   },
