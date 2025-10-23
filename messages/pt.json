@@ -60,8 +60,10 @@
     "loading": "A carregar..."
   },
   "hero": {
-    "title": "Rollerstat",
-    "subtitle": "Mantenha-se atualizado com as últimas notícias, análises e histórias do mundo do hóquei em patins na Europa.",
+    "headingPart1": "Últimas notícias e análises do mundo do",
+    "headingPart2": "Hóquei em Patins",
+    "headingPart3": "na",
+    "headingPart4": "Europa",
     "emailPlaceholder": "Digite o seu endereço de email",
     "subscribeButton": "Subscrever"
   },
