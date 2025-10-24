@@ -124,5 +124,30 @@
     "clearFilters": "Clear",
     "showingResults": "Showing {start}-{end} of {total} posts",
     "noResults": "No articles found for the selected filters."
+  },
+  "contact": {
+    "title": "Contact Us",
+    "description": "Get in touch with us for any questions, suggestions, or feedback about roller hockey.",
+    "formTitle": "Send us a Message",
+    "name": "Name",
+    "namePlaceholder": "Your full name",
+    "email": "Email",
+    "emailPlaceholder": "your.email@example.com",
+    "message": "Message",
+    "messagePlaceholder": "Tell us what's on your mind...",
+    "sendMessage": "Send Message",
+    "sending": "Sending...",
+    "successMessage": "Thank you! Your message has been sent successfully.",
+    "errorMessage": "Sorry, there was an error sending your message. Please try again.",
+    "contactInfo": "Contact Information",
+    "phone": "Phone",
+    "address": "Address",
+    "addressLine1": "123 Hockey Street",
+    "addressLine2": "Sports District, City 12345",
+    "businessHours": "Business Hours",
+    "hoursLine1": "Monday - Friday: 9:00 AM - 6:00 PM",
+    "hoursLine2": "Saturday: 10:00 AM - 4:00 PM",
+    "followUs": "Follow Us",
+    "socialDescription": "Stay connected with us on social media for the latest updates and news."
   }
 }

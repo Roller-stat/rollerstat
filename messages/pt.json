@@ -124,5 +124,30 @@
     "clearFilters": "Limpar",
     "showingResults": "Mostrando {start}-{end} de {total} publicações",
     "noResults": "Nenhum artigo encontrado para os filtros selecionados."
+  },
+  "contact": {
+    "title": "Entre em Contato",
+    "description": "Entre em contato conosco para qualquer pergunta, sugestão ou feedback sobre hóquei em patins.",
+    "formTitle": "Envie-nos uma Mensagem",
+    "name": "Nome",
+    "namePlaceholder": "Seu nome completo",
+    "email": "Email",
+    "emailPlaceholder": "seu.email@exemplo.com",
+    "message": "Mensagem",
+    "messagePlaceholder": "Conte-nos o que você pensa...",
+    "sendMessage": "Enviar Mensagem",
+    "sending": "Enviando...",
+    "successMessage": "Obrigado! Sua mensagem foi enviada com sucesso.",
+    "errorMessage": "Desculpe, ocorreu um erro ao enviar sua mensagem. Tente novamente.",
+    "contactInfo": "Informações de Contato",
+    "phone": "Telefone",
+    "address": "Endereço",
+    "addressLine1": "Rua do Hóquei 123",
+    "addressLine2": "Bairro Esportivo, Cidade 12345",
+    "businessHours": "Horário de Funcionamento",
+    "hoursLine1": "Segunda - Sexta: 9:00 - 18:00",
+    "hoursLine2": "Sábado: 10:00 - 16:00",
+    "followUs": "Siga-nos",
+    "socialDescription": "Mantenha-se conectado conosco nas redes sociais para as últimas atualizações e notícias."
   }
 }
