@@ -1,13 +1,21 @@
 import type { Metadata } from "next";
-import { Barlow_Condensed } from "next/font/google";
+import { Barlow_Condensed, Allura } from "next/font/google";
 import { headers } from "next/headers";
 import { getLocaleFromPathname, defaultLocale } from "@/lib/i18n";
+import { AuthSessionProvider } from "@/components/auth/session-provider";
+import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
 const barlowCondensed = Barlow_Condensed({
   variable: "--font-barlow-condensed",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800", "900"],
+});
+
+const allura = Allura({
+  variable: "--font-allura",
+  subsets: ["latin"],
+  weight: ["400"],
 });
 
 export const metadata: Metadata = {
@@ -42,10 +50,13 @@ export default async function RootLayout({
         <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
       </head>
       <body
-        className={`${barlowCondensed.variable} antialiased`}
+        className={`${barlowCondensed.variable} ${allura.variable} antialiased`}
         suppressHydrationWarning
       >
-        {children}
+        <AuthSessionProvider>
+          {children}
+          <Toaster />
+        </AuthSessionProvider>
       </body>
     </html>
   );
