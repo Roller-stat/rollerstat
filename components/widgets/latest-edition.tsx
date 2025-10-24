@@ -34,14 +34,14 @@ export async function LatestEdition({ locale }: LatestEditionProps) {
 
   return (
     <ErrorBoundary>
-      <div className="w-full lg:w-3/4 space-y-4">
+      <div className="w-full lg:w-3/5 space-y-4">
         <h2 className="text-2xl font-bold mb-6">{t("latestEdition")}</h2>
         
         {/* Latest Post (News or Blog) */}
         <Link href={latestPost.url} className="block">
-          <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer rounded-none pt-6 pb-0">
-            <CardHeader>
-              <div className="flex items-center gap-2 mb-2">
+          <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer rounded-none pt-6 pb-0 h-auto gap-2">
+            <CardHeader className="space-y-2">
+              <div className="flex items-center gap-2 mb-0">
                 <Badge variant="default" className="rounded-none">
                   {tNav("blogs")}
                 </Badge>
@@ -49,20 +49,20 @@ export async function LatestEdition({ locale }: LatestEditionProps) {
                   {getTimeAgo(latestPost.date, locale)}
                 </span>
               </div>
-              <CardTitle className="text-2xl" style={{ fontFamily: '"Castoro Titling", serif' }}>
+              <CardTitle className="text-lg sm:text-xl md:text-2xl line-clamp-2 mb-0" style={{ fontFamily: '"Castoro Titling", serif' }}>
                 {latestPost.title}
               </CardTitle>
-              <CardDescription className="text-base">
+              <CardDescription className="text-sm sm:text-base line-clamp-2">
                 {latestPost.summary}
               </CardDescription>
             </CardHeader>
-            <CardContent className="pb-0">
-              <div className="text-sm text-muted-foreground mb-4">
+            <CardContent className="pb-0 pt-0 mb-3">
+              <div className="text-xs sm:text-sm text-muted-foreground">
                 {t("by")} {latestPost.author} • {latestPost.readingTime} {t("readingTime")}
               </div>
             </CardContent>
             {latestPost.coverImage ? (
-              <div className="aspect-video relative">
+              <div className="w-full h-64 sm:h-72 md:h-80 lg:h-96 relative">
                 <Image
                   src={latestPost.coverImage}
                   alt={latestPost.title}
@@ -73,7 +73,7 @@ export async function LatestEdition({ locale }: LatestEditionProps) {
                 />
               </div>
             ) : (
-              <div className="aspect-video bg-gradient-to-r from-primary/20 to-secondary/20 flex items-center justify-center">
+              <div className="w-full h-64 bg-gradient-to-r from-primary/20 to-secondary/20 flex items-center justify-center">
                 <span className="text-muted-foreground">Featured Image</span>
               </div>
             )}
@@ -83,9 +83,9 @@ export async function LatestEdition({ locale }: LatestEditionProps) {
         {/* Second Latest Post (News or Blog) */}
         {secondLatestPost && (
           <Link href={secondLatestPost.url} className="block">
-            <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer rounded-none pt-6 pb-0">
-              <CardHeader>
-                <div className="flex items-center gap-2 mb-2">
+            <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer rounded-none pt-6 pb-0 h-auto gap-2">
+              <CardHeader className="space-y-2">
+                <div className="flex items-center gap-2 mb-0">
                   <Badge variant="default" className="rounded-none">
                     {tNav("blogs")}
                   </Badge>
@@ -93,30 +93,31 @@ export async function LatestEdition({ locale }: LatestEditionProps) {
                     {getTimeAgo(secondLatestPost.date, locale)}
                   </span>
                 </div>
-                <CardTitle className="text-xl" style={{ fontFamily: '"Castoro Titling", serif' }}>
+                <CardTitle className="text-lg sm:text-xl md:text-2xl line-clamp-2 mb-0" style={{ fontFamily: '"Castoro Titling", serif' }}>
                   {secondLatestPost.title}
                 </CardTitle>
-                <CardDescription className="text-sm">
+                <CardDescription className="text-sm sm:text-base line-clamp-2">
                   {secondLatestPost.summary}
                 </CardDescription>
               </CardHeader>
-              <CardContent className="pb-0">
-                <div className="text-sm text-muted-foreground mb-4">
+              <CardContent className="pb-0 pt-0 mb-3">
+                <div className="text-xs sm:text-sm text-muted-foreground">
                   {t("by")} {secondLatestPost.author} • {secondLatestPost.readingTime} {t("readingTime")}
                 </div>
               </CardContent>
               {secondLatestPost.coverImage ? (
-                <div className="aspect-video relative">
+                <div className="w-full h-64 sm:h-72 md:h-80 lg:h-96 relative">
                   <Image
                     src={secondLatestPost.coverImage}
                     alt={secondLatestPost.title}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw"
+                    priority
                     className="object-cover"
                   />
                 </div>
               ) : (
-                <div className="aspect-video bg-gradient-to-r from-primary/20 to-secondary/20 flex items-center justify-center">
+                <div className="w-full h-64 sm:h-72 md:h-80 lg:h-96 bg-gradient-to-r from-primary/20 to-secondary/20 flex items-center justify-center">
                   <span className="text-muted-foreground">Featured Image</span>
                 </div>
               )}
