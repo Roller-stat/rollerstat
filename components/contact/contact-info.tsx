@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { Phone, Mail, MapPin, Clock } from "lucide-react";
+import { Phone, Mail, Clock } from "lucide-react";
 
 export function ContactInfo() {
   const t = useTranslations("contact");
@@ -31,21 +31,10 @@ export function ContactInfo() {
             <Mail className="h-5 w-5 text-primary" />
             <div>
               <p className="font-medium">{t("email")}</p>
-              <p className="text-sm text-muted-foreground">info@rollerstat.com</p>
+              <p className="text-sm text-muted-foreground">rollerstat@rollerstat.com</p>
             </div>
           </div>
 
-          {/* Address */}
-          <div className="flex items-center gap-3">
-            <MapPin className="h-5 w-5 text-primary" />
-            <div>
-              <p className="font-medium">{t("address")}</p>
-              <p className="text-sm text-muted-foreground">
-                {t("addressLine1")}<br />
-                {t("addressLine2")}
-              </p>
-            </div>
-          </div>
 
           {/* Hours */}
           <div className="flex items-center gap-3">
