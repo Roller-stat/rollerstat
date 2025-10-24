@@ -1,44 +1,41 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useTranslations } from "next-intl";
 
 interface NewsletterContent {
   id: number;
   title: string;
   description: string;
-  cta: string;
 }
 
-const newsletterContent: NewsletterContent[] = [
-  {
-    id: 1,
-    title: "GET THE LATEST MATCH UPDATES",
-    description: "Stay informed with real-time scores, highlights, and breaking news from roller hockey matches across Europe.",
-    cta: "View Updates"
-  },
-  {
-    id: 2,
-    title: "SEE THE POST MATCH ANALYSIS",
-    description: "Dive deep into tactical breakdowns, player performances, and expert insights from every major game.",
-    cta: "Read Analysis"
-  },
-  {
-    id: 3,
-    title: "CHECK THE CHAMPIONSHIP STANDINGS",
-    description: "Track your favorite teams' progress with comprehensive league tables and championship predictions.",
-    cta: "View Standings"
-  },
-  {
-    id: 4,
-    title: "DISCOVER PLAYER SPOTLIGHTS",
-    description: "Get to know the stars of European roller hockey with exclusive player profiles and interviews.",
-    cta: "Meet Players"
-  }
-];
-
 export function NewsletterOverlay() {
+  const t = useTranslations("newsletter");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
+
+  const newsletterContent: NewsletterContent[] = [
+    {
+      id: 1,
+      title: t("content1.title"),
+      description: t("content1.description")
+    },
+    {
+      id: 2,
+      title: t("content2.title"),
+      description: t("content2.description")
+    },
+    {
+      id: 3,
+      title: t("content3.title"),
+      description: t("content3.description")
+    },
+    {
+      id: 4,
+      title: t("content4.title"),
+      description: t("content4.description")
+    }
+  ];
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -53,7 +50,7 @@ export function NewsletterOverlay() {
     }, 5000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [newsletterContent.length]);
 
   const currentContent = newsletterContent[currentIndex];
 

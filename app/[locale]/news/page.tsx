@@ -6,6 +6,15 @@ import { isValidLocale } from "@/lib/i18n";
 import { Navbar } from "@/components/shared/navbar";
 import { Footer } from "@/components/shared/footer";
 import { PostCard } from "@/components/widgets/post-card";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+  PaginationEllipsis,
+} from "@/components/ui/pagination";
 
 // Force dynamic rendering to always show latest posts
 export const dynamic = 'force-dynamic';
@@ -25,6 +34,9 @@ function getOpenGraphLocale(locale: string): string {
 interface NewsPageProps {
   params: Promise<{
     locale: string;
+  }>;
+  searchParams: Promise<{
+    page?: string;
   }>;
 }
 
@@ -74,15 +86,24 @@ export async function generateMetadata({ params }: NewsPageProps) {
   };
 }
 
-export default async function NewsPage({ params }: NewsPageProps) {
+export default async function NewsPage({ params, searchParams }: NewsPageProps) {
   const { locale } = await params;
+  const { page } = await searchParams;
+  
   if (!isValidLocale(locale)) {
     notFound();
   }
 
   const t = await getTranslations({ locale, namespace: "nav" });
   const tContent = await getTranslations({ locale, namespace: "content" });
-  const news = getPostsByType("news", locale);
+  
+  const allNews = getPostsByType("news", locale);
+  const POSTS_PER_PAGE = 9;
+  const currentPage = Number(page) || 1;
+  const totalPages = Math.ceil(allNews.length / POSTS_PER_PAGE);
+  const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
+  const endIndex = startIndex + POSTS_PER_PAGE;
+  const news = allNews.slice(startIndex, endIndex);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -118,6 +139,55 @@ export default async function NewsPage({ params }: NewsPageProps) {
               </p>
             </CardContent>
           </Card>
+        )}
+
+        {totalPages > 1 && (
+          <div className="mt-8">
+            <Pagination>
+              <PaginationContent>
+                {currentPage > 1 && (
+                  <PaginationItem>
+                    <PaginationPrevious href={`/${locale}/news?page=${currentPage - 1}`} />
+                  </PaginationItem>
+                )}
+                
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => {
+                  if (
+                    pageNum === 1 ||
+                    pageNum === totalPages ||
+                    (pageNum >= currentPage - 1 && pageNum <= currentPage + 1)
+                  ) {
+                    return (
+                      <PaginationItem key={pageNum}>
+                        <PaginationLink
+                          href={`/${locale}/news?page=${pageNum}`}
+                          isActive={currentPage === pageNum}
+                        >
+                          {pageNum}
+                        </PaginationLink>
+                      </PaginationItem>
+                    );
+                  } else if (
+                    pageNum === currentPage - 2 ||
+                    pageNum === currentPage + 2
+                  ) {
+                    return (
+                      <PaginationItem key={pageNum}>
+                        <PaginationEllipsis />
+                      </PaginationItem>
+                    );
+                  }
+                  return null;
+                })}
+
+                {currentPage < totalPages && (
+                  <PaginationItem>
+                    <PaginationNext href={`/${locale}/news?page=${currentPage + 1}`} />
+                  </PaginationItem>
+                )}
+              </PaginationContent>
+            </Pagination>
+          </div>
         )}
         </div>
       </main>

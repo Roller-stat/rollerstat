@@ -88,5 +88,23 @@
       "author": "Sophie Dubois",
       "role": "Team Captain"
     }
+  },
+  "newsletter": {
+    "content1": {
+      "title": "GET THE LATEST MATCH UPDATES",
+      "description": "Stay informed with real-time scores, highlights, and breaking news from roller hockey matches across Europe."
+    },
+    "content2": {
+      "title": "SEE THE POST MATCH ANALYSIS",
+      "description": "Dive deep into tactical breakdowns, player performances, and expert insights from every major game."
+    },
+    "content3": {
+      "title": "CHECK THE CHAMPIONSHIP STANDINGS",
+      "description": "Track your favorite teams' progress with comprehensive league tables and championship predictions."
+    },
+    "content4": {
+      "title": "DISCOVER PLAYER SPOTLIGHTS",
+      "description": "Get to know the stars of European roller hockey with exclusive player profiles and interviews."
+    }
   }
 }

@@ -88,5 +88,23 @@
       "author": "Sophie Dubois",
       "role": "Capitã da Equipa"
     }
+  },
+  "newsletter": {
+    "content1": {
+      "title": "OBTENHA AS ÚLTIMAS ATUALIZAÇÕES DOS JOGOS",
+      "description": "Mantenha-se informado com resultados em tempo real, destaques e notícias de última hora dos jogos de hóquei em patins em toda a Europa."
+    },
+    "content2": {
+      "title": "VEJA A ANÁLISE PÓS-JOGO",
+      "description": "Mergulhe em análises táticas, desempenhos dos jogadores e insights de especialistas de cada jogo importante."
+    },
+    "content3": {
+      "title": "CONSULTE AS CLASSIFICAÇÕES DO CAMPEONATO",
+      "description": "Acompanhe o progresso das suas equipas favoritas com tabelas de liga completas e previsões do campeonato."
+    },
+    "content4": {
+      "title": "DESCUBRA OS DESTAQUES DOS JOGADORES",
+      "description": "Conheça as estrelas do hóquei em patins europeu com perfis exclusivos de jogadores e entrevistas."
+    }
   }
 }
