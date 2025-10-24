@@ -132,7 +132,7 @@
     "name": "Nom",
     "namePlaceholder": "Votre nom complet",
     "email": "Email",
-    "emailPlaceholder": "votre.email@exemple.com",
+    "emailPlaceholder": "Entrez votre email",
     "message": "Message",
     "messagePlaceholder": "Dites-nous ce que vous pensez...",
     "sendMessage": "Envoyer le Message",
