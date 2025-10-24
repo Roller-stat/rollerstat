@@ -24,7 +24,7 @@ interface BlogCardProps {
 function BlogCard({ post, locale, badgeLabel, byText, readingTimeText, isPriority = false }: BlogCardProps) {
   return (
     <Link href={post.url} className="block">
-      <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer rounded-none pt-4 sm:pt-5 md:pt-6 lg:pt-7 xl:pt-8 pb-0 h-auto gap-2">
+      <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer rounded-none pt-4 sm:pt-5 md:pt-6 lg:pt-5 xl:pt-6 pb-0 h-auto gap-2">
         <CardHeader className="space-y-2">
           <div className="flex items-center gap-2 mb-0">
             <Badge variant="default" className="rounded-none">
