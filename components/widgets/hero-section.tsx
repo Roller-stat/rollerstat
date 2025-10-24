@@ -28,21 +28,26 @@ export function HeroSection() {
   };
 
   return (
-    <section className="relative w-full bg-gradient-to-br from-primary/20 via-background to-secondary/20 overflow-visible pb-16 sm:pb-20 md:pb-28 lg:pb-32 xl:pb-40">
+    <section className="relative w-full bg-background overflow-visible pb-14 sm:pb-18 md:pb-24 lg:pb-28 xl:pb-36">
+      {/* Background Image with 10% opacity */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-10 pointer-events-none"
+        style={{ backgroundImage: 'url(/HeroBG.png)' }}
+      />
       
       {/* Desktop Layout: Text Top, Video Bottom */}
-      <div className="hidden md:flex flex-col">
+      <div className="hidden md:flex flex-col relative z-10">
         {/* Text Content - Top Section */}
-        <div className="w-full flex items-center justify-center py-24 px-8 sm:px-12 md:px-16 lg:px-20 xl:px-24">
+        <div className="w-full flex items-center justify-center px-8 sm:px-12 md:px-16 lg:px-20 xl:px-24" style={{ height: '50vh' }}>
           <div className="w-full max-w-4xl text-center">
             <div className="flex flex-col justify-center items-center space-y-4">
               {/* Main heading */}
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl tracking-tight leading-tight text-muted-foreground uppercase" style={{ fontFamily: '"Castoro Titling", serif' }}>
-                {t("headingPart1")} <span className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl" style={{ fontFamily: 'var(--font-allura), "Allura", cursive', textTransform: 'capitalize' }}>{t("headingPart2")}</span> {t("headingPart3")} <span className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl" style={{ fontFamily: 'var(--font-allura), "Allura", cursive', textTransform: 'capitalize' }}>{t("headingPart4")}</span>.
+              <h1 className="text-3xl sm:text-4xl md:text-4xl lg:text-5xl xl:text-6xl tracking-tight leading-tight text-muted-foreground uppercase" style={{ fontFamily: '"Castoro Titling", serif' }}>
+                {t("headingPart1")} <span className="text-4xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl text-black" style={{ fontFamily: 'var(--font-allura), "Allura", cursive', textTransform: 'capitalize' }}>{t("headingPart2")}</span> {t("headingPart3")} <span className="text-4xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl text-black" style={{ fontFamily: 'var(--font-allura), "Allura", cursive', textTransform: 'capitalize' }}>{t("headingPart4")}</span>.
               </h1>
               
               {/* Spacing before form */}
-              <div className="pt-8 w-full">
+              <div className="w-full">
                 <div className="flex justify-center max-w-64 sm:max-w-72 md:max-w-80 lg:max-w-96 mx-auto">
                   <div className="flex w-full">
                     <Input
@@ -99,12 +104,12 @@ export function HeroSection() {
       </div>
 
       {/* Mobile Layout: Text Top, Videos Bottom */}
-      <div className="md:hidden flex flex-col h-full">
+      <div className="md:hidden flex flex-col h-full relative z-10">
           {/* Text Content - Top */}
           <div className="flex-1 flex flex-col justify-center text-center space-y-4 py-12 px-8 sm:px-12 md:px-16 lg:px-20 xl:px-24" style={{ paddingLeft: '3rem', paddingRight: '3rem' }}>
             {/* Main heading */}
             <h1 className="text-2xl sm:text-3xl tracking-tight leading-relaxed text-muted-foreground uppercase" style={{ fontFamily: '"Castoro Titling", serif', lineHeight: '1.8' }}>
-              {t("headingPart1")} <span className="text-3xl sm:text-4xl" style={{ fontFamily: 'var(--font-allura), "Allura", cursive', textTransform: 'capitalize' }}>{t("headingPart2")}</span> {t("headingPart3")} <span className="text-3xl sm:text-4xl" style={{ fontFamily: 'var(--font-allura), "Allura", cursive', textTransform: 'capitalize' }}>{t("headingPart4")}</span>.
+              {t("headingPart1")} <span className="text-3xl sm:text-4xl text-black" style={{ fontFamily: 'var(--font-allura), "Allura", cursive', textTransform: 'capitalize' }}>{t("headingPart2")}</span> {t("headingPart3")} <span className="text-3xl sm:text-4xl text-black" style={{ fontFamily: 'var(--font-allura), "Allura", cursive', textTransform: 'capitalize' }}>{t("headingPart4")}</span>.
             </h1>
             
             {/* Spacing before form */}

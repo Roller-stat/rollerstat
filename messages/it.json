@@ -88,5 +88,41 @@
       "author": "Sophie Dubois",
       "role": "Capitano della Squadra"
     }
+  },
+  "newsletter": {
+    "content1": {
+      "title": "OTTIENI GLI ULTIMI AGGIORNAMENTI DELLE PARTITE",
+      "description": "Rimani informato con punteggi in tempo reale, momenti salienti e notizie dell'ultima ora dalle partite di hockey su pista in tutta Europa."
+    },
+    "content2": {
+      "title": "GUARDA L'ANALISI POST PARTITA",
+      "description": "Immergiti nelle analisi tattiche, nelle prestazioni dei giocatori e nelle intuizioni degli esperti di ogni partita importante."
+    },
+    "content3": {
+      "title": "CONTROLLA LE CLASSIFICHE DEL CAMPIONATO",
+      "description": "Segui i progressi delle tue squadre preferite con classifiche complete e previsioni del campionato."
+    },
+    "content4": {
+      "title": "SCOPRI I RITRATTI DEI GIOCATORI",
+      "description": "Conosci le stelle dell'hockey su pista europeo con profili esclusivi dei giocatori e interviste."
+    }
+  },
+  "filters": {
+    "filters": "Filtri",
+    "active": "Attivo",
+    "filterByDate": "Filtra per Data",
+    "allTime": "Tutto il tempo",
+    "last7Days": "Ultimi 7 giorni",
+    "last30Days": "Ultimi 30 giorni",
+    "last3Months": "Ultimi 3 mesi",
+    "customDate": "Data personalizzata",
+    "selectDate": "Seleziona Data",
+    "sortOrder": "Ordine",
+    "newestFirst": "Più Recenti Prima",
+    "oldestFirst": "Più Vecchi Prima",
+    "applyFilters": "Applica Filtri",
+    "clearFilters": "Cancella",
+    "showingResults": "Mostrando {start}-{end} di {total} pubblicazioni",
+    "noResults": "Nessun articolo trovato per i filtri selezionati."
   }
 }
