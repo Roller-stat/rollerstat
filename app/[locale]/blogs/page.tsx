@@ -1,15 +1,11 @@
 import { getPostsByType } from "@/lib/content";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { getTranslations } from "next-intl/server";
-import { getTimeAgo } from "@/lib/content";
-import Link from "next/link";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { isValidLocale } from "@/lib/i18n";
 import { Navbar } from "@/components/shared/navbar";
 import { Footer } from "@/components/shared/footer";
+import { PostCard } from "@/components/widgets/post-card";
 
 function getOpenGraphLocale(locale: string): string {
   const localeMap: Record<string, string> = {
@@ -98,50 +94,17 @@ export default async function BlogsPage({ params }: BlogsPageProps) {
 
         {blogs.length > 0 ? (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {blogs.map((blog) => (
-              <Link key={blog._id} href={blog.url} className="block">
-                <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
-                  {blog.coverImage && (
-                    <div className="aspect-video relative">
-                      <Image
-                        src={blog.coverImage}
-                        alt={blog.title}
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        className="object-cover"
-                      />
-                    </div>
-                  )}
-                  <CardHeader>
-                    <div className="flex items-center gap-2 mb-2">
-                      <Badge variant="secondary">{t("blogs")}</Badge>
-                      <span className="text-sm text-muted-foreground">
-                        {getTimeAgo(blog.date, locale)}
-                      </span>
-                    </div>
-                    <CardTitle className="text-xl leading-tight">
-                      {blog.title}
-                    </CardTitle>
-                    <CardDescription className="text-base">
-                      {blog.summary}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-sm text-muted-foreground">
-                      {tContent("by")} {blog.author} • {blog.readingTime} {tContent("readingTime")}
-                    </div>
-                    {blog.tags && blog.tags.length > 0 && (
-                      <div className="flex flex-wrap gap-1 mt-3">
-                        {blog.tags.map((tag: string) => (
-                          <Badge key={tag} variant="outline" className="text-xs">
-                            {tag}
-                          </Badge>
-                        ))}
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-              </Link>
+            {blogs.map((blog, index) => (
+              <PostCard
+                key={blog._id}
+                post={blog}
+                locale={locale}
+                badgeLabel={t("blogs")}
+                byText={tContent("by")}
+                readingTimeText={tContent("readingTime")}
+                showTags={true}
+                isPriority={index < 3}
+              />
             ))}
           </div>
         ) : (
