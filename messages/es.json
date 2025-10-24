@@ -124,5 +124,30 @@
     "clearFilters": "Limpiar",
     "showingResults": "Mostrando {start}-{end} de {total} publicaciones",
     "noResults": "No se encontraron artículos para los filtros seleccionados."
+  },
+  "contact": {
+    "title": "Contáctanos",
+    "description": "Ponte en contacto con nosotros para cualquier pregunta, sugerencia o comentario sobre hockey sobre patines.",
+    "formTitle": "Envíanos un Mensaje",
+    "name": "Nombre",
+    "namePlaceholder": "Tu nombre completo",
+    "email": "Correo Electrónico",
+    "emailPlaceholder": "tu.email@ejemplo.com",
+    "message": "Mensaje",
+    "messagePlaceholder": "Cuéntanos qué tienes en mente...",
+    "sendMessage": "Enviar Mensaje",
+    "sending": "Enviando...",
+    "successMessage": "¡Gracias! Tu mensaje ha sido enviado exitosamente.",
+    "errorMessage": "Lo siento, hubo un error al enviar tu mensaje. Por favor, inténtalo de nuevo.",
+    "contactInfo": "Información de Contacto",
+    "phone": "Teléfono",
+    "address": "Dirección",
+    "addressLine1": "Calle Hockey 123",
+    "addressLine2": "Distrito Deportivo, Ciudad 12345",
+    "businessHours": "Horario de Atención",
+    "hoursLine1": "Lunes - Viernes: 9:00 AM - 6:00 PM",
+    "hoursLine2": "Sábado: 10:00 AM - 4:00 PM",
+    "followUs": "Síguenos",
+    "socialDescription": "Mantente conectado con nosotros en redes sociales para las últimas actualizaciones y noticias."
   }
 }
