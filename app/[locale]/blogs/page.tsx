@@ -114,7 +114,7 @@ export default async function BlogsPage({ params, searchParams }: BlogsPageProps
         </div>
 
         {blogs.length > 0 ? (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 auto-rows-fr">
             {blogs.map((blog, index) => (
               <PostCard
                 key={blog._id}

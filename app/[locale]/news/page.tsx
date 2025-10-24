@@ -117,7 +117,7 @@ export default async function NewsPage({ params, searchParams }: NewsPageProps) 
         </div>
 
         {news.length > 0 ? (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 auto-rows-fr">
             {news.map((article, index) => (
               <PostCard
                 key={article._id}
