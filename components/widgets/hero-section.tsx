@@ -28,10 +28,15 @@ export function HeroSection() {
   };
 
   return (
-    <section className="relative w-full bg-gradient-to-br from-primary/20 via-background to-secondary/20 overflow-visible pb-14 sm:pb-18 md:pb-24 lg:pb-28 xl:pb-36">
+    <section className="relative w-full bg-background overflow-visible pb-14 sm:pb-18 md:pb-24 lg:pb-28 xl:pb-36">
+      {/* Background Image with 10% opacity */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-10 pointer-events-none"
+        style={{ backgroundImage: 'url(/HeroBG.png)' }}
+      />
       
       {/* Desktop Layout: Text Top, Video Bottom */}
-      <div className="hidden md:flex flex-col">
+      <div className="hidden md:flex flex-col relative z-10">
         {/* Text Content - Top Section */}
         <div className="w-full flex items-center justify-center py-24 px-8 sm:px-12 md:px-16 lg:px-20 xl:px-24">
           <div className="w-full max-w-4xl text-center">
@@ -99,7 +104,7 @@ export function HeroSection() {
       </div>
 
       {/* Mobile Layout: Text Top, Videos Bottom */}
-      <div className="md:hidden flex flex-col h-full">
+      <div className="md:hidden flex flex-col h-full relative z-10">
           {/* Text Content - Top */}
           <div className="flex-1 flex flex-col justify-center text-center space-y-4 py-12 px-8 sm:px-12 md:px-16 lg:px-20 xl:px-24" style={{ paddingLeft: '3rem', paddingRight: '3rem' }}>
             {/* Main heading */}
