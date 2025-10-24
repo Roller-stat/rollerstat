@@ -34,7 +34,7 @@ export default async function HomePage({ params }: HomePageProps) {
       <main className="flex-1">
         <HeroSection />
         
-        <section className="container mx-auto px-4 py-12">
+        <section className="container mx-auto px-4 py-8 sm:py-10 md:py-12 lg:py-14 xl:py-16">
           <div className="flex flex-col lg:flex-row gap-8">
             {await LatestEdition({ locale, blogCount: BLOG_COUNT })}
             {await TopStories({ locale, blogCount: BLOG_COUNT })}
