@@ -106,5 +106,23 @@
       "title": "DESCUBRA OS DESTAQUES DOS JOGADORES",
       "description": "Conheça as estrelas do hóquei em patins europeu com perfis exclusivos de jogadores e entrevistas."
     }
+  },
+  "filters": {
+    "filters": "Filtros",
+    "active": "Ativo",
+    "filterByDate": "Filtrar por Data",
+    "allTime": "Todo o tempo",
+    "last7Days": "Últimos 7 dias",
+    "last30Days": "Últimos 30 dias",
+    "last3Months": "Últimos 3 meses",
+    "customDate": "Data personalizada",
+    "selectDate": "Selecionar Data",
+    "sortOrder": "Ordem",
+    "newestFirst": "Mais Recentes Primeiro",
+    "oldestFirst": "Mais Antigos Primeiro",
+    "applyFilters": "Aplicar Filtros",
+    "clearFilters": "Limpar",
+    "showingResults": "Mostrando {start}-{end} de {total} publicações",
+    "noResults": "Nenhum artigo encontrado para os filtros selecionados."
   }
 }

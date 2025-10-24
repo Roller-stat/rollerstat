@@ -106,5 +106,23 @@
       "title": "DISCOVER PLAYER SPOTLIGHTS",
       "description": "Get to know the stars of European roller hockey with exclusive player profiles and interviews."
     }
+  },
+  "filters": {
+    "filters": "Filters",
+    "active": "Active",
+    "filterByDate": "Filter by Date",
+    "allTime": "All time",
+    "last7Days": "Last 7 days",
+    "last30Days": "Last 30 days",
+    "last3Months": "Last 3 months",
+    "customDate": "Custom date",
+    "selectDate": "Select Date",
+    "sortOrder": "Sort Order",
+    "newestFirst": "Newest First",
+    "oldestFirst": "Oldest First",
+    "applyFilters": "Apply Filters",
+    "clearFilters": "Clear",
+    "showingResults": "Showing {start}-{end} of {total} posts",
+    "noResults": "No articles found for the selected filters."
   }
 }
