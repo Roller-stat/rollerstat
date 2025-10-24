@@ -14,6 +14,7 @@ interface LogoProps {
   animateOnMount?: boolean;
   loop?: boolean;
   loopDelay?: number;
+  color?: string;
 }
 
 export function Logo({ 
@@ -24,7 +25,8 @@ export function Logo({
   href = "/",
   animateOnMount = true,
   loop = false,
-  loopDelay = 2000
+  loopDelay = 2000,
+  color = '#057ec8'
 }: LogoProps) {
   const textSizeClasses = {
     xxs: "text-xs",
@@ -85,7 +87,7 @@ export function Logo({
         )}
         style={{ 
           fontFamily: 'var(--font-barlow-condensed), "Barlow Condensed", Arial, sans-serif',
-          color: '#057ec8',
+          color: color,
           display: 'block',
           fontSize: mobileSize ? `clamp(${fontSizeStyles[mobileSize]}, 4vw, ${fontSizeStyles[size]})` : fontSizeStyles[size],
           fontWeight: '700',

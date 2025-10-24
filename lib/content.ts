@@ -40,17 +40,25 @@ export function getAllPosts(): Post[] {
 }
 
 export function getPostsByLocale(locale: Locale): Post[] {
-  return allPosts
+  const posts = allPosts
     .filter((post: Post) =>
       isValidPost(post) &&
       post.locale === locale &&
       post.published !== false
     )
     .sort((a: Post, b: Post) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  
+  // Debug logging to help troubleshoot
+  console.log(`getPostsByLocale(${locale}): Found ${posts.length} posts`);
+  if (posts.length > 0) {
+    console.log(`Latest post: ${posts[0].title} (${posts[0].date})`);
+  }
+  
+  return posts;
 }
 
 export function getPostsByType(type: "news" | "blog", locale: Locale): Post[] {
-  return allPosts
+  const posts = allPosts
     .filter((post: Post) =>
       isValidPost(post) &&
       post.contentType === type &&
@@ -58,6 +66,14 @@ export function getPostsByType(type: "news" | "blog", locale: Locale): Post[] {
       post.published !== false
     )
     .sort((a: Post, b: Post) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  
+  // Debug logging to help troubleshoot
+  console.log(`getPostsByType(${type}, ${locale}): Found ${posts.length} posts`);
+  if (posts.length > 0) {
+    console.log(`Latest ${type} post: ${posts[0].title} (${posts[0].date})`);
+  }
+  
+  return posts;
 }
 
 export function getLatestPost(locale: Locale): Post | undefined {
@@ -137,4 +153,80 @@ export function getTimeAgo(date: string, locale: Locale): string {
     console.error("Error calculating time ago:", error);
     return locale === "es" ? "Fecha no disponible" : "Date not available";
   }
+}
+
+// Filter posts by date range
+export function filterPostsByDateRange(
+  posts: Post[], 
+  dateRange: string
+): Post[] {
+  const now = new Date();
+  const ranges: Record<string, number | null> = {
+    '7days': 7,
+    '30days': 30,
+    '3months': 90,
+    'all': null
+  };
+  
+  if (dateRange === 'all' || !dateRange) return posts;
+  
+  const days = ranges[dateRange];
+  if (!days) return posts;
+  
+  const cutoffDate = new Date(now.getTime() - (days * 24 * 60 * 60 * 1000));
+  
+  return posts.filter(post => new Date(post.date) >= cutoffDate);
+}
+
+// Filter posts by specific date
+export function filterPostsByCustomDate(
+  posts: Post[], 
+  customDate: string
+): Post[] {
+  if (!customDate) return posts;
+  
+  const targetDate = new Date(customDate);
+  
+  return posts.filter(post => {
+    const postDate = new Date(post.date);
+    return postDate.toDateString() === targetDate.toDateString();
+  });
+}
+
+// Sort posts by date
+export function sortPostsByDate(
+  posts: Post[], 
+  order: 'asc' | 'desc' = 'desc'
+): Post[] {
+  return [...posts].sort((a, b) => {
+    const dateA = new Date(a.date).getTime();
+    const dateB = new Date(b.date).getTime();
+    return order === 'desc' ? dateB - dateA : dateA - dateB;
+  });
+}
+
+// Combined filter and sort function
+export function filterAndSortPosts(
+  posts: Post[],
+  filters: {
+    dateRange?: string;
+    customDate?: string;
+    sortOrder?: 'asc' | 'desc';
+  }
+): Post[] {
+  let filtered = posts;
+  
+  // Apply custom date filter first (more specific)
+  if (filters.customDate) {
+    filtered = filterPostsByCustomDate(filtered, filters.customDate);
+  } 
+  // Otherwise apply date range filter
+  else if (filters.dateRange && filters.dateRange !== 'all') {
+    filtered = filterPostsByDateRange(filtered, filters.dateRange);
+  }
+  
+  // Apply sorting
+  filtered = sortPostsByDate(filtered, filters.sortOrder || 'desc');
+  
+  return filtered;
 }

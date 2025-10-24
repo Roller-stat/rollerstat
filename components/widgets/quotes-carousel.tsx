@@ -27,7 +27,7 @@ export function QuotesCarousel() {
   return (
     <section className="py-12 bg-muted/30">
       <div className="container mx-auto px-4">
-        <Card className="max-w-4xl mx-auto">
+        <Card className="max-w-4xl mx-auto rounded-none">
           <CardContent className="p-8 text-center">
             <blockquote className="text-xl md:text-2xl font-medium italic mb-6 text-foreground">
               &ldquo;{currentQuoteData.text}&rdquo;

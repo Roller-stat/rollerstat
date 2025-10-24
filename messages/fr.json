@@ -60,8 +60,10 @@
     "loading": "Chargement..."
   },
   "hero": {
-    "title": "Rollerstat",
-    "subtitle": "Restez informé des dernières actualités, analyses et histoires du monde du hockey sur patins en Europe.",
+    "headingPart1": "Dernières actualités et analyses du monde du",
+    "headingPart2": "Hockey sur Patins",
+    "headingPart3": "en",
+    "headingPart4": "Europe",
     "emailPlaceholder": "Entrez votre adresse e-mail",
     "subscribeButton": "S'abonner"
   },
@@ -86,5 +88,41 @@
       "author": "Sophie Dubois",
       "role": "Capitaine d'Équipe"
     }
+  },
+  "newsletter": {
+    "content1": {
+      "title": "OBTENEZ LES DERNIÈRES MISES À JOUR DES MATCHS",
+      "description": "Restez informé avec les scores en temps réel, les moments forts et les dernières nouvelles des matchs de hockey sur patins à travers l'Europe."
+    },
+    "content2": {
+      "title": "CONSULTEZ L'ANALYSE POST-MATCH",
+      "description": "Plongez dans les analyses tactiques, les performances des joueurs et les perspectives d'experts de chaque match majeur."
+    },
+    "content3": {
+      "title": "VÉRIFIEZ LES CLASSEMENTS DU CHAMPIONNAT",
+      "description": "Suivez les progrès de vos équipes préférées avec des tableaux de ligue complets et des prédictions de championnat."
+    },
+    "content4": {
+      "title": "DÉCOUVREZ LES PORTRAITS DE JOUEURS",
+      "description": "Apprenez à connaître les stars du hockey sur patins européen avec des profils de joueurs exclusifs et des interviews."
+    }
+  },
+  "filters": {
+    "filters": "Filtres",
+    "active": "Actif",
+    "filterByDate": "Filtrer par Date",
+    "allTime": "Tout le temps",
+    "last7Days": "7 derniers jours",
+    "last30Days": "30 derniers jours",
+    "last3Months": "3 derniers mois",
+    "customDate": "Date personnalisée",
+    "selectDate": "Sélectionner la Date",
+    "sortOrder": "Ordre de Tri",
+    "newestFirst": "Plus Récents d'Abord",
+    "oldestFirst": "Plus Anciens d'Abord",
+    "applyFilters": "Appliquer les Filtres",
+    "clearFilters": "Effacer",
+    "showingResults": "Affichage de {start}-{end} sur {total} publications",
+    "noResults": "Aucun article trouvé pour les filtres sélectionnés."
   }
 }

@@ -60,8 +60,10 @@
     "loading": "A carregar..."
   },
   "hero": {
-    "title": "Rollerstat",
-    "subtitle": "Mantenha-se atualizado com as últimas notícias, análises e histórias do mundo do hóquei em patins na Europa.",
+    "headingPart1": "Últimas notícias e análises do mundo do",
+    "headingPart2": "Hóquei em Patins",
+    "headingPart3": "na",
+    "headingPart4": "Europa",
     "emailPlaceholder": "Digite o seu endereço de email",
     "subscribeButton": "Subscrever"
   },
@@ -86,5 +88,41 @@
       "author": "Sophie Dubois",
       "role": "Capitã da Equipa"
     }
+  },
+  "newsletter": {
+    "content1": {
+      "title": "OBTENHA AS ÚLTIMAS ATUALIZAÇÕES DOS JOGOS",
+      "description": "Mantenha-se informado com resultados em tempo real, destaques e notícias de última hora dos jogos de hóquei em patins em toda a Europa."
+    },
+    "content2": {
+      "title": "VEJA A ANÁLISE PÓS-JOGO",
+      "description": "Mergulhe em análises táticas, desempenhos dos jogadores e insights de especialistas de cada jogo importante."
+    },
+    "content3": {
+      "title": "CONSULTE AS CLASSIFICAÇÕES DO CAMPEONATO",
+      "description": "Acompanhe o progresso das suas equipas favoritas com tabelas de liga completas e previsões do campeonato."
+    },
+    "content4": {
+      "title": "DESCUBRA OS DESTAQUES DOS JOGADORES",
+      "description": "Conheça as estrelas do hóquei em patins europeu com perfis exclusivos de jogadores e entrevistas."
+    }
+  },
+  "filters": {
+    "filters": "Filtros",
+    "active": "Ativo",
+    "filterByDate": "Filtrar por Data",
+    "allTime": "Todo o tempo",
+    "last7Days": "Últimos 7 dias",
+    "last30Days": "Últimos 30 dias",
+    "last3Months": "Últimos 3 meses",
+    "customDate": "Data personalizada",
+    "selectDate": "Selecionar Data",
+    "sortOrder": "Ordem",
+    "newestFirst": "Mais Recentes Primeiro",
+    "oldestFirst": "Mais Antigos Primeiro",
+    "applyFilters": "Aplicar Filtros",
+    "clearFilters": "Limpar",
+    "showingResults": "Mostrando {start}-{end} de {total} publicações",
+    "noResults": "Nenhum artigo encontrado para os filtros selecionados."
   }
 }
