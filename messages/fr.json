@@ -124,5 +124,30 @@
     "clearFilters": "Effacer",
     "showingResults": "Affichage de {start}-{end} sur {total} publications",
     "noResults": "Aucun article trouvé pour les filtres sélectionnés."
+  },
+  "contact": {
+    "title": "Contactez-nous",
+    "description": "Contactez-nous pour toute question, suggestion ou commentaire sur le hockey sur patins.",
+    "formTitle": "Envoyez-nous un Message",
+    "name": "Nom",
+    "namePlaceholder": "Votre nom complet",
+    "email": "Email",
+    "emailPlaceholder": "Entrez votre email",
+    "message": "Message",
+    "messagePlaceholder": "Dites-nous ce que vous pensez...",
+    "sendMessage": "Envoyer le Message",
+    "sending": "Envoi en cours...",
+    "successMessage": "Merci ! Votre message a été envoyé avec succès.",
+    "errorMessage": "Désolé, une erreur s'est produite lors de l'envoi de votre message. Veuillez réessayer.",
+    "contactInfo": "Informations de Contact",
+    "phone": "Téléphone",
+    "address": "Adresse",
+    "addressLine1": "123 Rue du Hockey",
+    "addressLine2": "Quartier Sportif, Ville 12345",
+    "businessHours": "Heures d'Ouverture",
+    "hoursLine1": "Lundi - Vendredi: 9h00 - 18h00",
+    "hoursLine2": "Samedi: 10h00 - 16h00",
+    "followUs": "Suivez-nous",
+    "socialDescription": "Restez connecté avec nous sur les réseaux sociaux pour les dernières mises à jour et actualités."
   }
 }
