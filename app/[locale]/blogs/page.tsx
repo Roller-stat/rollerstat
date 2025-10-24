@@ -6,6 +6,15 @@ import { isValidLocale } from "@/lib/i18n";
 import { Navbar } from "@/components/shared/navbar";
 import { Footer } from "@/components/shared/footer";
 import { PostCard } from "@/components/widgets/post-card";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+  PaginationEllipsis,
+} from "@/components/ui/pagination";
 
 function getOpenGraphLocale(locale: string): string {
   const localeMap: Record<string, string> = {
@@ -21,6 +30,9 @@ function getOpenGraphLocale(locale: string): string {
 interface BlogsPageProps {
   params: Promise<{
     locale: string;
+  }>;
+  searchParams: Promise<{
+    page?: string;
   }>;
 }
 
@@ -70,8 +82,10 @@ export async function generateMetadata({ params }: BlogsPageProps) {
   };
 }
 
-export default async function BlogsPage({ params }: BlogsPageProps) {
+export default async function BlogsPage({ params, searchParams }: BlogsPageProps) {
   const { locale } = await params;
+  const { page } = await searchParams;
+  
   if (!isValidLocale(locale)) {
     notFound();
   }
@@ -79,7 +93,14 @@ export default async function BlogsPage({ params }: BlogsPageProps) {
   const t = await getTranslations({ locale, namespace: "nav" });
   const tCta = await getTranslations({ locale, namespace: "cta" });
   const tContent = await getTranslations({ locale, namespace: "content" });
-  const blogs = getPostsByType("blog", locale);
+  
+  const allBlogs = getPostsByType("blog", locale);
+  const POSTS_PER_PAGE = 9;
+  const currentPage = Number(page) || 1;
+  const totalPages = Math.ceil(allBlogs.length / POSTS_PER_PAGE);
+  const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
+  const endIndex = startIndex + POSTS_PER_PAGE;
+  const blogs = allBlogs.slice(startIndex, endIndex);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -115,6 +136,55 @@ export default async function BlogsPage({ params }: BlogsPageProps) {
               </p>
             </CardContent>
           </Card>
+        )}
+
+        {totalPages > 1 && (
+          <div className="mt-8">
+            <Pagination>
+              <PaginationContent>
+                {currentPage > 1 && (
+                  <PaginationItem>
+                    <PaginationPrevious href={`/${locale}/blogs?page=${currentPage - 1}`} />
+                  </PaginationItem>
+                )}
+                
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => {
+                  if (
+                    pageNum === 1 ||
+                    pageNum === totalPages ||
+                    (pageNum >= currentPage - 1 && pageNum <= currentPage + 1)
+                  ) {
+                    return (
+                      <PaginationItem key={pageNum}>
+                        <PaginationLink
+                          href={`/${locale}/blogs?page=${pageNum}`}
+                          isActive={currentPage === pageNum}
+                        >
+                          {pageNum}
+                        </PaginationLink>
+                      </PaginationItem>
+                    );
+                  } else if (
+                    pageNum === currentPage - 2 ||
+                    pageNum === currentPage + 2
+                  ) {
+                    return (
+                      <PaginationItem key={pageNum}>
+                        <PaginationEllipsis />
+                      </PaginationItem>
+                    );
+                  }
+                  return null;
+                })}
+
+                {currentPage < totalPages && (
+                  <PaginationItem>
+                    <PaginationNext href={`/${locale}/blogs?page=${currentPage + 1}`} />
+                  </PaginationItem>
+                )}
+              </PaginationContent>
+            </Pagination>
+          </div>
         )}
         </div>
       </main>
