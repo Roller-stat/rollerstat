@@ -108,8 +108,13 @@ export default async function NewsPage({ params, searchParams }: NewsPageProps) 
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-1">
-        <div className="container mx-auto px-4 py-8">
+      <main className="flex-1 relative">
+        {/* Background Image with 10% opacity */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-10 pointer-events-none"
+          style={{ backgroundImage: 'url(/HeroBG.png)' }}
+        />
+        <div className="container mx-auto px-4 py-8 relative z-10">
         <div className="mb-8">
           <p className="text-muted-foreground text-lg">
             Stay updated with the latest roller hockey news and events
