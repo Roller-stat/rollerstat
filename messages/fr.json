@@ -106,5 +106,23 @@
       "title": "DÉCOUVREZ LES PORTRAITS DE JOUEURS",
       "description": "Apprenez à connaître les stars du hockey sur patins européen avec des profils de joueurs exclusifs et des interviews."
     }
+  },
+  "filters": {
+    "filters": "Filtres",
+    "active": "Actif",
+    "filterByDate": "Filtrer par Date",
+    "allTime": "Tout le temps",
+    "last7Days": "7 derniers jours",
+    "last30Days": "30 derniers jours",
+    "last3Months": "3 derniers mois",
+    "customDate": "Date personnalisée",
+    "selectDate": "Sélectionner la Date",
+    "sortOrder": "Ordre de Tri",
+    "newestFirst": "Plus Récents d'Abord",
+    "oldestFirst": "Plus Anciens d'Abord",
+    "applyFilters": "Appliquer les Filtres",
+    "clearFilters": "Effacer",
+    "showingResults": "Affichage de {start}-{end} sur {total} publications",
+    "noResults": "Aucun article trouvé pour les filtres sélectionnés."
   }
 }

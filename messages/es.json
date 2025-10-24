@@ -106,5 +106,23 @@
       "title": "DESCUBRE LOS DESTACADOS DE JUGADORES",
       "description": "Conoce a las estrellas del hockey patines europeo con perfiles exclusivos de jugadores y entrevistas."
     }
+  },
+  "filters": {
+    "filters": "Filtros",
+    "active": "Activo",
+    "filterByDate": "Filtrar por Fecha",
+    "allTime": "Todo el tiempo",
+    "last7Days": "Últimos 7 días",
+    "last30Days": "Últimos 30 días",
+    "last3Months": "Últimos 3 meses",
+    "customDate": "Fecha personalizada",
+    "selectDate": "Seleccionar Fecha",
+    "sortOrder": "Orden",
+    "newestFirst": "Más Recientes Primero",
+    "oldestFirst": "Más Antiguos Primero",
+    "applyFilters": "Aplicar Filtros",
+    "clearFilters": "Limpiar",
+    "showingResults": "Mostrando {start}-{end} de {total} publicaciones",
+    "noResults": "No se encontraron artículos para los filtros seleccionados."
   }
 }
