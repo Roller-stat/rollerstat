@@ -44,7 +44,7 @@ export async function TopStories({ locale }: TopStoriesProps) {
                       {getTimeAgo(article.date, locale)}
                     </span>
                   </div>
-                  <CardTitle className="text-sm leading-tight">
+                  <CardTitle className="text-sm leading-tight" style={{ fontFamily: '"Castoro Titling", serif' }}>
                     {article.title}
                   </CardTitle>
                 </CardHeader>

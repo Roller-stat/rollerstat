@@ -39,7 +39,28 @@ export async function LatestEdition({ locale }: LatestEditionProps) {
         
         {/* Latest Post (News or Blog) */}
         <Link href={latestPost.url} className="block">
-          <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
+          <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer rounded-none pt-6 pb-0">
+            <CardHeader>
+              <div className="flex items-center gap-2 mb-2">
+                <Badge variant="default" className="rounded-none">
+                  {tNav("blogs")}
+                </Badge>
+                <span className="text-sm text-muted-foreground">
+                  {getTimeAgo(latestPost.date, locale)}
+                </span>
+              </div>
+              <CardTitle className="text-2xl" style={{ fontFamily: '"Castoro Titling", serif' }}>
+                {latestPost.title}
+              </CardTitle>
+              <CardDescription className="text-base">
+                {latestPost.summary}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="pb-0">
+              <div className="text-sm text-muted-foreground mb-4">
+                {t("by")} {latestPost.author} • {latestPost.readingTime} {t("readingTime")}
+              </div>
+            </CardContent>
             {latestPost.coverImage ? (
               <div className="aspect-video relative">
                 <Image
@@ -56,34 +77,34 @@ export async function LatestEdition({ locale }: LatestEditionProps) {
                 <span className="text-muted-foreground">Featured Image</span>
               </div>
             )}
-            <CardHeader>
-              <div className="flex items-center gap-2 mb-2">
-                <Badge variant="default">
-                  {tNav("blogs")}
-                </Badge>
-                <span className="text-sm text-muted-foreground">
-                  {getTimeAgo(latestPost.date, locale)}
-                </span>
-              </div>
-              <CardTitle className="text-2xl">
-                {latestPost.title}
-              </CardTitle>
-              <CardDescription className="text-base">
-                {latestPost.summary}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="text-sm text-muted-foreground">
-                {t("by")} {latestPost.author} • {latestPost.readingTime} {t("readingTime")}
-              </div>
-            </CardContent>
           </Card>
         </Link>
 
         {/* Second Latest Post (News or Blog) */}
         {secondLatestPost && (
           <Link href={secondLatestPost.url} className="block">
-            <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
+            <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer rounded-none pt-6 pb-0">
+              <CardHeader>
+                <div className="flex items-center gap-2 mb-2">
+                  <Badge variant="default" className="rounded-none">
+                    {tNav("blogs")}
+                  </Badge>
+                  <span className="text-sm text-muted-foreground">
+                    {getTimeAgo(secondLatestPost.date, locale)}
+                  </span>
+                </div>
+                <CardTitle className="text-xl" style={{ fontFamily: '"Castoro Titling", serif' }}>
+                  {secondLatestPost.title}
+                </CardTitle>
+                <CardDescription className="text-sm">
+                  {secondLatestPost.summary}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="pb-0">
+                <div className="text-sm text-muted-foreground mb-4">
+                  {t("by")} {secondLatestPost.author} • {secondLatestPost.readingTime} {t("readingTime")}
+                </div>
+              </CardContent>
               {secondLatestPost.coverImage ? (
                 <div className="aspect-video relative">
                   <Image
@@ -99,27 +120,6 @@ export async function LatestEdition({ locale }: LatestEditionProps) {
                   <span className="text-muted-foreground">Featured Image</span>
                 </div>
               )}
-              <CardHeader>
-                <div className="flex items-center gap-2 mb-2">
-                  <Badge variant="default">
-                    {tNav("blogs")}
-                  </Badge>
-                  <span className="text-sm text-muted-foreground">
-                    {getTimeAgo(secondLatestPost.date, locale)}
-                  </span>
-                </div>
-                <CardTitle className="text-xl">
-                  {secondLatestPost.title}
-                </CardTitle>
-                <CardDescription className="text-sm">
-                  {secondLatestPost.summary}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="text-sm text-muted-foreground">
-                  {t("by")} {secondLatestPost.author} • {secondLatestPost.readingTime} {t("readingTime")}
-                </div>
-              </CardContent>
             </Card>
           </Link>
         )}
