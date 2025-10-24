@@ -28,7 +28,7 @@ export function PostCard({
 
   return (
     <Link href={post.url} className="block h-full">
-      <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer rounded-none pt-4 sm:pt-5 md:pt-6 lg:pt-5 xl:pt-6 pb-0 gap-2 flex flex-col h-full justify-between">
+      <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer rounded-none pb-0 gap-2 flex flex-col h-full justify-between">
         <CardHeader className="space-y-2 flex-shrink-0">
           <div className="flex items-center gap-2 mb-0">
             <Badge variant="default" className="rounded-none">
