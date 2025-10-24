@@ -1,57 +1,66 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { getLatestBlogs, getTimeAgo } from "@/lib/content";
+import { getPostsByType, getTimeAgo } from "@/lib/content";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import Image from "next/image";
 
 interface TopStoriesProps {
   locale: "en" | "es" | "fr" | "it" | "pt";
+  blogCount?: number;
 }
 
-export async function TopStories({ locale }: TopStoriesProps) {
+export async function TopStories({ locale, blogCount = 2 }: TopStoriesProps) {
   const t = await getTranslations({ locale, namespace: "content" });
+  const tNav = await getTranslations({ locale, namespace: "nav" });
   
-  const blogs = getLatestBlogs(locale, 4);
+  // Dynamically calculate news count based on blog count
+  // Each blog card is roughly equivalent to 4 news cards in height
+  // This creates a uniform section where both columns end at roughly the same point
+  const newsCount = blogCount * 4;
+  const news = getPostsByType("news", locale).slice(0, newsCount);
 
   return (
-    <div className="w-full lg:w-1/4 space-y-4">
+    <div className="w-full lg:w-2/5 space-y-4">
       <h2 className="text-2xl font-bold mb-6">{t("topStories")}</h2>
       
       <div className="space-y-4">
-        {blogs.length > 0 ? (
-          blogs.map((blog) => (
-            <Link key={blog._id} href={blog.url} className="block">
-              <Card className="hover:shadow-md transition-shadow cursor-pointer">
-                {blog.coverImage && (
-                  <div className="aspect-[4/3] relative overflow-hidden rounded-t-xl">
-                    <Image
-                      src={blog.coverImage}
-                      alt={blog.title}
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 25vw, 20vw"
-                      className="object-cover"
-                    />
+        {news.length > 0 ? (
+          news.map((article) => (
+            <Link key={article._id} href={article.url} className="block">
+              <Card className="hover:shadow-md transition-shadow cursor-pointer rounded-none p-0 h-20 sm:h-22 md:h-24 lg:h-28">
+                <div className="flex flex-row h-full">
+                  {/* Image Section */}
+                  {article.coverImage && (
+                    <div className="w-20 h-20 sm:w-22 sm:h-22 md:w-24 md:h-24 lg:w-28 lg:h-28 relative flex-shrink-0">
+                      <Image
+                        src={article.coverImage}
+                        alt={article.title}
+                        fill
+                        sizes="96px"
+                        className="object-cover"
+                      />
+                    </div>
+                  )}
+                  
+                  {/* Content Section */}
+                  <div className="flex-1 p-2 sm:p-3 flex flex-col overflow-hidden">
+                    <div className="flex items-center gap-1 sm:gap-2 mb-0.5 sm:mb-1">
+                      <Badge variant="outline" className="text-[10px] sm:text-xs md:text-xs rounded-none">
+                        {tNav("news")}
+                      </Badge>
+                      <span className="text-[10px] sm:text-xs md:text-xs text-muted-foreground">
+                        {getTimeAgo(article.date, locale)}
+                      </span>
+                    </div>
+                    <CardTitle className="text-xs sm:text-sm md:text-base leading-tight line-clamp-2 mb-1 sm:mb-1.5 mt-1 sm:mt-1.5" style={{ fontFamily: '"Castoro Titling", serif' }}>
+                      {article.title}
+                    </CardTitle>
+                    <CardDescription className="text-[10px] sm:text-xs md:text-sm line-clamp-1">
+                      {article.summary}
+                    </CardDescription>
                   </div>
-                )}
-                <CardHeader>
-                  <div className="flex items-center gap-2 mb-2">
-                    <Badge variant="outline" className="text-xs">
-                      {blog.tags?.[0] || "Blog"}
-                    </Badge>
-                    <span className="text-xs text-muted-foreground">
-                      {getTimeAgo(blog.date, locale)}
-                    </span>
-                  </div>
-                  <CardTitle className="text-sm leading-tight">
-                    {blog.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <CardDescription className="text-xs">
-                    {blog.summary}
-                  </CardDescription>
-                </CardContent>
+                </div>
               </Card>
             </Link>
           ))

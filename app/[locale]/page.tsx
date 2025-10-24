@@ -23,6 +23,10 @@ export default async function HomePage({ params }: HomePageProps) {
     notFound();
   }
 
+  // Configure how many blog posts to show (default: 2)
+  // News posts will automatically adjust to match the height (blogCount * 4)
+  const BLOG_COUNT = 2;
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -30,10 +34,10 @@ export default async function HomePage({ params }: HomePageProps) {
       <main className="flex-1">
         <HeroSection />
         
-        <section className="container mx-auto px-4 py-12">
+        <section className="container mx-auto px-4 py-8 sm:py-10 md:py-12 lg:py-14 xl:py-16">
           <div className="flex flex-col lg:flex-row gap-8">
-            {await LatestEdition({ locale })}
-            {await TopStories({ locale })}
+            {await LatestEdition({ locale, blogCount: BLOG_COUNT })}
+            {await TopStories({ locale, blogCount: BLOG_COUNT })}
           </div>
         </section>
         
