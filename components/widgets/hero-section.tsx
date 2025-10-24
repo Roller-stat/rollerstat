@@ -28,7 +28,7 @@ export function HeroSection() {
   };
 
   return (
-    <section className="relative w-full bg-gradient-to-br from-primary/20 via-background to-secondary/20 overflow-visible pb-16 sm:pb-20 md:pb-28 lg:pb-32 xl:pb-40">
+    <section className="relative w-full bg-gradient-to-br from-primary/20 via-background to-secondary/20 overflow-visible pb-14 sm:pb-18 md:pb-24 lg:pb-28 xl:pb-36">
       
       {/* Desktop Layout: Text Top, Video Bottom */}
       <div className="hidden md:flex flex-col">

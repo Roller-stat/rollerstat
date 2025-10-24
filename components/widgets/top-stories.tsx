@@ -7,13 +7,18 @@ import Image from "next/image";
 
 interface TopStoriesProps {
   locale: "en" | "es" | "fr" | "it" | "pt";
+  blogCount?: number;
 }
 
-export async function TopStories({ locale }: TopStoriesProps) {
+export async function TopStories({ locale, blogCount = 2 }: TopStoriesProps) {
   const t = await getTranslations({ locale, namespace: "content" });
   const tNav = await getTranslations({ locale, namespace: "nav" });
   
-  const news = getPostsByType("news", locale).slice(0, 4);
+  // Dynamically calculate news count based on blog count
+  // Each blog card is roughly equivalent to 4 news cards in height
+  // This creates a uniform section where both columns end at roughly the same point
+  const newsCount = blogCount * 4;
+  const news = getPostsByType("news", locale).slice(0, newsCount);
 
   return (
     <div className="w-full lg:w-2/5 space-y-4">

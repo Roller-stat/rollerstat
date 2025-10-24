@@ -9,6 +9,7 @@ import { Post } from "contentlayer/generated";
 
 interface LatestEditionProps {
   locale: "en" | "es" | "fr" | "it" | "pt";
+  blogCount?: number;
 }
 
 interface BlogCardProps {
@@ -23,7 +24,7 @@ interface BlogCardProps {
 function BlogCard({ post, locale, badgeLabel, byText, readingTimeText, isPriority = false }: BlogCardProps) {
   return (
     <Link href={post.url} className="block">
-      <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer rounded-none pt-6 pb-0 h-auto gap-2">
+      <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer rounded-none pt-4 sm:pt-5 md:pt-6 lg:pt-7 xl:pt-8 pb-0 h-auto gap-2">
         <CardHeader className="space-y-2">
           <div className="flex items-center gap-2 mb-0">
             <Badge variant="default" className="rounded-none">
@@ -66,12 +67,12 @@ function BlogCard({ post, locale, badgeLabel, byText, readingTimeText, isPriorit
   );
 }
 
-export async function LatestEdition({ locale }: LatestEditionProps) {
+export async function LatestEdition({ locale, blogCount = 2 }: LatestEditionProps) {
   const t = await getTranslations({ locale, namespace: "content" });
   const tNav = await getTranslations({ locale, namespace: "nav" });
   
   // Get only blog posts sorted by date, most recent first
-  const blogPosts = getLatestBlogs(locale, 2);
+  const blogPosts = getLatestBlogs(locale, blogCount);
 
   if (blogPosts.length === 0) {
     return (
