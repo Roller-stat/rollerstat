@@ -1,4 +1,5 @@
 import * as brevo from '@getbrevo/brevo';
+import { generateUnsubscribeUrl } from './unsubscribe-tokens';
 
 // Initialize Brevo API client
 const apiInstance = new brevo.ContactsApi();
@@ -6,9 +7,17 @@ const listsApiInstance = new brevo.ContactsApi();
 const emailApiInstance = new brevo.TransactionalEmailsApi();
 
 // Configure API key
-apiInstance.setApiKey(brevo.ContactsApiApiKeys.apiKey, process.env.BREVO_API_KEY || '');
-listsApiInstance.setApiKey(brevo.ContactsApiApiKeys.apiKey, process.env.BREVO_API_KEY || '');
-emailApiInstance.setApiKey(brevo.TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY || '');
+const brevoApiKey = process.env.BREVO_API_KEY;
+if (!brevoApiKey) {
+  console.error('❌ BREVO_API_KEY not found in environment variables');
+  throw new Error('BREVO_API_KEY is required');
+}
+
+apiInstance.setApiKey(brevo.ContactsApiApiKeys.apiKey, brevoApiKey);
+listsApiInstance.setApiKey(brevo.ContactsApiApiKeys.apiKey, brevoApiKey);
+emailApiInstance.setApiKey(brevo.TransactionalEmailsApiApiKeys.apiKey, brevoApiKey);
+
+console.log('✅ Brevo API client initialized with key:', brevoApiKey.substring(0, 10) + '...');
 
 // Types for better type safety
 export interface SubscriberAttributes {
@@ -38,6 +47,7 @@ export interface BrevoResponse {
   data?: unknown;
   error?: string;
   messageId?: string;
+  shouldSendWelcome?: boolean;
 }
 
 export interface SubscriberStats {
@@ -77,32 +87,151 @@ export const addSubscriber = async (
       parseInt(process.env.BREVO_WELCOME_LIST_ID || '')
     ].filter(id => !isNaN(id));
 
-    const createContact = new brevo.CreateContact();
-    createContact.email = email;
-    createContact.attributes = attributes;
-    createContact.listIds = defaultListIds;
-    createContact.emailBlacklisted = false;
-    createContact.smsBlacklisted = false;
-
-    const result = await apiInstance.createContact(createContact);
-    
-    console.log(`✅ Subscriber added successfully: ${email}`);
-    return {
-      success: true,
-      data: result,
-      messageId: result.body?.id?.toString()
-    };
-  } catch (error: unknown) {
-    console.error(`❌ Failed to add subscriber ${email}:`, error);
-    
-    // Handle specific Brevo errors
-    if (error && typeof error === 'object' && 'status' in error && error.status === 400) {
-      const errorObj = error as { status: number; body?: { message?: string } };
-      if (errorObj.body?.message?.includes('Contact already exist')) {
+    // First, try to get the contact to see if it already exists
+    try {
+      const existingContact = await apiInstance.getContactInfo(email);
+      console.log(`📧 Contact already exists: ${email}, checking subscription status`);
+      
+      // Check if user is already subscribed to newsletter list
+      const newsletterListId = parseInt(process.env.BREVO_NEWSLETTER_LIST_ID || '');
+      const currentListIds = existingContact.body?.listIds || [];
+      
+      console.log(`🔍 Checking subscription status for ${email}:`, {
+        newsletterListId,
+        currentListIds,
+        isInNewsletterList: currentListIds.includes(newsletterListId)
+      });
+      
+      if (currentListIds.includes(newsletterListId)) {
+        console.log(`📧 User ${email} is already subscribed to newsletter`);
         return {
           success: false,
           error: 'Email already subscribed'
         };
+      }
+      
+      // User exists but not in newsletter list - they need to be added
+      console.log(`📧 Adding existing user ${email} to newsletter list`);
+      
+      // Check if user was previously unsubscribed (blacklisted)
+      const isBlacklisted = existingContact.body?.emailBlacklisted;
+      const attributes = existingContact.body?.attributes as Record<string, unknown> | undefined;
+      const wasUnsubscribed = attributes?.unsubscribed as boolean | undefined;
+      
+      // If user was previously unsubscribed, remove blacklist status
+      if (isBlacklisted || wasUnsubscribed) {
+        console.log(`📧 User ${email} was previously unsubscribed, removing blacklist status`);
+        
+        const updateContact = new brevo.UpdateContact();
+        updateContact.emailBlacklisted = false;
+        updateContact.smsBlacklisted = false;
+        updateContact.attributes = {
+          ...existingContact.body?.attributes,
+          unsubscribed: false,
+          resubscribedAt: new Date().toISOString()
+        };
+        
+        await apiInstance.updateContact(email, updateContact);
+        console.log(`✅ Removed blacklist status for ${email}`);
+      }
+      
+      // Add to Newsletter list (they're already in Welcome series if they exist)
+      try {
+        await addToList(email, newsletterListId);
+        console.log(`✅ Successfully added to Newsletter list ${newsletterListId}`);
+      } catch (listError) {
+        console.warn(`⚠️ Failed to add to Newsletter list ${newsletterListId}:`, listError);
+      }
+      
+      console.log(`📧 Returning addSubscriber result for ${email}:`, {
+        success: true,
+        shouldSendWelcome: true // Always send welcome email for existing users who weren't subscribed
+      });
+      
+      return {
+        success: true,
+        data: existingContact,
+        messageId: 'existing_contact_added_to_newsletter',
+        shouldSendWelcome: true // Always send welcome email for existing users
+      };
+    } catch {
+      // Contact doesn't exist, create new one
+      console.log(`📧 Creating new contact: ${email}`);
+      
+      const createContact = new brevo.CreateContact();
+      createContact.email = email;
+      createContact.attributes = attributes;
+      createContact.listIds = defaultListIds;
+      createContact.emailBlacklisted = false;
+      createContact.smsBlacklisted = false;
+
+      const result = await apiInstance.createContact(createContact);
+      
+      console.log(`✅ New subscriber added successfully: ${email}`);
+      console.log(`📧 Returning addSubscriber result for new user ${email}:`, {
+        success: true,
+        shouldSendWelcome: true
+      });
+      
+      return {
+        success: true,
+        data: result,
+        messageId: result.body?.id?.toString(),
+        shouldSendWelcome: true // New contacts always get welcome email
+      };
+    }
+  } catch (error: unknown) {
+    console.error(`❌ Failed to add subscriber ${email}:`, error);
+    console.error(`❌ Error type:`, typeof error);
+    console.error(`❌ Error constructor:`, error?.constructor?.name);
+    console.error(`❌ Error keys:`, error && typeof error === 'object' ? Object.keys(error) : 'N/A');
+    
+    // Handle specific Brevo errors - check multiple possible error structures
+    if (error && typeof error === 'object') {
+      const errorObj = error as Record<string, unknown>;
+      console.log('🔍 Brevo error details:', {
+        status: errorObj.status,
+        response: errorObj.response,
+        body: errorObj.body,
+        message: errorObj.message,
+        code: errorObj.code,
+        fullError: errorObj
+      });
+      
+      // Check for duplicate contact errors in various possible locations
+      const response = errorObj.response as { body?: { message?: string }; status?: number; statusCode?: number } | undefined;
+      const body = errorObj.body as { message?: string } | undefined;
+      
+      const errorMessage = response?.body?.message || 
+                          body?.message || 
+                          (errorObj.message as string) || 
+                          '';
+      
+      const statusCode = response?.status || 
+                        (errorObj.status as number) || 
+                        response?.statusCode;
+      
+      console.log('🔍 Parsed error details:', {
+        statusCode,
+        errorMessage,
+        isDuplicate: errorMessage.includes('Contact already exist') || 
+                     errorMessage.includes('already exist') ||
+                     errorMessage.includes('duplicate') ||
+                     errorMessage.includes('already registered')
+      });
+      
+      // Check for duplicate contact errors (status 400 or 409)
+      if (statusCode === 400 || statusCode === 409) {
+        if (errorMessage.includes('Contact already exist') || 
+            errorMessage.includes('already exist') ||
+            errorMessage.includes('duplicate') ||
+            errorMessage.includes('already registered')) {
+          console.log('✅ Detected duplicate contact, returning already subscribed error');
+          return {
+            success: false,
+            error: 'Email already subscribed'
+          };
+        }
       }
     }
     
@@ -152,20 +281,61 @@ export const updateSubscriber = async (
  */
 export const removeSubscriber = async (email: string): Promise<BrevoResponse> => {
   try {
-    console.log(`🗑️ Removing subscriber: ${email}`);
+    console.log(`🗑️ Unsubscribing: ${email}`);
 
-    const result = await apiInstance.deleteContact(email);
+    // Get the contact first to get their current list IDs
+    let contactInfo;
+    try {
+      contactInfo = await apiInstance.getContactInfo(email);
+    } catch {
+      console.log(`📧 Contact ${email} not found, nothing to unsubscribe`);
+      return {
+        success: true,
+        data: { message: 'Contact not found, already unsubscribed' }
+      };
+    }
+
+    // Remove from Newsletter list only (keep in Welcome list)
+    const newsletterListId = parseInt(process.env.BREVO_NEWSLETTER_LIST_ID || '');
+    const currentListIds = contactInfo.body?.listIds || [];
     
-    console.log(`✅ Subscriber removed successfully: ${email}`);
+    console.log(`📋 Current lists: ${currentListIds.join(', ')}`);
+    console.log(`📋 Removing from Newsletter list only (ID: ${newsletterListId})`);
+    
+    if (currentListIds.includes(newsletterListId)) {
+      try {
+        await removeFromList(email, newsletterListId);
+        console.log(`✅ Removed from Newsletter list ${newsletterListId}`);
+      } catch (listError) {
+        console.warn(`⚠️ Failed to remove from Newsletter list ${newsletterListId}:`, listError);
+      }
+    } else {
+      console.log(`📧 User ${email} was not in Newsletter list`);
+    }
+
+    // Update contact to blacklist email (prevent future sends)
+    const updateContact = new brevo.UpdateContact();
+    updateContact.emailBlacklisted = true;
+    updateContact.smsBlacklisted = true;
+    updateContact.attributes = {
+      ...contactInfo.body?.attributes,
+      unsubscribedAt: new Date().toISOString(),
+      unsubscribed: true
+    };
+
+    const result = await apiInstance.updateContact(email, updateContact);
+    
+    console.log(`✅ Subscriber unsubscribed successfully: ${email}`);
     return {
       success: true,
-      data: result
+      data: result,
+      messageId: 'unsubscribed_successfully'
     };
   } catch (error: unknown) {
-    console.error(`❌ Failed to remove subscriber ${email}:`, error);
+    console.error(`❌ Failed to unsubscribe ${email}:`, error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to remove subscriber'
+      error: error instanceof Error ? error.message : 'Failed to unsubscribe'
     };
   }
 };
@@ -378,6 +548,11 @@ export const getListMembers = async (listId: number): Promise<BrevoResponse> => 
 export const sendWelcomeEmail = async (email: string, name?: string): Promise<BrevoResponse> => {
   try {
     console.log(`📧 Sending welcome email to: ${email}`);
+    console.log(`📧 Welcome email function called with:`, { email, name });
+
+    // Generate unsubscribe URL
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://rollerstat.com';
+    const unsubscribeUrl = await generateUnsubscribeUrl(email, baseUrl);
 
     const sendSmtpEmail = new brevo.SendSmtpEmail();
     sendSmtpEmail.to = [{ email, name: name || 'Subscriber' }];
@@ -419,6 +594,13 @@ export const sendWelcomeEmail = async (email: string, name?: string): Promise<Br
             The Rollerstat Team
           </p>
         </div>
+        
+        <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #dee2e6; text-align: center;">
+          <p style="font-size: 12px; color: #999; margin: 0;">
+            If you no longer wish to receive these emails, you can 
+            <a href="${unsubscribeUrl}" style="color: #999; text-decoration: underline;">unsubscribe here</a>.
+          </p>
+        </div>
       </div>
     `;
     sendSmtpEmail.sender = {
@@ -426,9 +608,14 @@ export const sendWelcomeEmail = async (email: string, name?: string): Promise<Br
       email: process.env.BREVO_SENDER_EMAIL || 'noreply@rollerstat.com'
     };
 
+    console.log(`📧 About to send welcome email via Brevo API to: ${email}`);
     const result = await emailApiInstance.sendTransacEmail(sendSmtpEmail);
     
-    console.log(`✅ Welcome email sent successfully: ${email}`);
+    console.log(`✅ Welcome email sent successfully: ${email}`, {
+      messageId: result.body?.messageId,
+      result: result.body,
+      fullResult: result
+    });
     return {
       success: true,
       data: result,
@@ -436,6 +623,11 @@ export const sendWelcomeEmail = async (email: string, name?: string): Promise<Br
     };
   } catch (error: unknown) {
     console.error(`❌ Failed to send welcome email to ${email}:`, error);
+    console.error(`❌ Welcome email error details:`, {
+      error: error,
+      type: typeof error,
+      message: error instanceof Error ? error.message : 'Unknown error'
+    });
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to send welcome email'
@@ -464,9 +656,21 @@ export const sendNewsletter = async (
       throw new Error('No newsletter list ID configured');
     }
 
+    // Add unsubscribe footer to HTML content
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://rollerstat.com';
+    const unsubscribeFooter = `
+      <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #dee2e6; text-align: center;">
+        <p style="font-size: 12px; color: #999; margin: 0;">
+          You received this email because you subscribed to our newsletter.<br>
+          If you no longer wish to receive these emails, you can 
+          <a href="${baseUrl}/unsubscribe" style="color: #999; text-decoration: underline;">unsubscribe here</a>.
+        </p>
+      </div>
+    `;
+
     const sendSmtpEmail = new brevo.SendSmtpEmail();
     sendSmtpEmail.subject = subject;
-    sendSmtpEmail.htmlContent = htmlContent;
+    sendSmtpEmail.htmlContent = htmlContent + unsubscribeFooter;
     sendSmtpEmail.sender = {
       name: 'Rollerstat',
       email: process.env.BREVO_SENDER_EMAIL || 'noreply@rollerstat.com'

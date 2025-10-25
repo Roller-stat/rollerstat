@@ -65,35 +65,54 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Send welcome email
-    console.log(`📧 Sending welcome email to: ${sanitizedEmail}`);
-    const welcomeResult = await sendWelcomeEmail(sanitizedEmail, sanitizedFirstName || 'Friend');
+    // Send welcome email only if shouldSendWelcome is true
+    let welcomeEmailSent = false;
+    console.log(`🔍 Welcome email decision for ${sanitizedEmail}:`, {
+      shouldSendWelcome: addResult.shouldSendWelcome,
+      condition: addResult.shouldSendWelcome !== false
+    });
+    
+    if (addResult.shouldSendWelcome !== false) {
+      console.log(`📧 Sending welcome email to: ${sanitizedEmail}`);
+      const welcomeResult = await sendWelcomeEmail(sanitizedEmail, sanitizedFirstName || 'Friend');
 
-    if (!welcomeResult.success) {
-      console.warn('⚠️ Failed to send welcome email:', welcomeResult.error);
-      // Don't fail the subscription if welcome email fails
+      if (!welcomeResult.success) {
+        console.warn('⚠️ Failed to send welcome email:', welcomeResult.error);
+        // Don't fail the subscription if welcome email fails
+      } else {
+        welcomeEmailSent = true;
+        console.log(`✅ Welcome email sent successfully to: ${sanitizedEmail}`);
+      }
+    } else {
+      console.log(`📧 Skipping welcome email for ${sanitizedEmail} - shouldSendWelcome is false`);
     }
 
     console.log('✅ Newsletter subscription successful:', {
       email: sanitizedEmail,
       firstName: sanitizedFirstName,
       timestamp: new Date().toISOString(),
-      welcomeEmailSent: welcomeResult.success
+      welcomeEmailSent: welcomeEmailSent
     });
 
     return NextResponse.json({
       success: true,
       message: 'Successfully subscribed to newsletter!',
       email: sanitizedEmail,
-      welcomeEmailSent: welcomeResult.success
+      welcomeEmailSent: welcomeEmailSent
     });
 
   } catch (error) {
     console.error('❌ Newsletter subscription error:', error);
+    console.error('❌ Error details:', {
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined,
+      error: error
+    });
     return NextResponse.json(
       { 
         success: false,
-        error: 'Internal server error. Please try again later.'
+        error: 'Internal server error. Please try again later.',
+        details: error instanceof Error ? error.message : 'Unknown error'
       },
       { status: 500 }
     );
@@ -102,9 +121,24 @@ export async function POST(request: NextRequest) {
 
 // Health check endpoint
 export async function GET() {
-  return NextResponse.json({ 
-    status: 'ok', 
-    message: 'Newsletter subscription endpoint is active',
-    timestamp: new Date().toISOString()
-  });
+  try {
+    // Test Brevo configuration
+    const { verifyBrevoConfig } = await import('@/lib/brevo');
+    const isConfigured = await verifyBrevoConfig();
+    
+    return NextResponse.json({ 
+      status: 'ok', 
+      message: 'Newsletter subscription endpoint is active',
+      brevoConfigured: isConfigured,
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('Health check error:', error);
+    return NextResponse.json({ 
+      status: 'error', 
+      message: 'Newsletter subscription endpoint has issues',
+      error: error instanceof Error ? error.message : 'Unknown error',
+      timestamp: new Date().toISOString()
+    }, { status: 500 });
+  }
 }

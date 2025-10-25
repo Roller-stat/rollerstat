@@ -15,6 +15,8 @@
 - Add Brevo sender email configuration
 - Add Brevo list IDs for different subscriber types
 - Configure webhook secrets for security
+- Add unsubscribe token secret for secure unsubscribe links
+- Add base URL for unsubscribe link generation
 
 ### 1.3 Package Installation
 
@@ -91,12 +93,13 @@
 - Handle error states gracefully
 - Add email confirmation prompts
 
-### 4.3 Unsubscribe Links
+### 4.3 Token-Based Unsubscribe System
 
-- Add unsubscribe links to all emails
-- Create unsubscribe page with token validation
-- Implement one-click unsubscribe
-- Add subscription management page
+- **Token-based unsubscribe links** - Users can only unsubscribe through email links
+- **Secure token generation** - HMAC-signed tokens with expiration (7 days)
+- **Unsubscribe feedback form** - Collect reasons for unsubscribing (optional)
+- **Email validation** - Tokens are tied to specific email addresses
+- **No direct website unsubscribe** - Prevents unauthorized unsubscribes
 
 ## Phase 5: Email Templates & Campaigns
 

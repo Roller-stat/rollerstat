@@ -6,7 +6,7 @@ export async function POST(request: NextRequest) {
     console.log('👋 Processing unsubscribe request');
 
     const body = await request.json();
-    const { email } = body;
+    const { email, reasons, customReason } = body;
 
     // Basic validation
     if (!email) {
@@ -54,6 +54,8 @@ export async function POST(request: NextRequest) {
 
     console.log('✅ Unsubscribe successful:', {
       email: sanitizedEmail,
+      reasons: reasons || [],
+      customReason: customReason || '',
       timestamp: new Date().toISOString(),
       confirmationEmailSent: confirmationResult.success
     });

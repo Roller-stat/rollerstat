@@ -6,10 +6,13 @@ import { Input } from "@/components/ui/input";
 import { useVideoRotation } from "@/lib/hooks";
 import { useTranslations } from "next-intl";
 import { NewsletterOverlay } from "./newsletter-overlay";
+import { toast } from "sonner";
 
 export function HeroSection() {
   const t = useTranslations("hero");
   const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(false);
   
   // Array of video URLs - replace with your actual video URLs
   const videos = [
@@ -19,11 +22,49 @@ export function HeroSection() {
 
   const { currentVideoIndex, setCurrentVideoIndex } = useVideoRotation(videos);
 
-  const handleSubscribe = () => {
-    if (email && email.includes("@")) {
-      // TODO: Implement actual subscription logic
-      console.log("Subscribing email:", email);
-      setEmail(""); // Clear the input after subscription
+  const handleSubscribe = async () => {
+    // Basic validation
+    if (!email) {
+      toast.error("Please enter your email address");
+      return;
+    }
+
+    if (!email.includes("@")) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
+
+    setIsLoading(true);
+    
+    try {
+      const response = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: email.trim() }),
+      });
+
+      const data = await response.json();
+
+      // Handle already subscribed case (409 status)
+      if (response.status === 409 || data.alreadySubscribed) {
+        toast.info("You're already subscribed to our newsletter!");
+        setIsSubscribed(true);
+        setEmail(""); // Clear the input
+      } else if (data.success) {
+        toast.success("Successfully subscribed to our newsletter!");
+        setIsSubscribed(true);
+        setEmail(""); // Clear the input
+      } else {
+        toast.error(data.error || "Failed to subscribe. Please try again.");
+      }
+    } catch (error) {
+      console.error('Subscription error:', error);
+      console.error('Error details:', error);
+      toast.error("Failed to subscribe. Please try again later.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -59,9 +100,25 @@ export function HeroSection() {
                     />
                     <Button 
                       onClick={handleSubscribe}
-                      className="flex-[1] rounded-none bg-gray-900 hover:bg-black text-white border border-gray-300 border-l-0 px-1 sm:px-2 md:px-3 lg:px-4 h-8 sm:h-10 md:h-12 lg:h-14 font-semibold text-xs sm:text-xs md:text-sm lg:text-sm uppercase tracking-wide"
+                      disabled={isLoading || isSubscribed}
+                      className={`flex-[1] rounded-none border border-gray-300 border-l-0 px-1 sm:px-2 md:px-3 lg:px-4 h-8 sm:h-10 md:h-12 lg:h-14 font-semibold text-xs sm:text-xs md:text-sm lg:text-sm uppercase tracking-wide ${
+                        isSubscribed 
+                          ? 'bg-green-600 hover:bg-green-700 text-white' 
+                          : isLoading 
+                            ? 'bg-gray-600 hover:bg-gray-600 text-white' 
+                            : 'bg-gray-900 hover:bg-black text-white'
+                      }`}
                     >
-                      {t("subscribeButton")}
+                      {isLoading ? (
+                        <div className="flex items-center space-x-2">
+                          <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                          <span>Subscribing...</span>
+                        </div>
+                      ) : isSubscribed ? (
+                        "✓ Subscribed!"
+                      ) : (
+                        t("subscribeButton")
+                      )}
                     </Button>
                   </div>
                 </div>
@@ -125,9 +182,25 @@ export function HeroSection() {
                   />
                   <Button 
                     onClick={handleSubscribe}
-                    className="flex-[1] rounded-none bg-gray-900 hover:bg-black text-white border border-gray-300 border-l-0 px-2 sm:px-2 h-8 sm:h-10 font-semibold text-[10px] sm:text-sm uppercase tracking-wide"
+                    disabled={isLoading || isSubscribed}
+                    className={`flex-[1] rounded-none border border-gray-300 border-l-0 px-2 sm:px-2 h-8 sm:h-10 font-semibold text-[10px] sm:text-sm uppercase tracking-wide ${
+                      isSubscribed 
+                        ? 'bg-green-600 hover:bg-green-700 text-white' 
+                        : isLoading 
+                          ? 'bg-gray-600 hover:bg-gray-600 text-white' 
+                          : 'bg-gray-900 hover:bg-black text-white'
+                    }`}
                   >
-                    {t("subscribeButton")}
+                    {isLoading ? (
+                      <div className="flex items-center space-x-1">
+                        <div className="w-2 h-2 border border-white border-t-transparent rounded-full animate-spin"></div>
+                        <span className="text-[8px] sm:text-[10px]">Subscribing...</span>
+                      </div>
+                    ) : isSubscribed ? (
+                      "✓ Subscribed!"
+                    ) : (
+                      t("subscribeButton")
+                    )}
                   </Button>
                 </div>
               </div>
