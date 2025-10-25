@@ -166,7 +166,7 @@ export default async function NewsPage({ params, searchParams }: NewsPageProps) 
                 byText={tContent("by")}
                 readingTimeText={tContent("readingTime")}
                 showTags={true}
-                isPriority={index < 3}
+                isPriority={index === 0}
               />
             ))}
           </div>

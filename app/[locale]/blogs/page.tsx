@@ -162,7 +162,7 @@ export default async function BlogsPage({ params, searchParams }: BlogsPageProps
                 byText={tContent("by")}
                 readingTimeText={tContent("readingTime")}
                 showTags={true}
-                isPriority={index < 3}
+                isPriority={index === 0}
               />
             ))}
           </div>

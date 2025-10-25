@@ -157,7 +157,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
             {/* Header */}
             <header className="mb-8">
               <div className="flex items-center gap-2 mb-4">
-                <Badge variant="secondary">{tNav("blogs")}</Badge>
+                <Badge variant="secondary" className="rounded-none">{tNav("blogs")}</Badge>
                 <span className="text-sm text-muted-foreground">
                   {formatDate(post.date, locale)}
                 </span>
@@ -181,7 +181,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
 
             {/* Cover Image */}
             {post.coverImage && (
-              <div className="aspect-video relative mb-8 rounded-lg overflow-hidden">
+              <div className="aspect-video relative mb-8 overflow-hidden">
                 <Image
                   src={post.coverImage}
                   alt={post.title}
@@ -205,7 +205,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
                 <h3 className="text-lg font-semibold mb-3">{t("tags")}</h3>
                 <div className="flex flex-wrap gap-2">
                   {post.tags.map((tag: string) => (
-                    <Badge key={tag} variant="outline">
+                    <Badge key={tag} variant="outline" className="rounded-none">
                       {tag}
                     </Badge>
                   ))}
