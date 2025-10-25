@@ -1,4 +1,4 @@
-import { getPostBySlug, getRelatedPosts, formatDate } from "@/lib/content";
+import { getPostBySlug, formatDate } from "@/lib/content";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -111,8 +111,6 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
   const t = await getTranslations("content");
   const tNav = await getTranslations("nav");
   const tInteractions = await getTranslations("interactions");
-  const tCta = await getTranslations("cta");
-  const relatedPosts = getRelatedPosts(post, 3);
 
   // JSON-LD for SEO
   const jsonLd = {
@@ -233,41 +231,6 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
               </div>
             </div>
 
-            {/* Related Posts */}
-            {relatedPosts.length > 0 && (
-              <section className="border-t pt-8">
-                <h2 className="text-2xl font-bold mb-6">{t("relatedPosts")}</h2>
-                <div className="grid gap-4 md:grid-cols-3">
-                  {relatedPosts.map((relatedPost) => (
-                    <Card key={relatedPost._id} className="hover:shadow-md transition-shadow">
-                      {relatedPost.coverImage && (
-                        <div className="aspect-video relative">
-                          <Image
-                            src={relatedPost.coverImage}
-                            alt={relatedPost.title}
-                            fill
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
-                            className="object-cover"
-                          />
-                        </div>
-                      )}
-                      <CardHeader className="pb-3">
-                        <CardTitle className="text-sm leading-tight">
-                          {relatedPost.title}
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="pt-0">
-                        <Button variant="ghost" size="sm" asChild>
-                          <Link href={relatedPost.url}>
-                            {tCta("readMore")} →
-                          </Link>
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </section>
-            )}
           </article>
           </div>
         </main>
