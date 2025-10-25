@@ -124,5 +124,30 @@
     "clearFilters": "Cancella",
     "showingResults": "Mostrando {start}-{end} di {total} pubblicazioni",
     "noResults": "Nessun articolo trovato per i filtri selezionati."
+  },
+  "contact": {
+    "title": "Contattaci",
+    "description": "Contattaci per qualsiasi domanda, suggerimento o feedback sull'hockey su pattini.",
+    "formTitle": "Inviaci un Messaggio",
+    "name": "Nome",
+    "namePlaceholder": "Il tuo nome completo",
+    "email": "Email",
+    "emailPlaceholder": "Inserisci la tua email",
+    "message": "Messaggio",
+    "messagePlaceholder": "Dicci cosa pensi...",
+    "sendMessage": "Invia Messaggio",
+    "sending": "Invio in corso...",
+    "successMessage": "Grazie! Il tuo messaggio è stato inviato con successo.",
+    "errorMessage": "Spiacenti, si è verificato un errore durante l'invio del tuo messaggio. Riprova.",
+    "contactInfo": "Informazioni di Contatto",
+    "phone": "Telefono",
+    "address": "Indirizzo",
+    "addressLine1": "Via Hockey 123",
+    "addressLine2": "Quartiere Sportivo, Città 12345",
+    "businessHours": "Orari di Apertura",
+    "hoursLine1": "Lunedì - Venerdì: 9:00 - 18:00",
+    "hoursLine2": "Sabato: 10:00 - 16:00",
+    "followUs": "Seguici",
+    "socialDescription": "Rimani connesso con noi sui social media per gli ultimi aggiornamenti e notizie."
   }
 }
