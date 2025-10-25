@@ -12,6 +12,7 @@
   "dependencies": {
     "@emotion/is-prop-valid": "^1.2.2",
     "@formatjs/intl": "^3.1.6",
+    "@getbrevo/brevo": "^3.0.1",
     "@hookform/resolvers": "^5.2.2",
     "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-label": "^2.1.7",
