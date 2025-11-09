@@ -65,7 +65,9 @@
     "headingPart3": "en",
     "headingPart4": "Europa",
     "emailPlaceholder": "Ingresa tu dirección de correo",
-    "subscribeButton": "Suscribirse"
+    "subscribeButton": "Suscribirse",
+    "subscribing": "Suscribiendo...",
+    "subscribed": "✓ ¡Suscrito!"
   },
   "quotes": {
     "quote1": {
@@ -149,5 +151,41 @@
     "hoursLine2": "Sábado: 10:00 AM - 4:00 PM",
     "followUs": "Síguenos",
     "socialDescription": "Mantente conectado con nosotros en redes sociales para las últimas actualizaciones y noticias."
+  },
+  "unsubscribe": {
+    "title": "Darse de baja del boletín",
+    "description": "¡Lamentamos verte partir! Por favor, cuéntanos por qué te das de baja para que podamos mejorar nuestro servicio.",
+    "emailLabel": "Correo electrónico",
+    "loading": "Validando solicitud de baja...",
+    "goToHomepage": "Ir a la página de inicio",
+    "button": "Darse de baja del boletín",
+    "unsubscribing": "Dándose de baja...",
+    "reasons": {
+      "title": "¿Por qué te das de baja? (Opcional)",
+      "tooManyEmails": "Demasiados correos",
+      "contentNotRelevant": "El contenido no es relevante",
+      "neverSignedUp": "Nunca me suscribí",
+      "technicalIssues": "Problemas técnicos",
+      "other": "Otro"
+    },
+    "comments": {
+      "title": "Comentarios adicionales (Opcional)",
+      "placeholder": "Cuéntanos más sobre tu experiencia..."
+    },
+    "success": {
+      "title": "Baja exitosa",
+      "description": "Te has dado de baja de nuestro boletín. ¡Lamentamos verte partir!",
+      "message": "Ya no recibirás nuestros correos del boletín. Si cambias de opinión, siempre puedes volver a suscribirte desde nuestra página de inicio.",
+      "unsubscribed": "Te has dado de baja exitosamente de nuestro boletín"
+    },
+    "invalidToken": {
+      "title": "Enlace de baja inválido",
+      "description": "Este enlace de baja es inválido o ha expirado. Por favor, contáctanos si necesitas ayuda."
+    },
+    "errors": {
+      "emailNotFound": "Correo electrónico no encontrado",
+      "failedToUnsubscribe": "Error al darse de baja. Por favor, inténtalo de nuevo.",
+      "failedToUnsubscribeLater": "Error al darse de baja. Por favor, inténtalo más tarde."
+    }
   }
 }

@@ -65,7 +65,9 @@
     "headingPart3": "in",
     "headingPart4": "Europa",
     "emailPlaceholder": "Inserisci il tuo indirizzo email",
-    "subscribeButton": "Iscriviti"
+    "subscribeButton": "Iscriviti",
+    "subscribing": "Iscrizione in corso...",
+    "subscribed": "✓ Iscritto!"
   },
   "quotes": {
     "quote1": {
@@ -149,5 +151,41 @@
     "hoursLine2": "Sabato: 10:00 - 16:00",
     "followUs": "Seguici",
     "socialDescription": "Rimani connesso con noi sui social media per gli ultimi aggiornamenti e notizie."
+  },
+  "unsubscribe": {
+    "title": "Annulla l'iscrizione alla newsletter",
+    "description": "Ci dispiace vederti andare! Per favore, facci sapere perché ti stai disiscrivendo così possiamo migliorare il nostro servizio.",
+    "emailLabel": "Email",
+    "loading": "Validazione della richiesta di disiscrizione...",
+    "goToHomepage": "Vai alla homepage",
+    "button": "Annulla l'iscrizione alla newsletter",
+    "unsubscribing": "Disiscrizione in corso...",
+    "reasons": {
+      "title": "Perché ti stai disiscrivendo? (Opzionale)",
+      "tooManyEmails": "Troppe email",
+      "contentNotRelevant": "Il contenuto non è rilevante",
+      "neverSignedUp": "Non mi sono mai iscritto",
+      "technicalIssues": "Problemi tecnici",
+      "other": "Altro"
+    },
+    "comments": {
+      "title": "Commenti aggiuntivi (Opzionale)",
+      "placeholder": "Raccontaci di più sulla tua esperienza..."
+    },
+    "success": {
+      "title": "Disiscrizione completata",
+      "description": "Ti sei disiscritto dalla nostra newsletter. Ci dispiace vederti andare!",
+      "message": "Non riceverai più le nostre email della newsletter. Se cambi idea, puoi sempre riiscriverti dalla nostra homepage.",
+      "unsubscribed": "Ti sei disiscritto con successo dalla nostra newsletter"
+    },
+    "invalidToken": {
+      "title": "Link di disiscrizione non valido",
+      "description": "Questo link di disiscrizione non è valido o è scaduto. Contattaci se hai bisogno di aiuto."
+    },
+    "errors": {
+      "emailNotFound": "Email non trovata",
+      "failedToUnsubscribe": "Errore nella disiscrizione. Riprova.",
+      "failedToUnsubscribeLater": "Errore nella disiscrizione. Riprova più tardi."
+    }
   }
 }

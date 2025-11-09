@@ -4,12 +4,13 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useVideoRotation } from "@/lib/hooks";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { NewsletterOverlay } from "./newsletter-overlay";
 import { toast } from "sonner";
 
 export function HeroSection() {
   const t = useTranslations("hero");
+  const locale = useLocale();
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
@@ -42,7 +43,10 @@ export function HeroSection() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email: email.trim() }),
+        body: JSON.stringify({ 
+          email: email.trim(),
+          locale: locale // Pass the current locale
+        }),
       });
 
       const data = await response.json();
@@ -112,10 +116,10 @@ export function HeroSection() {
                       {isLoading ? (
                         <div className="flex items-center space-x-2">
                           <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                          <span>Subscribing...</span>
+                          <span>{t("subscribing")}</span>
                         </div>
                       ) : isSubscribed ? (
-                        "✓ Subscribed!"
+                        t("subscribed")
                       ) : (
                         t("subscribeButton")
                       )}
@@ -194,13 +198,13 @@ export function HeroSection() {
                     {isLoading ? (
                       <div className="flex items-center space-x-1">
                         <div className="w-2 h-2 border border-white border-t-transparent rounded-full animate-spin"></div>
-                        <span className="text-[8px] sm:text-[10px]">Subscribing...</span>
+                        <span className="text-[8px] sm:text-[10px]">{t("subscribing")}</span>
                       </div>
                     ) : isSubscribed ? (
-                      "✓ Subscribed!"
-                    ) : (
-                      t("subscribeButton")
-                    )}
+                        t("subscribed")
+                      ) : (
+                        t("subscribeButton")
+                      )}
                   </Button>
                 </div>
               </div>

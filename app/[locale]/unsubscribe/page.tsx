@@ -1,16 +1,21 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
+import { getLocaleFromPathname } from '@/lib/i18n';
 
 
 export default function UnsubscribePage() {
   const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const locale = getLocaleFromPathname(pathname);
+  const t = useTranslations('unsubscribe');
   const token = searchParams.get('token');
   
   const [isLoading, setIsLoading] = useState(true);
@@ -23,11 +28,11 @@ export default function UnsubscribePage() {
   const [customReason, setCustomReason] = useState('');
   
   const unsubscribeReasons = [
-    'Too many emails',
-    'Content not relevant',
-    'Never signed up',
-    'Technical issues',
-    'Other'
+    t('reasons.tooManyEmails'),
+    t('reasons.contentNotRelevant'),
+    t('reasons.neverSignedUp'),
+    t('reasons.technicalIssues'),
+    t('reasons.other')
   ];
 
   useEffect(() => {
@@ -79,7 +84,7 @@ export default function UnsubscribePage() {
 
   const handleUnsubscribe = async () => {
     if (!email) {
-      toast.error('Email not found');
+      toast.error(t('errors.emailNotFound'));
       return;
     }
 
@@ -102,13 +107,13 @@ export default function UnsubscribePage() {
 
       if (data.success) {
         setIsUnsubscribed(true);
-        toast.success('Successfully unsubscribed from our newsletter');
+        toast.success(t('success.unsubscribed'));
       } else {
-        toast.error(data.error || 'Failed to unsubscribe. Please try again.');
+        toast.error(data.error || t('errors.failedToUnsubscribe'));
       }
     } catch (error) {
       console.error('Unsubscribe error:', error);
-      toast.error('Failed to unsubscribe. Please try again later.');
+      toast.error(t('errors.failedToUnsubscribeLater'));
     } finally {
       setIsUnsubscribing(false);
     }
@@ -119,7 +124,7 @@ export default function UnsubscribePage() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600">Validating unsubscribe request...</p>
+          <p className="text-gray-600">{t('loading')}</p>
         </div>
       </div>
     );
@@ -130,17 +135,17 @@ export default function UnsubscribePage() {
       <div className="min-h-screen flex items-center justify-center">
         <Card className="w-full max-w-md">
           <CardHeader>
-            <CardTitle className="text-red-600">Invalid Unsubscribe Link</CardTitle>
+            <CardTitle className="text-red-600">{t('invalidToken.title')}</CardTitle>
             <CardDescription>
-              This unsubscribe link is invalid or has expired. Please contact us if you need help.
+              {t('invalidToken.description')}
             </CardDescription>
           </CardHeader>
           <CardContent>
             <Button 
-              onClick={() => window.location.href = '/'}
+              onClick={() => window.location.href = `/${locale}`}
               className="w-full"
             >
-              Go to Homepage
+              {t('goToHomepage')}
             </Button>
           </CardContent>
         </Card>
@@ -153,20 +158,20 @@ export default function UnsubscribePage() {
       <div className="min-h-screen flex items-center justify-center">
         <Card className="w-full max-w-md">
           <CardHeader>
-            <CardTitle className="text-green-600">Successfully Unsubscribed</CardTitle>
+            <CardTitle className="text-green-600">{t('success.title')}</CardTitle>
             <CardDescription>
-              You have been unsubscribed from our newsletter. We&apos;re sorry to see you go!
+              {t('success.description')}
             </CardDescription>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-gray-600 mb-4">
-              You will no longer receive our newsletter emails. If you change your mind, you can always resubscribe from our homepage.
+              {t('success.message')}
             </p>
             <Button 
-              onClick={() => window.location.href = '/'}
+              onClick={() => window.location.href = `/${locale}`}
               className="w-full"
             >
-              Go to Homepage
+              {t('goToHomepage')}
             </Button>
           </CardContent>
         </Card>
@@ -178,23 +183,23 @@ export default function UnsubscribePage() {
     <div className="min-h-screen flex items-center justify-center p-4">
       <Card className="w-full max-w-lg">
         <CardHeader>
-          <CardTitle>Unsubscribe from Newsletter</CardTitle>
+          <CardTitle>{t('title')}</CardTitle>
           <CardDescription>
-            We&apos;re sorry to see you go! Please let us know why you&apos;re unsubscribing so we can improve our service.
+            {t('description')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div>
-            <Label className="text-sm font-medium">Email: {email}</Label>
+            <Label className="text-sm font-medium">{t('emailLabel')}: {email}</Label>
           </div>
 
           <div>
             <Label className="text-sm font-medium mb-3 block">
-              Why are you unsubscribing? (Optional)
+              {t('reasons.title')}
             </Label>
             <div className="space-y-2">
-              {unsubscribeReasons.map((reason) => (
-                <label key={reason} className="flex items-center space-x-2">
+              {unsubscribeReasons.map((reason, index) => (
+                <label key={index} className="flex items-center space-x-2">
                   <input
                     type="checkbox"
                     checked={selectedReasons.includes(reason)}
@@ -209,13 +214,13 @@ export default function UnsubscribePage() {
 
           <div>
             <Label htmlFor="customReason" className="text-sm font-medium">
-              Additional comments (Optional)
+              {t('comments.title')}
             </Label>
             <Textarea
               id="customReason"
               value={customReason}
               onChange={(e) => setCustomReason(e.target.value)}
-              placeholder="Tell us more about your experience..."
+              placeholder={t('comments.placeholder')}
               className="mt-1"
               rows={3}
             />
@@ -229,10 +234,10 @@ export default function UnsubscribePage() {
             {isUnsubscribing ? (
               <div className="flex items-center space-x-2">
                 <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                <span>Unsubscribing...</span>
+                <span>{t('unsubscribing')}</span>
               </div>
             ) : (
-              'Unsubscribe from Newsletter'
+              t('button')
             )}
           </Button>
         </CardContent>

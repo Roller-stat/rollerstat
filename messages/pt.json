@@ -65,7 +65,9 @@
     "headingPart3": "na",
     "headingPart4": "Europa",
     "emailPlaceholder": "Digite o seu endereço de email",
-    "subscribeButton": "Subscrever"
+    "subscribeButton": "Subscrever",
+    "subscribing": "A subscrever...",
+    "subscribed": "✓ Subscrevido!"
   },
   "quotes": {
     "quote1": {
@@ -149,5 +151,41 @@
     "hoursLine2": "Sábado: 10:00 - 16:00",
     "followUs": "Siga-nos",
     "socialDescription": "Mantenha-se conectado conosco nas redes sociais para as últimas atualizações e notícias."
+  },
+  "unsubscribe": {
+    "title": "Cancelar inscrição na newsletter",
+    "description": "Lamentamos vê-lo partir! Por favor, informe-nos por que está cancelando a inscrição para que possamos melhorar nosso serviço.",
+    "emailLabel": "Email",
+    "loading": "Validando solicitação de cancelamento...",
+    "goToHomepage": "Ir para a página inicial",
+    "button": "Cancelar inscrição na newsletter",
+    "unsubscribing": "Cancelando inscrição...",
+    "reasons": {
+      "title": "Por que você está cancelando a inscrição? (Opcional)",
+      "tooManyEmails": "Muitos emails",
+      "contentNotRelevant": "O conteúdo não é relevante",
+      "neverSignedUp": "Nunca me inscrevi",
+      "technicalIssues": "Problemas técnicos",
+      "other": "Outro"
+    },
+    "comments": {
+      "title": "Comentários adicionais (Opcional)",
+      "placeholder": "Conte-nos mais sobre sua experiência..."
+    },
+    "success": {
+      "title": "Inscrição cancelada com sucesso",
+      "description": "Você foi removido da nossa newsletter. Lamentamos vê-lo partir!",
+      "message": "Você não receberá mais nossos emails da newsletter. Se mudar de ideia, você sempre pode se inscrever novamente em nossa página inicial.",
+      "unsubscribed": "Você cancelou a inscrição com sucesso da nossa newsletter"
+    },
+    "invalidToken": {
+      "title": "Link de cancelamento inválido",
+      "description": "Este link de cancelamento é inválido ou expirou. Entre em contato conosco se precisar de ajuda."
+    },
+    "errors": {
+      "emailNotFound": "Email não encontrado",
+      "failedToUnsubscribe": "Falha ao cancelar a inscrição. Tente novamente.",
+      "failedToUnsubscribeLater": "Falha ao cancelar a inscrição. Tente novamente mais tarde."
+    }
   }
 }

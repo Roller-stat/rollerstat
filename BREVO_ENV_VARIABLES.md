@@ -23,6 +23,22 @@ BREVO_SENDER_EMAIL=rollerstat@rollerstat.com
 BREVO_WEBHOOK_ID=1613650
 
 # ============================================================================
+# BREVO TEMPLATE IDs (Phase 5.1)
+# ============================================================================
+
+# Welcome Email Template IDs by Locale (from Brevo dashboard)
+# Get these from: Brevo Dashboard → Campaigns → Email Templates → Your Template → Template ID
+# Default English template (fallback)
+BREVO_WELCOME_TEMPLATE_ID=1
+
+# Locale-specific templates (optional - falls back to English if not set)
+BREVO_WELCOME_TEMPLATE_ID_EN=1
+BREVO_WELCOME_TEMPLATE_ID_ES=2
+BREVO_WELCOME_TEMPLATE_ID_FR=3
+BREVO_WELCOME_TEMPLATE_ID_IT=4
+BREVO_WELCOME_TEMPLATE_ID_PT=5
+
+# ============================================================================
 # UNSUBSCRIBE TOKEN CONFIGURATION
 # ============================================================================
 
@@ -87,6 +103,9 @@ BREVO_NEWSLETTER_LIST_ID=4
 BREVO_WELCOME_LIST_ID=5
 BREVO_SENDER_EMAIL=rollerstat@rollerstat.com
 BREVO_WEBHOOK_ID=1613650
+
+# Brevo Template IDs
+BREVO_WELCOME_TEMPLATE_ID=1
 
 # Unsubscribe Token (generate using: node -e "console.log(require('crypto').randomBytes(32).toString('hex'))")
 UNSUBSCRIBE_TOKEN_SECRET=a7f3e9d2c8b1f4a6e3d7c9b2f5a8e1d4c7b3f6a9e2d5c8b1f4a7e3d6c9b2f5a8

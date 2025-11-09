@@ -6,7 +6,7 @@ export async function POST(request: NextRequest) {
     console.log('📧 Processing newsletter subscription request');
 
     const body = await request.json();
-    const { email, firstName, lastName } = body;
+    const { email, firstName, lastName, locale } = body;
 
     // Basic validation
     if (!email) {
@@ -30,12 +30,17 @@ export async function POST(request: NextRequest) {
     const sanitizedFirstName = firstName?.trim().substring(0, 50) || '';
     const sanitizedLastName = lastName?.trim().substring(0, 50) || '';
 
+    // Validate and sanitize locale
+    const validLocales = ['en', 'es', 'fr', 'it', 'pt'];
+    const sanitizedLocale = locale && validLocales.includes(locale) ? locale : 'en';
+
     // Prepare subscriber attributes
     const attributes = {
       firstName: sanitizedFirstName,
       lastName: sanitizedLastName,
       subscribedAt: new Date().toISOString(),
-      source: 'website'
+      source: 'website',
+      locale: sanitizedLocale // Store locale for future use
     };
 
     // Add subscriber to Brevo
@@ -73,8 +78,8 @@ export async function POST(request: NextRequest) {
     });
     
     if (addResult.shouldSendWelcome !== false) {
-      console.log(`📧 Sending welcome email to: ${sanitizedEmail}`);
-      const welcomeResult = await sendWelcomeEmail(sanitizedEmail, sanitizedFirstName || 'Friend');
+      console.log(`📧 Sending welcome email to: ${sanitizedEmail} with locale: ${sanitizedLocale}`);
+      const welcomeResult = await sendWelcomeEmail(sanitizedEmail, sanitizedFirstName || 'Friend', sanitizedLocale);
 
       if (!welcomeResult.success) {
         console.warn('⚠️ Failed to send welcome email:', welcomeResult.error);

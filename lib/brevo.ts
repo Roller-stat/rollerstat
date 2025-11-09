@@ -543,78 +543,69 @@ export const getListMembers = async (listId: number): Promise<BrevoResponse> => 
  * Send welcome email to new subscriber
  * @param email - Subscriber's email address
  * @param name - Subscriber's name (optional)
+ * @param locale - Subscriber's locale (defaults to 'en')
  * @returns Promise<BrevoResponse>
  */
-export const sendWelcomeEmail = async (email: string, name?: string): Promise<BrevoResponse> => {
+export const sendWelcomeEmail = async (email: string, name?: string, locale: string = 'en'): Promise<BrevoResponse> => {
   try {
-    console.log(`📧 Sending welcome email to: ${email}`);
-    console.log(`📧 Welcome email function called with:`, { email, name });
+    console.log(`📧 Sending welcome email to: ${email} with locale: ${locale}`);
+    console.log(`📧 Welcome email function called with:`, { email, name, locale });
 
-    // Generate unsubscribe URL
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://rollerstat.com';
-    const unsubscribeUrl = await generateUnsubscribeUrl(email, baseUrl);
+    // Validate locale and get template ID based on locale
+    const validLocales = ['en', 'es', 'fr', 'it', 'pt'];
+    const sanitizedLocale = validLocales.includes(locale) ? locale : 'en';
+    
+    // Get template ID from environment based on locale
+    const templateIdEnvKey = `BREVO_WELCOME_TEMPLATE_ID_${sanitizedLocale.toUpperCase()}`;
+    let templateId = parseInt(process.env[templateIdEnvKey] || '');
+    
+    // Fallback to default English template if locale-specific template not found
+    if (!templateId || isNaN(templateId)) {
+      console.warn(`⚠️ Template ID for locale ${sanitizedLocale} not found, falling back to English template`);
+      templateId = parseInt(process.env.BREVO_WELCOME_TEMPLATE_ID || '');
+    }
+    
+    if (!templateId || isNaN(templateId)) {
+      console.error('❌ BREVO_WELCOME_TEMPLATE_ID not configured or invalid');
+      throw new Error('Welcome email template ID not configured');
+    }
 
+    // Generate unsubscribe URL with locale
+    // Ensure baseUrl doesn't have trailing slash
+    let baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://rollerstat.com';
+    baseUrl = baseUrl.replace(/\/$/, ''); // Remove trailing slash if present
+    const unsubscribeUrl = await generateUnsubscribeUrl(email, baseUrl, sanitizedLocale);
+
+    // Prepare template parameters with localized URLs
+    const templateParams = {
+      name: name || 'Friend',
+      unsubscribeUrl: unsubscribeUrl,
+      newsUrl: `${baseUrl}/${sanitizedLocale}/news`,
+      blogsUrl: `${baseUrl}/${sanitizedLocale}/blogs`
+    };
+
+    const senderEmail = process.env.BREVO_SENDER_EMAIL || 'noreply@rollerstat.com';
+    
     const sendSmtpEmail = new brevo.SendSmtpEmail();
     sendSmtpEmail.to = [{ email, name: name || 'Subscriber' }];
     sendSmtpEmail.subject = 'Welcome to Rollerstat Newsletter!';
-    sendSmtpEmail.htmlContent = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <div style="text-align: center; margin-bottom: 30px;">
-          <h1 style="color: #057ec8; margin: 0;">Welcome to Rollerstat!</h1>
-          <p style="color: #666; margin: 5px 0;">Your Source for Roller Hockey News</p>
-        </div>
-        
-        <h2 style="color: #333;">Thank you for subscribing, ${name || 'Friend'}!</h2>
-        
-        <p>You're now part of our community and will receive the latest news, insights, and updates from the world of roller hockey.</p>
-        
-        <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
-          <h3 style="color: #057ec8; margin-top: 0;">What to expect:</h3>
-          <ul style="color: #333;">
-            <li>Weekly newsletter with the latest news</li>
-            <li>Exclusive blog posts and analysis</li>
-            <li>Championship updates and results</li>
-            <li>Player spotlights and interviews</li>
-          </ul>
-        </div>
-        
-        <div style="background-color: #e9ecef; padding: 15px; border-radius: 4px; margin: 20px 0;">
-          <h4 style="color: #333; margin-top: 0;">Stay connected:</h4>
-          <p style="margin: 5px 0;">
-            <a href="https://rollerstat.com/news" style="color: #057ec8; text-decoration: none;">📰 Latest News</a>
-          </p>
-          <p style="margin: 5px 0;">
-            <a href="https://rollerstat.com/blogs" style="color: #057ec8; text-decoration: none;">📝 Blog Posts</a>
-          </p>
-        </div>
-        
-        <div style="margin-top: 30px; text-align: center; padding-top: 20px; border-top: 1px solid #dee2e6;">
-          <p style="color: #666; font-size: 14px; margin: 0;">
-            Best regards,<br>
-            The Rollerstat Team
-          </p>
-        </div>
-        
-        <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #dee2e6; text-align: center;">
-          <p style="font-size: 12px; color: #999; margin: 0;">
-            If you no longer wish to receive these emails, you can 
-            <a href="${unsubscribeUrl}" style="color: #999; text-decoration: underline;">unsubscribe here</a>.
-          </p>
-        </div>
-      </div>
-    `;
+    sendSmtpEmail.templateId = templateId;
+    sendSmtpEmail.params = templateParams;
     sendSmtpEmail.sender = {
       name: 'Rollerstat',
-      email: process.env.BREVO_SENDER_EMAIL || 'noreply@rollerstat.com'
+      email: senderEmail
     };
 
-    console.log(`📧 About to send welcome email via Brevo API to: ${email}`);
+    console.log(`📧 About to send welcome email via Brevo template (ID: ${templateId}) to: ${email}`);
+    console.log(`📧 Template parameters:`, templateParams);
+    console.log(`📧 Sender configured:`, { name: 'Rollerstat', email: senderEmail });
+    
     const result = await emailApiInstance.sendTransacEmail(sendSmtpEmail);
     
     console.log(`✅ Welcome email sent successfully: ${email}`, {
       messageId: result.body?.messageId,
-      result: result.body,
-      fullResult: result
+      templateId: templateId,
+      result: result.body
     });
     return {
       success: true,

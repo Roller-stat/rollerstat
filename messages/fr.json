@@ -65,7 +65,9 @@
     "headingPart3": "en",
     "headingPart4": "Europe",
     "emailPlaceholder": "Entrez votre adresse e-mail",
-    "subscribeButton": "S'abonner"
+    "subscribeButton": "S'abonner",
+    "subscribing": "Abonnement en cours...",
+    "subscribed": "✓ Abonné !"
   },
   "quotes": {
     "quote1": {
@@ -149,5 +151,41 @@
     "hoursLine2": "Samedi: 10h00 - 16h00",
     "followUs": "Suivez-nous",
     "socialDescription": "Restez connecté avec nous sur les réseaux sociaux pour les dernières mises à jour et actualités."
+  },
+  "unsubscribe": {
+    "title": "Se désabonner de la newsletter",
+    "description": "Nous sommes désolés de vous voir partir ! Veuillez nous indiquer pourquoi vous vous désabonnez afin que nous puissions améliorer notre service.",
+    "emailLabel": "Email",
+    "loading": "Validation de la demande de désabonnement...",
+    "goToHomepage": "Aller à la page d'accueil",
+    "button": "Se désabonner de la newsletter",
+    "unsubscribing": "Désabonnement en cours...",
+    "reasons": {
+      "title": "Pourquoi vous désabonnez-vous ? (Optionnel)",
+      "tooManyEmails": "Trop d'emails",
+      "contentNotRelevant": "Le contenu n'est pas pertinent",
+      "neverSignedUp": "Je ne me suis jamais abonné",
+      "technicalIssues": "Problèmes techniques",
+      "other": "Autre"
+    },
+    "comments": {
+      "title": "Commentaires supplémentaires (Optionnel)",
+      "placeholder": "Parlez-nous davantage de votre expérience..."
+    },
+    "success": {
+      "title": "Désabonnement réussi",
+      "description": "Vous avez été désabonné de notre newsletter. Nous sommes désolés de vous voir partir !",
+      "message": "Vous ne recevrez plus nos emails de newsletter. Si vous changez d'avis, vous pouvez toujours vous réabonner depuis notre page d'accueil.",
+      "unsubscribed": "Vous avez été désabonné avec succès de notre newsletter"
+    },
+    "invalidToken": {
+      "title": "Lien de désabonnement invalide",
+      "description": "Ce lien de désabonnement est invalide ou a expiré. Veuillez nous contacter si vous avez besoin d'aide."
+    },
+    "errors": {
+      "emailNotFound": "Email introuvable",
+      "failedToUnsubscribe": "Échec du désabonnement. Veuillez réessayer.",
+      "failedToUnsubscribeLater": "Échec du désabonnement. Veuillez réessayer plus tard."
+    }
   }
 }

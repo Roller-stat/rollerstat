@@ -65,7 +65,9 @@
     "headingPart3": "across",
     "headingPart4": "Europe",
     "emailPlaceholder": "Enter your email address",
-    "subscribeButton": "Subscribe"
+    "subscribeButton": "Subscribe",
+    "subscribing": "Subscribing...",
+    "subscribed": "✓ Subscribed!"
   },
   "quotes": {
     "quote1": {
@@ -149,5 +151,41 @@
     "hoursLine2": "Saturday: 10:00 AM - 4:00 PM",
     "followUs": "Follow Us",
     "socialDescription": "Stay connected with us on social media for the latest updates and news."
+  },
+  "unsubscribe": {
+    "title": "Unsubscribe from Newsletter",
+    "description": "We're sorry to see you go! Please let us know why you're unsubscribing so we can improve our service.",
+    "emailLabel": "Email",
+    "loading": "Validating unsubscribe request...",
+    "goToHomepage": "Go to Homepage",
+    "button": "Unsubscribe from Newsletter",
+    "unsubscribing": "Unsubscribing...",
+    "reasons": {
+      "title": "Why are you unsubscribing? (Optional)",
+      "tooManyEmails": "Too many emails",
+      "contentNotRelevant": "Content not relevant",
+      "neverSignedUp": "Never signed up",
+      "technicalIssues": "Technical issues",
+      "other": "Other"
+    },
+    "comments": {
+      "title": "Additional comments (Optional)",
+      "placeholder": "Tell us more about your experience..."
+    },
+    "success": {
+      "title": "Successfully Unsubscribed",
+      "description": "You have been unsubscribed from our newsletter. We're sorry to see you go!",
+      "message": "You will no longer receive our newsletter emails. If you change your mind, you can always resubscribe from our homepage.",
+      "unsubscribed": "Successfully unsubscribed from our newsletter"
+    },
+    "invalidToken": {
+      "title": "Invalid Unsubscribe Link",
+      "description": "This unsubscribe link is invalid or has expired. Please contact us if you need help."
+    },
+    "errors": {
+      "emailNotFound": "Email not found",
+      "failedToUnsubscribe": "Failed to unsubscribe. Please try again.",
+      "failedToUnsubscribeLater": "Failed to unsubscribe. Please try again later."
+    }
   }
 }

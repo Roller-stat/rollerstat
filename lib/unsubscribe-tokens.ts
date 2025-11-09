@@ -106,9 +106,12 @@ export const verifyUnsubscribeToken = async (token: string): Promise<{
  * Generate unsubscribe URL for an email
  * @param email - The email address
  * @param baseUrl - The base URL of your website
+ * @param locale - The locale for the unsubscribe page (defaults to 'en')
  * @returns Promise<string> - The complete unsubscribe URL
  */
-export const generateUnsubscribeUrl = async (email: string, baseUrl: string): Promise<string> => {
+export const generateUnsubscribeUrl = async (email: string, baseUrl: string, locale: string = 'en'): Promise<string> => {
   const token = await generateUnsubscribeToken(email);
-  return `${baseUrl}/unsubscribe?token=${token}`;
+  // Ensure baseUrl doesn't have trailing slash
+  const cleanBaseUrl = baseUrl.replace(/\/$/, '');
+  return `${cleanBaseUrl}/${locale}/unsubscribe?token=${token}`;
 };
