@@ -48,6 +48,7 @@ export interface BrevoResponse {
   error?: string;
   messageId?: string;
   shouldSendWelcome?: boolean;
+  locale?: string; // For unsubscribe confirmation locale
 }
 
 export interface SubscriberStats {
@@ -295,6 +296,9 @@ export const removeSubscriber = async (email: string): Promise<BrevoResponse> =>
       };
     }
 
+    // Get locale from subscriber attributes BEFORE making changes (needed for confirmation email)
+    const subscriberLocale = (contactInfo.body?.attributes as Record<string, unknown>)?.locale as string | undefined;
+    
     // Remove from Newsletter list only (keep in Welcome list)
     const newsletterListId = parseInt(process.env.BREVO_NEWSLETTER_LIST_ID || '');
     const currentListIds = contactInfo.body?.listIds || [];
@@ -313,10 +317,10 @@ export const removeSubscriber = async (email: string): Promise<BrevoResponse> =>
       console.log(`📧 User ${email} was not in Newsletter list`);
     }
 
-    // Update contact to blacklist email (prevent future sends)
+    // IMPORTANT: Update attributes first (but DON'T blacklist yet - we need to send confirmation email)
     const updateContact = new brevo.UpdateContact();
-    updateContact.emailBlacklisted = true;
-    updateContact.smsBlacklisted = true;
+    // DO NOT blacklist yet - we need to send confirmation email first
+    // updateContact.emailBlacklisted = true;  // ← Moved this AFTER confirmation email
     updateContact.attributes = {
       ...contactInfo.body?.attributes,
       unsubscribedAt: new Date().toISOString(),
@@ -329,7 +333,8 @@ export const removeSubscriber = async (email: string): Promise<BrevoResponse> =>
     return {
       success: true,
       data: result,
-      messageId: 'unsubscribed_successfully'
+      messageId: 'unsubscribed_successfully',
+      locale: subscriberLocale || 'en' // Return locale for confirmation email
     };
   } catch (error: unknown) {
     console.error(`❌ Failed to unsubscribe ${email}:`, error);
@@ -690,47 +695,75 @@ export const sendNewsletter = async (
 /**
  * Send unsubscribe confirmation email
  * @param email - Subscriber's email address
+ * @param locale - Subscriber's locale (defaults to 'en')
  * @returns Promise<BrevoResponse>
  */
-export const sendUnsubscribeConfirmation = async (email: string): Promise<BrevoResponse> => {
+export const sendUnsubscribeConfirmation = async (email: string, locale: string = 'en'): Promise<BrevoResponse> => {
   try {
-    console.log(`📧 Sending unsubscribe confirmation to: ${email}`);
+    console.log(`📧 Sending unsubscribe confirmation to: ${email} with locale: ${locale}`);
+
+    // Validate locale and get template ID based on locale
+    const validLocales = ['en', 'es', 'fr', 'it', 'pt'];
+    const sanitizedLocale = validLocales.includes(locale) ? locale : 'en';
+    
+    // Get template ID from environment based on locale
+    const templateIdEnvKey = `BREVO_UNSUBSCRIBE_TEMPLATE_ID_${sanitizedLocale.toUpperCase()}`;
+    let templateId = parseInt(process.env[templateIdEnvKey] || '');
+    
+    // Fallback to default English template if locale-specific template not found
+    if (!templateId || isNaN(templateId)) {
+      console.warn(`⚠️ Template ID for locale ${sanitizedLocale} not found, falling back to English template`);
+      templateId = parseInt(process.env.BREVO_UNSUBSCRIBE_TEMPLATE_ID || '');
+    }
+    
+    if (!templateId || isNaN(templateId)) {
+      console.error('❌ BREVO_UNSUBSCRIBE_TEMPLATE_ID not configured or invalid');
+      throw new Error('Unsubscribe confirmation template ID not configured');
+    }
+
+    // Generate resubscribe URL with locale
+    let baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://rollerstat.com';
+    baseUrl = baseUrl.replace(/\/$/, ''); // Remove trailing slash if present
+
+    // Prepare template parameters
+    const templateParams = {
+      resubscribeUrl: `${baseUrl}/${sanitizedLocale}`
+    };
+
+    console.log(`🔍 Template parameters being sent:`, templateParams);
+    console.log(`🔍 Resubscribe URL value: ${templateParams.resubscribeUrl}`);
+    console.log(`🔍 Base URL: ${baseUrl}, Locale: ${sanitizedLocale}`);
+
+    const senderEmail = process.env.BREVO_SENDER_EMAIL;
+    
+    if (!senderEmail) {
+      console.error('❌ BREVO_SENDER_EMAIL not configured in environment variables');
+      throw new Error('BREVO_SENDER_EMAIL is required');
+    }
 
     const sendSmtpEmail = new brevo.SendSmtpEmail();
     sendSmtpEmail.to = [{ email }];
-    sendSmtpEmail.subject = 'You have been unsubscribed from Rollerstat';
-    sendSmtpEmail.htmlContent = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <div style="text-align: center; margin-bottom: 30px;">
-          <h1 style="color: #057ec8; margin: 0;">Rollerstat</h1>
-          <p style="color: #666; margin: 5px 0;">Your Source for Roller Hockey News</p>
-        </div>
-        
-        <h2 style="color: #333;">You have been unsubscribed</h2>
-        
-        <p>You have successfully unsubscribed from the Rollerstat newsletter. You will no longer receive our emails.</p>
-        
-        <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
-          <h3 style="color: #057ec8; margin-top: 0;">We're sorry to see you go!</h3>
-          <p>If you change your mind, you can always subscribe again by visiting our website.</p>
-        </div>
-        
-        <div style="margin-top: 30px; text-align: center; padding-top: 20px; border-top: 1px solid #dee2e6;">
-          <p style="color: #666; font-size: 14px; margin: 0;">
-            Best regards,<br>
-            The Rollerstat Team
-          </p>
-        </div>
-      </div>
-    `;
+    // Don't set subject - use the subject from the Brevo template
+    sendSmtpEmail.templateId = templateId;
+    sendSmtpEmail.params = templateParams;
     sendSmtpEmail.sender = {
       name: 'Rollerstat',
-      email: process.env.BREVO_SENDER_EMAIL || 'noreply@rollerstat.com'
+      email: senderEmail
     };
+
+    console.log(`📧 Sending email with params object:`, JSON.stringify(sendSmtpEmail.params, null, 2));
+    console.log(`📧 Expected URL in email: ${templateParams.resubscribeUrl}`);
 
     const result = await emailApiInstance.sendTransacEmail(sendSmtpEmail);
     
-    console.log(`✅ Unsubscribe confirmation sent successfully: ${email}`);
+    console.log(`✅ Unsubscribe confirmation sent successfully: ${email}`, {
+      messageId: result.body?.messageId,
+      templateId: templateId,
+      locale: sanitizedLocale,
+      resubscribeUrlSent: templateParams.resubscribeUrl
+    });
+    console.log(`✅ Check email - link should point to: ${templateParams.resubscribeUrl}`);
+    
     return {
       success: true,
       data: result,

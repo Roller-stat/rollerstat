@@ -38,6 +38,18 @@ BREVO_WELCOME_TEMPLATE_ID_FR=3
 BREVO_WELCOME_TEMPLATE_ID_IT=4
 BREVO_WELCOME_TEMPLATE_ID_PT=5
 
+# Unsubscribe Confirmation Template IDs by Locale (from Brevo dashboard)
+# Get these from: Brevo Dashboard → Campaigns → Email Templates → Your Template → Template ID
+# Default English template (fallback)
+BREVO_UNSUBSCRIBE_TEMPLATE_ID=6
+
+# Locale-specific templates (optional - falls back to English if not set)
+BREVO_UNSUBSCRIBE_TEMPLATE_ID_EN=6
+BREVO_UNSUBSCRIBE_TEMPLATE_ID_ES=7
+BREVO_UNSUBSCRIBE_TEMPLATE_ID_FR=8
+BREVO_UNSUBSCRIBE_TEMPLATE_ID_IT=9
+BREVO_UNSUBSCRIBE_TEMPLATE_ID_PT=10
+
 # ============================================================================
 # UNSUBSCRIBE TOKEN CONFIGURATION
 # ============================================================================

@@ -6,7 +6,7 @@ export async function POST(request: NextRequest) {
     console.log('👋 Processing unsubscribe request');
 
     const body = await request.json();
-    const { email, reasons, customReason } = body;
+    const { email, locale, reasons, customReason } = body;
 
     // Basic validation
     if (!email) {
@@ -43,13 +43,46 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Send unsubscribe confirmation email
-    console.log(`📧 Sending unsubscribe confirmation to: ${sanitizedEmail}`);
-    const confirmationResult = await sendUnsubscribeConfirmation(sanitizedEmail);
+    // Get locale: prefer passed locale, fallback to stored locale, then default to 'en'
+    const validLocales = ['en', 'es', 'fr', 'it', 'pt'];
+    const passedLocale = locale && validLocales.includes(locale) ? locale : null;
+    const storedLocale = (removeResult as { locale?: string }).locale;
+    const subscriberLocale = passedLocale || (storedLocale && validLocales.includes(storedLocale) ? storedLocale : 'en');
+    
+    console.log(`🌍 Locale for unsubscribe confirmation:`, {
+      passedLocale,
+      storedLocale,
+      finalLocale: subscriberLocale
+    });
+
+    // Send unsubscribe confirmation email with locale (BEFORE blacklisting)
+    const confirmationResult = await sendUnsubscribeConfirmation(sanitizedEmail, subscriberLocale);
 
     if (!confirmationResult.success) {
       console.warn('⚠️ Failed to send unsubscribe confirmation:', confirmationResult.error);
       // Don't fail the unsubscribe if confirmation email fails
+    }
+
+    // NOW blacklist the email AFTER sending confirmation email
+    try {
+      const brevo = await import('@getbrevo/brevo');
+      const apiKey = process.env.BREVO_API_KEY;
+      if (!apiKey) {
+        throw new Error('BREVO_API_KEY not configured');
+      }
+      
+      const contactsApi = new brevo.ContactsApi();
+      contactsApi.setApiKey(brevo.ContactsApiApiKeys.apiKey, apiKey);
+      
+      const updateContactObj = new brevo.UpdateContact();
+      updateContactObj.emailBlacklisted = true;
+      updateContactObj.smsBlacklisted = true;
+      
+      await contactsApi.updateContact(sanitizedEmail, updateContactObj);
+      console.log(`✅ Email blacklisted after confirmation sent: ${sanitizedEmail}`);
+    } catch (blacklistError) {
+      console.warn('⚠️ Failed to blacklist email after confirmation:', blacklistError);
+      // Don't fail - email was already unsubscribed
     }
 
     console.log('✅ Unsubscribe successful:', {

@@ -98,6 +98,7 @@ export default function UnsubscribePage() {
         },
         body: JSON.stringify({
           email,
+          locale: locale, // Pass the locale from the URL
           reasons: selectedReasons,
           customReason: customReason.trim()
         }),
