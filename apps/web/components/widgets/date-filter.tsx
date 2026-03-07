@@ -88,7 +88,7 @@ export function DateFilter({ currentFilters }: DateFilterProps) {
         <Button
           onClick={() => setIsExpanded(!isExpanded)}
           variant="outline"
-          className="rounded-none w-full md:w-auto flex items-center justify-between gap-2"
+          className="rounded-none w-full md:w-auto flex items-center justify-between gap-2 bg-card text-foreground border-border hover:bg-card/90"
         >
           <div className="flex items-center gap-2">
             <Filter className="h-4 w-4" />
@@ -194,4 +194,3 @@ export function DateFilter({ currentFilters }: DateFilterProps) {
     </div>
   );
 }
-

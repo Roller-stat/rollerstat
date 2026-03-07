@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
@@ -13,7 +13,8 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Separator } from "@/components/ui/separator"
-import { Loader2, X, Plus, Eye, Edit3, AlertCircle, CheckCircle } from "lucide-react"
+import { Loader2, X, Plus, Eye, Edit3, AlertCircle, CheckCircle, Upload } from "lucide-react"
+import { toast } from "sonner"
 
 const LOCALES = ["en", "es", "fr", "it", "pt"] as const
 type LocaleCode = (typeof LOCALES)[number]
@@ -24,6 +25,11 @@ const LOCALE_LABELS: Record<LocaleCode, string> = {
   it: "Italian",
   pt: "Portuguese",
 }
+
+const IMAGE_MAX_MB = 4
+const VIDEO_MAX_MB = 20
+const IMAGE_MAX_BYTES = IMAGE_MAX_MB * 1024 * 1024
+const VIDEO_MAX_BYTES = VIDEO_MAX_MB * 1024 * 1024
 
 const postSchema = z.object({
   title: z.string()
@@ -100,6 +106,10 @@ export function PostForm({
   const [formErrors, setFormErrors] = useState<string[]>([])
   const [isValidating, setIsValidating] = useState(false)
   const [showPreview, setShowPreview] = useState(false)
+  const [isUploadingCoverImage, setIsUploadingCoverImage] = useState(false)
+  const [isUploadingHeroVideo, setIsUploadingHeroVideo] = useState(false)
+  const coverImageInputRef = useRef<HTMLInputElement | null>(null)
+  const heroVideoInputRef = useRef<HTMLInputElement | null>(null)
 
   const form = useForm<PostFormValues>({
     resolver: zodResolver(postSchema),
@@ -115,6 +125,7 @@ export function PostForm({
     }
   })
   const sourceLocale = form.watch("locale") as LocaleCode
+  const sourcePostType = form.watch("type")
 
   const selectableLocales = useMemo(() => {
     const fromProps = availableTargetLocales ?? LOCALES
@@ -149,6 +160,92 @@ export function PostForm({
     const newTags = tags.filter(tag => tag !== tagToRemove)
     setTags(newTags)
     form.setValue("tags", newTags)
+  }
+
+  const validateMediaFile = (file: File, mediaType: "image" | "video"): string | null => {
+    if (mediaType === "image") {
+      if (!file.type.startsWith("image/")) {
+        return "Please select a valid image file."
+      }
+      if (file.size > IMAGE_MAX_BYTES) {
+        return `Image must be ${IMAGE_MAX_MB} MB or smaller.`
+      }
+      return null
+    }
+
+    if (!file.type.startsWith("video/")) {
+      return "Please select a valid video file."
+    }
+    if (file.size > VIDEO_MAX_BYTES) {
+      return `Video must be ${VIDEO_MAX_MB} MB or smaller.`
+    }
+    return null
+  }
+
+  const uploadMediaToCloudinary = async (
+    file: File,
+    mediaType: "image" | "video"
+  ): Promise<string> => {
+    const payload = new FormData()
+    payload.append("file", file)
+    payload.append("mediaType", mediaType)
+    payload.append("postType", sourcePostType)
+
+    const response = await fetch("/api/admin/media-upload", {
+      method: "POST",
+      body: payload,
+    })
+
+    const data = await response.json().catch(() => ({}))
+    if (!response.ok || !data?.url) {
+      throw new Error(data?.error || "Upload failed")
+    }
+
+    return data.url as string
+  }
+
+  const handleCoverImageUpload = async (file: File) => {
+    const validationError = validateMediaFile(file, "image")
+    if (validationError) {
+      toast.error(validationError)
+      return
+    }
+
+    try {
+      setIsUploadingCoverImage(true)
+      const uploadedUrl = await uploadMediaToCloudinary(file, "image")
+      form.setValue("coverImage", uploadedUrl, { shouldValidate: true, shouldDirty: true })
+      toast.success("Cover image uploaded successfully")
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Failed to upload cover image")
+    } finally {
+      setIsUploadingCoverImage(false)
+      if (coverImageInputRef.current) {
+        coverImageInputRef.current.value = ""
+      }
+    }
+  }
+
+  const handleHeroVideoUpload = async (file: File) => {
+    const validationError = validateMediaFile(file, "video")
+    if (validationError) {
+      toast.error(validationError)
+      return
+    }
+
+    try {
+      setIsUploadingHeroVideo(true)
+      const uploadedUrl = await uploadMediaToCloudinary(file, "video")
+      form.setValue("heroVideo", uploadedUrl, { shouldValidate: true, shouldDirty: true })
+      toast.success("Hero video uploaded successfully")
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Failed to upload hero video")
+    } finally {
+      setIsUploadingHeroVideo(false)
+      if (heroVideoInputRef.current) {
+        heroVideoInputRef.current.value = ""
+      }
+    }
   }
 
   const handleSubmit = (values: PostFormValues) => {
@@ -428,9 +525,41 @@ export function PostForm({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Cover Image URL</FormLabel>
-                    <FormControl>
-                      <Input placeholder="https://example.com/image.jpg" {...field} />
-                    </FormControl>
+                    <div className="space-y-2">
+                      <FormControl>
+                        <Input placeholder="https://example.com/image.jpg" {...field} />
+                      </FormControl>
+                      <input
+                        ref={coverImageInputRef}
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={(event) => {
+                          const file = event.target.files?.[0]
+                          if (file) {
+                            void handleCoverImageUpload(file)
+                          }
+                        }}
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => coverImageInputRef.current?.click()}
+                        disabled={isUploadingCoverImage}
+                      >
+                        {isUploadingCoverImage ? (
+                          <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Uploading Image...
+                          </>
+                        ) : (
+                          <>
+                            <Upload className="mr-2 h-4 w-4" />
+                            Upload Image ({IMAGE_MAX_MB} MB max)
+                          </>
+                        )}
+                      </Button>
+                    </div>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -442,9 +571,41 @@ export function PostForm({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Hero Video URL</FormLabel>
-                    <FormControl>
-                      <Input placeholder="https://example.com/video.mp4" {...field} />
-                    </FormControl>
+                    <div className="space-y-2">
+                      <FormControl>
+                        <Input placeholder="https://example.com/video.mp4" {...field} />
+                      </FormControl>
+                      <input
+                        ref={heroVideoInputRef}
+                        type="file"
+                        accept="video/*"
+                        className="hidden"
+                        onChange={(event) => {
+                          const file = event.target.files?.[0]
+                          if (file) {
+                            void handleHeroVideoUpload(file)
+                          }
+                        }}
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => heroVideoInputRef.current?.click()}
+                        disabled={isUploadingHeroVideo}
+                      >
+                        {isUploadingHeroVideo ? (
+                          <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Uploading Video...
+                          </>
+                        ) : (
+                          <>
+                            <Upload className="mr-2 h-4 w-4" />
+                            Upload Video ({VIDEO_MAX_MB} MB max)
+                          </>
+                        )}
+                      </Button>
+                    </div>
                     <FormMessage />
                   </FormItem>
                 )}
