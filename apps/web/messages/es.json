@@ -1,0 +1,191 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "news": "Noticias",
+    "blogs": "Blogs",
+    "about": "Acerca de",
+    "contact": "Contacto"
+  },
+  "cta": {
+    "subscribe": "Suscribirse",
+    "signin": "Iniciar Sesión",
+    "readMore": "Leer Más",
+    "viewAll": "Ver Todo"
+  },
+  "content": {
+    "latestEdition": "Última Edición",
+    "topStories": "Historias Destacadas",
+    "readingTime": "min de lectura",
+    "publishedOn": "Publicado el",
+    "updatedOn": "Actualizado el",
+    "by": "por",
+    "tags": "Etiquetas",
+    "relatedPosts": "Publicaciones Relacionadas"
+  },
+  "interactions": {
+    "like": "Me Gusta",
+    "liked": "Te Gusta",
+    "comments": "Comentarios",
+    "share": "Compartir",
+    "bookmark": "Marcador"
+  },
+  "seo": {
+    "title": "Rollerstat - Tu Fuente de Noticias de Hockey Patines",
+    "description": "Mantente actualizado con las últimas noticias, análisis e historias del mundo del hockey patines en Europa.",
+    "keywords": "hockey patines, campeonato europeo, noticias, blogs, análisis",
+    "ogTitle": "Rollerstat - Tu Fuente de Noticias de Hockey Patines",
+    "ogDescription": "Mantente actualizado con las últimas noticias, análisis e historias del mundo del hockey patines en Europa.",
+    "twitterTitle": "Rollerstat - Tu Fuente de Noticias de Hockey Patines",
+    "twitterDescription": "Mantente actualizado con las últimas noticias, análisis e historias del mundo del hockey patines en Europa.",
+    "imageAlt": "Rollerstat - Tu Fuente de Noticias de Hockey Patines"
+  },
+  "footer": {
+    "description": "Tu fuente principal de noticias, análisis y comunidad de hockey patines en Europa.",
+    "quickLinks": "Enlaces Rápidos",
+    "latestNews": "Últimas Noticias",
+    "blogPosts": "Publicaciones del Blog",
+    "contactUs": "Contáctanos",
+    "socialMedia": "Síguenos",
+    "contact": "Contacto",
+    "email": "Email: rollerstat@rollerstat.com",
+    "phone": "Teléfono: +1 (555) 123-4567",
+    "copyright": "© 2024 Rollerstat. Todos los derechos reservados.",
+    "license": "Licencia",
+    "privacyPolicy": "Política de Privacidad",
+    "termsOfService": "Términos de Servicio"
+  },
+  "errors": {
+    "notFound": "Página no encontrada",
+    "serverError": "Algo salió mal",
+    "loading": "Cargando..."
+  },
+  "hero": {
+    "headingPart1": "Últimas noticias y análisis del mundo del",
+    "headingPart2": "Hockey Patines",
+    "headingPart3": "en",
+    "headingPart4": "Europa",
+    "emailPlaceholder": "Ingresa tu dirección de correo",
+    "subscribeButton": "Suscribirse",
+    "subscribing": "Suscribiendo...",
+    "subscribed": "✓ ¡Suscrito!"
+  },
+  "quotes": {
+    "quote1": {
+      "text": "El hockey patines no es solo un deporte, es una forma de vida que une a las comunidades en toda Europa.",
+      "author": "Marco Silva",
+      "role": "Entrenador del Campeonato Europeo"
+    },
+    "quote2": {
+      "text": "La velocidad, habilidad y estrategia del hockey patines lo convierten en uno de los deportes más emocionantes de ver y jugar.",
+      "author": "Elena Rodriguez",
+      "role": "Jugadora Profesional"
+    },
+    "quote3": {
+      "text": "Cada partido nos enseña algo nuevo sobre trabajo en equipo, perseverancia y el hermoso juego del hockey patines.",
+      "author": "Thomas Müller",
+      "role": "Comisionado de la Liga"
+    },
+    "quote4": {
+      "text": "La pasión por el hockey patines corre profundo en nuestras venas, conectando jugadores y aficionados a través de las fronteras.",
+      "author": "Sophie Dubois",
+      "role": "Capitana del Equipo"
+    }
+  },
+  "newsletter": {
+    "content1": {
+      "title": "OBTÉN LAS ÚLTIMAS ACTUALIZACIONES DE PARTIDOS",
+      "description": "Mantente informado con resultados en tiempo real, destacados y noticias de última hora de los partidos de hockey patines en toda Europa."
+    },
+    "content2": {
+      "title": "VE EL ANÁLISIS POST PARTIDO",
+      "description": "Sumérgete en análisis tácticos, rendimientos de jugadores y perspectivas expertas de cada partido importante."
+    },
+    "content3": {
+      "title": "CONSULTA LAS CLASIFICACIONES DEL CAMPEONATO",
+      "description": "Sigue el progreso de tus equipos favoritos con tablas de liga completas y predicciones del campeonato."
+    },
+    "content4": {
+      "title": "DESCUBRE LOS DESTACADOS DE JUGADORES",
+      "description": "Conoce a las estrellas del hockey patines europeo con perfiles exclusivos de jugadores y entrevistas."
+    }
+  },
+  "filters": {
+    "filters": "Filtros",
+    "active": "Activo",
+    "filterByDate": "Filtrar por Fecha",
+    "allTime": "Todo el tiempo",
+    "last7Days": "Últimos 7 días",
+    "last30Days": "Últimos 30 días",
+    "last3Months": "Últimos 3 meses",
+    "customDate": "Fecha personalizada",
+    "selectDate": "Seleccionar Fecha",
+    "sortOrder": "Orden",
+    "newestFirst": "Más Recientes Primero",
+    "oldestFirst": "Más Antiguos Primero",
+    "applyFilters": "Aplicar Filtros",
+    "clearFilters": "Limpiar",
+    "showingResults": "Mostrando {start}-{end} de {total} publicaciones",
+    "noResults": "No se encontraron artículos para los filtros seleccionados."
+  },
+  "contact": {
+    "title": "Contáctanos",
+    "description": "Ponte en contacto con nosotros para cualquier pregunta, sugerencia o comentario sobre hockey sobre patines.",
+    "formTitle": "Envíanos un Mensaje",
+    "name": "Nombre",
+    "namePlaceholder": "Tu nombre completo",
+    "email": "Correo Electrónico",
+    "emailPlaceholder": "Ingresa tu email",
+    "message": "Mensaje",
+    "messagePlaceholder": "Cuéntanos qué tienes en mente...",
+    "sendMessage": "Enviar Mensaje",
+    "sending": "Enviando...",
+    "successMessage": "¡Gracias! Tu mensaje ha sido enviado exitosamente.",
+    "errorMessage": "Lo siento, hubo un error al enviar tu mensaje. Por favor, inténtalo de nuevo.",
+    "contactInfo": "Información de Contacto",
+    "phone": "Teléfono",
+    "address": "Dirección",
+    "addressLine1": "Calle Hockey 123",
+    "addressLine2": "Distrito Deportivo, Ciudad 12345",
+    "businessHours": "Horario de Atención",
+    "hoursLine1": "Lunes - Viernes: 9:00 AM - 6:00 PM",
+    "hoursLine2": "Sábado: 10:00 AM - 4:00 PM",
+    "followUs": "Síguenos",
+    "socialDescription": "Mantente conectado con nosotros en redes sociales para las últimas actualizaciones y noticias."
+  },
+  "unsubscribe": {
+    "title": "Darse de baja del boletín",
+    "description": "¡Lamentamos verte partir! Por favor, cuéntanos por qué te das de baja para que podamos mejorar nuestro servicio.",
+    "emailLabel": "Correo electrónico",
+    "loading": "Validando solicitud de baja...",
+    "goToHomepage": "Ir a la página de inicio",
+    "button": "Darse de baja del boletín",
+    "unsubscribing": "Dándose de baja...",
+    "reasons": {
+      "title": "¿Por qué te das de baja? (Opcional)",
+      "tooManyEmails": "Demasiados correos",
+      "contentNotRelevant": "El contenido no es relevante",
+      "neverSignedUp": "Nunca me suscribí",
+      "technicalIssues": "Problemas técnicos",
+      "other": "Otro"
+    },
+    "comments": {
+      "title": "Comentarios adicionales (Opcional)",
+      "placeholder": "Cuéntanos más sobre tu experiencia..."
+    },
+    "success": {
+      "title": "Baja exitosa",
+      "description": "Te has dado de baja de nuestro boletín. ¡Lamentamos verte partir!",
+      "message": "Ya no recibirás nuestros correos del boletín. Si cambias de opinión, siempre puedes volver a suscribirte desde nuestra página de inicio.",
+      "unsubscribed": "Te has dado de baja exitosamente de nuestro boletín"
+    },
+    "invalidToken": {
+      "title": "Enlace de baja inválido",
+      "description": "Este enlace de baja es inválido o ha expirado. Por favor, contáctanos si necesitas ayuda."
+    },
+    "errors": {
+      "emailNotFound": "Correo electrónico no encontrado",
+      "failedToUnsubscribe": "Error al darse de baja. Por favor, inténtalo de nuevo.",
+      "failedToUnsubscribeLater": "Error al darse de baja. Por favor, inténtalo más tarde."
+    }
+  }
+}

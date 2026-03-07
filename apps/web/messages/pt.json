@@ -1,0 +1,191 @@
+{
+  "nav": {
+    "home": "Início",
+    "news": "Notícias",
+    "blogs": "Blogs",
+    "about": "Sobre",
+    "contact": "Contacto"
+  },
+  "cta": {
+    "subscribe": "Subscrever",
+    "signin": "Entrar",
+    "readMore": "Ler mais",
+    "viewAll": "Ver tudo"
+  },
+  "content": {
+    "latestEdition": "Última edição",
+    "topStories": "Histórias principais",
+    "readingTime": "min de leitura",
+    "publishedOn": "Publicado em",
+    "updatedOn": "Atualizado em",
+    "by": "por",
+    "tags": "Etiquetas",
+    "relatedPosts": "Posts relacionados"
+  },
+  "interactions": {
+    "like": "Gosto",
+    "liked": "Gostei",
+    "comments": "Comentários",
+    "share": "Partilhar",
+    "bookmark": "Marcador"
+  },
+  "seo": {
+    "title": "Rollerstat - A sua fonte de notícias sobre hóquei em patins",
+    "description": "Mantenha-se atualizado com as últimas notícias, análises e histórias do mundo do hóquei em patins na Europa.",
+    "keywords": "hóquei em patins, campeonato europeu, notícias, blogs, análise",
+    "ogTitle": "Rollerstat - A sua fonte de notícias sobre hóquei em patins",
+    "ogDescription": "Mantenha-se atualizado com as últimas notícias, análises e histórias do mundo do hóquei em patins na Europa.",
+    "twitterTitle": "Rollerstat - A sua fonte de notícias sobre hóquei em patins",
+    "twitterDescription": "Mantenha-se atualizado com as últimas notícias, análises e histórias do mundo do hóquei em patins na Europa.",
+    "imageAlt": "Rollerstat - A sua fonte de notícias sobre hóquei em patins"
+  },
+  "footer": {
+    "description": "A sua fonte principal de notícias, análises e comunidade sobre hóquei em patins na Europa.",
+    "quickLinks": "Links Rápidos",
+    "latestNews": "Últimas Notícias",
+    "blogPosts": "Posts do Blog",
+    "contactUs": "Contacte-nos",
+    "socialMedia": "Siga-nos",
+    "contact": "Contacto",
+    "email": "Email: rollerstat@rollerstat.com",
+    "phone": "Telefone: +1 (555) 123-4567",
+    "copyright": "© 2024 Rollerstat. Todos os direitos reservados.",
+    "license": "Licença",
+    "privacyPolicy": "Política de privacidade",
+    "termsOfService": "Termos de serviço"
+  },
+  "errors": {
+    "notFound": "Página não encontrada",
+    "serverError": "Algo correu mal",
+    "loading": "A carregar..."
+  },
+  "hero": {
+    "headingPart1": "Últimas notícias e análises do mundo do",
+    "headingPart2": "Hóquei em Patins",
+    "headingPart3": "na",
+    "headingPart4": "Europa",
+    "emailPlaceholder": "Digite o seu endereço de email",
+    "subscribeButton": "Subscrever",
+    "subscribing": "A subscrever...",
+    "subscribed": "✓ Subscrevido!"
+  },
+  "quotes": {
+    "quote1": {
+      "text": "O hóquei em patins não é apenas um desporto, é uma forma de vida que une comunidades em toda a Europa.",
+      "author": "Marco Silva",
+      "role": "Treinador do Campeonato Europeu"
+    },
+    "quote2": {
+      "text": "A velocidade, habilidade e estratégia do hóquei em patins tornam-no um dos desportos mais emocionantes de ver e jogar.",
+      "author": "Elena Rodriguez",
+      "role": "Jogadora Profissional"
+    },
+    "quote3": {
+      "text": "Cada jogo ensina-nos algo novo sobre trabalho em equipa, perseverança e o belo jogo do hóquei em patins.",
+      "author": "Thomas Müller",
+      "role": "Comissário da Liga"
+    },
+    "quote4": {
+      "text": "A paixão pelo hóquei em patins corre profundo nas nossas veias, conectando jogadores e fãs através das fronteiras.",
+      "author": "Sophie Dubois",
+      "role": "Capitã da Equipa"
+    }
+  },
+  "newsletter": {
+    "content1": {
+      "title": "OBTENHA AS ÚLTIMAS ATUALIZAÇÕES DOS JOGOS",
+      "description": "Mantenha-se informado com resultados em tempo real, destaques e notícias de última hora dos jogos de hóquei em patins em toda a Europa."
+    },
+    "content2": {
+      "title": "VEJA A ANÁLISE PÓS-JOGO",
+      "description": "Mergulhe em análises táticas, desempenhos dos jogadores e insights de especialistas de cada jogo importante."
+    },
+    "content3": {
+      "title": "CONSULTE AS CLASSIFICAÇÕES DO CAMPEONATO",
+      "description": "Acompanhe o progresso das suas equipas favoritas com tabelas de liga completas e previsões do campeonato."
+    },
+    "content4": {
+      "title": "DESCUBRA OS DESTAQUES DOS JOGADORES",
+      "description": "Conheça as estrelas do hóquei em patins europeu com perfis exclusivos de jogadores e entrevistas."
+    }
+  },
+  "filters": {
+    "filters": "Filtros",
+    "active": "Ativo",
+    "filterByDate": "Filtrar por Data",
+    "allTime": "Todo o tempo",
+    "last7Days": "Últimos 7 dias",
+    "last30Days": "Últimos 30 dias",
+    "last3Months": "Últimos 3 meses",
+    "customDate": "Data personalizada",
+    "selectDate": "Selecionar Data",
+    "sortOrder": "Ordem",
+    "newestFirst": "Mais Recentes Primeiro",
+    "oldestFirst": "Mais Antigos Primeiro",
+    "applyFilters": "Aplicar Filtros",
+    "clearFilters": "Limpar",
+    "showingResults": "Mostrando {start}-{end} de {total} publicações",
+    "noResults": "Nenhum artigo encontrado para os filtros selecionados."
+  },
+  "contact": {
+    "title": "Entre em Contato",
+    "description": "Entre em contato conosco para qualquer pergunta, sugestão ou feedback sobre hóquei em patins.",
+    "formTitle": "Envie-nos uma Mensagem",
+    "name": "Nome",
+    "namePlaceholder": "Seu nome completo",
+    "email": "Email",
+    "emailPlaceholder": "Digite seu email",
+    "message": "Mensagem",
+    "messagePlaceholder": "Conte-nos o que você pensa...",
+    "sendMessage": "Enviar Mensagem",
+    "sending": "Enviando...",
+    "successMessage": "Obrigado! Sua mensagem foi enviada com sucesso.",
+    "errorMessage": "Desculpe, ocorreu um erro ao enviar sua mensagem. Tente novamente.",
+    "contactInfo": "Informações de Contato",
+    "phone": "Telefone",
+    "address": "Endereço",
+    "addressLine1": "Rua do Hóquei 123",
+    "addressLine2": "Bairro Esportivo, Cidade 12345",
+    "businessHours": "Horário de Funcionamento",
+    "hoursLine1": "Segunda - Sexta: 9:00 - 18:00",
+    "hoursLine2": "Sábado: 10:00 - 16:00",
+    "followUs": "Siga-nos",
+    "socialDescription": "Mantenha-se conectado conosco nas redes sociais para as últimas atualizações e notícias."
+  },
+  "unsubscribe": {
+    "title": "Cancelar inscrição na newsletter",
+    "description": "Lamentamos vê-lo partir! Por favor, informe-nos por que está cancelando a inscrição para que possamos melhorar nosso serviço.",
+    "emailLabel": "Email",
+    "loading": "Validando solicitação de cancelamento...",
+    "goToHomepage": "Ir para a página inicial",
+    "button": "Cancelar inscrição na newsletter",
+    "unsubscribing": "Cancelando inscrição...",
+    "reasons": {
+      "title": "Por que você está cancelando a inscrição? (Opcional)",
+      "tooManyEmails": "Muitos emails",
+      "contentNotRelevant": "O conteúdo não é relevante",
+      "neverSignedUp": "Nunca me inscrevi",
+      "technicalIssues": "Problemas técnicos",
+      "other": "Outro"
+    },
+    "comments": {
+      "title": "Comentários adicionais (Opcional)",
+      "placeholder": "Conte-nos mais sobre sua experiência..."
+    },
+    "success": {
+      "title": "Inscrição cancelada com sucesso",
+      "description": "Você foi removido da nossa newsletter. Lamentamos vê-lo partir!",
+      "message": "Você não receberá mais nossos emails da newsletter. Se mudar de ideia, você sempre pode se inscrever novamente em nossa página inicial.",
+      "unsubscribed": "Você cancelou a inscrição com sucesso da nossa newsletter"
+    },
+    "invalidToken": {
+      "title": "Link de cancelamento inválido",
+      "description": "Este link de cancelamento é inválido ou expirou. Entre em contato conosco se precisar de ajuda."
+    },
+    "errors": {
+      "emailNotFound": "Email não encontrado",
+      "failedToUnsubscribe": "Falha ao cancelar a inscrição. Tente novamente.",
+      "failedToUnsubscribeLater": "Falha ao cancelar a inscrição. Tente novamente mais tarde."
+    }
+  }
+}
