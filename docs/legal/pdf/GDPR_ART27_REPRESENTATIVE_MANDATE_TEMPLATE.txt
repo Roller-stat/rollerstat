@@ -1,0 +1,104 @@
+GDPR Article 27 Representative Mandate Agreement (Template)
+
+Document Version: 1.0  
+Date: 7th March 2026
+
+This Representative Mandate Agreement (the "Agreement") is made between:
+
+- Controller/Operator (Principal): Asadullah Khan, operating "Rollerstat"  
+- Principal Contact Email: rollerstat@rollerstat.com  
+- Principal Legal Contact Method: Email-only contact at rollerstat@rollerstat.com  
+- Principal Current Entity Status: Individual operator (to be replaced once a company is formed)
+
+and
+
+- EU Representative: [Full legal name of representative or legal entity]  
+- Representative Contact Email: [Email]  
+- Representative Address (EU): [Full postal address in France/EU]
+
+The parties agree as follows:
+
+1. Purpose and Appointment
+1.1 The Principal appoints the EU Representative, and the EU Representative accepts appointment, as the Principal's representative in the European Union for purposes of Article 27 of Regulation (EU) 2016/679 (GDPR).  
+1.2 This appointment covers the processing activities of Rollerstat in scope of GDPR Article 3(2).
+
+2. Scope of Representative Services
+2.1 The EU Representative shall serve as a contact point for:
+- supervisory authorities in the EU/EEA; and
+- data subjects located in the EU/EEA,
+in matters related to processing under this mandate.
+
+2.2 The EU Representative shall:
+- receive GDPR-related communications addressed to the Principal;
+- forward them to the Principal promptly under Section 3;
+- maintain accurate contact details and availability for contact.
+
+2.3 The EU Representative is not responsible for determining purposes/means of processing and is not a controller by virtue of this appointment alone.
+
+3. Forwarding and Response Workflow
+3.1 The EU Representative must forward all GDPR-related regulator/data subject requests to the Principal without undue delay and in any event:
+- within 1 business day for supervisory authority communications; and
+- within 2 business days for data subject requests.
+
+3.2 Forwarding shall include all available details and copies of attachments/metadata needed for Principal response handling.
+
+3.3 If a request appears urgent (deadline, enforcement risk, or complaint escalation), the EU Representative will flag it as URGENT in subject line and notify by secondary channel (if provided).
+
+4. Principal Obligations
+4.1 The Principal remains fully responsible for GDPR compliance and all decisions on responses.  
+4.2 The Principal will provide the EU Representative with:
+- up-to-date processing summaries;
+- current privacy policy URL and legal contact details;
+- point-of-contact instructions for urgent matters.
+
+5. Confidentiality and Security
+5.1 Each party shall keep confidential all non-public information exchanged under this Agreement.  
+5.2 The EU Representative shall apply reasonable organizational and technical safeguards to protect personal data and legal correspondence.
+
+6. Records and Evidence
+6.1 The EU Representative shall keep records of inbound GDPR communications and timestamps of forwarding for auditability.  
+6.2 Upon request, the EU Representative shall provide forwarding logs related to this mandate.
+
+7. Fees (Optional)
+7.1 Representative fee structure: [No fee / fixed fee / monthly fee / other].  
+7.2 Payment terms: [Terms].
+
+8. Term and Termination
+8.1 Effective date: 7th March 2026.  
+8.2 This Agreement continues until terminated by either party with [30] days' written notice.  
+8.3 Immediate termination is allowed for material breach, non-performance, or legal inability to serve as representative.
+
+9. Liability
+9.1 Each party is liable for its own breach of this Agreement and applicable law.  
+9.2 Nothing in this Agreement limits mandatory rights under GDPR or applicable consumer/data protection laws.
+
+10. Governing Law and Dispute Venue
+10.1 Governing law: Laws of the State of Kansas, USA.  
+10.2 Venue: State or federal courts located in or serving Lawrence, Kansas, USA, subject to mandatory law.
+
+11. Notices
+11.1 Notices under this Agreement must be sent to:
+- Principal (email-only legal contact): rollerstat@rollerstat.com
+- EU Representative: [Representative email]
+
+11.2 Backup notice channels (optional): [Phone/secondary email].
+
+12. Signature Block
+
+Principal (Controller/Operator)
+Name: Asadullah Khan  
+Signature: __________________________  
+Date: ______________________________
+
+EU Representative
+Name: ______________________________  
+Signature: __________________________  
+Date: ______________________________
+
+---
+
+Annex A - Processing Summary (Fill Before Signing)
+- Website/App Name: Rollerstat  
+- Services in scope: public content, comments, reactions, newsletter subscriptions, contact form  
+- Main processors: Supabase, Google OAuth/Auth.js, Brevo, Cloudinary, hosting provider(s)  
+- Public Privacy Policy URL: https://rollerstat.com/en/privacy

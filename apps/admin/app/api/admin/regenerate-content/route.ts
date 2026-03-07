@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server"
+import { NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
 import { exec } from "child_process"
 import { promisify } from "util"
@@ -23,7 +23,7 @@ function resolveWebAppDir(): string {
 }
 
 // POST /api/admin/regenerate-content - Regenerate contentlayer data
-export async function POST(request: NextRequest) {
+export async function POST() {
   try {
     // Check authentication
     const session = await auth()

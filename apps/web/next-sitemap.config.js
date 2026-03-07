@@ -4,7 +4,7 @@ module.exports = {
   generateRobotsTxt: true,
   generateIndexSitemap: false,
   exclude: ['/api/*'],
-  additionalPaths: async (config) => {
+  additionalPaths: async () => {
     const locales = ['en', 'es', 'fr', 'it', 'pt'];
     const paths = [];
     

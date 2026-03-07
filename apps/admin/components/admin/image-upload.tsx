@@ -39,7 +39,7 @@ export function ImageUpload({ onImageSelect, onUpload, className }: ImageUploadP
       } else {
         setValidationStatus("invalid")
       }
-    } catch (error) {
+    } catch {
       setValidationStatus("invalid")
     } finally {
       setIsValidating(false)
@@ -78,7 +78,7 @@ export function ImageUpload({ onImageSelect, onUpload, className }: ImageUploadP
       if (onImageSelect) {
         onImageSelect(uploadedUrl)
       }
-    } catch (error) {
+    } catch {
       setValidationStatus("invalid")
     } finally {
       setIsUploading(false)
@@ -234,6 +234,8 @@ export function ImageUpload({ onImageSelect, onUpload, className }: ImageUploadP
           <div className="space-y-2">
             <label className="text-sm font-medium">Preview</label>
             <div className="border rounded-lg p-4 bg-muted/40">
+              {/* Dynamic external preview URLs are allowed here and may not be in next/image remotePatterns. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={imageUrl}
                 alt="Preview"

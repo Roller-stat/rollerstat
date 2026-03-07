@@ -22,6 +22,10 @@ type PostFormSubmitData = {
   heroVideo?: string
   featured: boolean
   published: boolean
+  sendNewsletter?: boolean
+  newsletterSubject?: string
+  newsletterPreviewText?: string
+  newsletterScheduleAt?: string
   tags: string[]
   content: string
 }
@@ -49,6 +53,14 @@ export default function NewPostPage() {
       const payload = await response.json()
       const generatedLocales = Array.isArray(payload.generatedLocales) ? payload.generatedLocales : []
       const failedLocales = Array.isArray(payload.failedLocales) ? payload.failedLocales : []
+      const newsletterCampaign = payload.newsletterCampaign as
+        | {
+            attempted?: boolean
+            success?: boolean
+            status?: "scheduled" | "sent"
+            error?: string
+          }
+        | undefined
 
       if (generatedLocales.length > 0) {
         toast.success(`Post created. Draft locales generated: ${generatedLocales.join(", ").toUpperCase()}`)
@@ -58,6 +70,18 @@ export default function NewPostPage() {
 
       if (failedLocales.length > 0) {
         toast.warning(`Some locales failed: ${failedLocales.map((item: { locale: string }) => item.locale).join(", ").toUpperCase()}`)
+      }
+
+      if (newsletterCampaign?.attempted) {
+        if (newsletterCampaign.success) {
+          toast.success(
+            newsletterCampaign.status === "scheduled"
+              ? "Newsletter campaign scheduled"
+              : "Newsletter campaign sent",
+          )
+        } else {
+          toast.warning(`Post published but campaign failed: ${newsletterCampaign.error || "Unknown error"}`)
+        }
       }
 
       router.push("/admin/posts")
