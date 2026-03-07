@@ -7,7 +7,10 @@ export interface PostData {
   summary: string
   type: "news" | "blog"
   locale: string
+  status?: "draft" | "published" | "archived"
   date?: string
+  createdAt?: string
+  publishedAt?: string | null
   updated?: string
   coverImage?: string
   heroVideo?: string
@@ -369,6 +372,7 @@ export async function listPosts(locale?: string, type?: "news" | "blog"): Promis
           const filenameSlug = file.replace(".mdx", "")
           
           try {
+            const fileStats = await fs.stat(filePath)
             const content = await fs.readFile(filePath, "utf8")
             const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---\n\n([\s\S]*)$/)
             
@@ -408,11 +412,21 @@ export async function listPosts(locale?: string, type?: "news" | "blog"): Promis
                 slug: (data.slug as string) || filenameSlug,
                 filePath,
                 data: {
+                  status:
+                    data.status === "archived" || data.status === "draft" || data.status === "published"
+                      ? (data.status as "draft" | "published" | "archived")
+                      : ((data.published as boolean) === false ? "draft" : "published"),
                   title: (data.title as string) || "",
                   author: (data.author as string) || "",
                   summary: (data.summary as string) || "",
                   type: (data.contentType as "news" | "blog") || contentType,
                   locale: (data.locale as string) || loc,
+                  createdAt: fileStats.birthtime?.toISOString() || fileStats.mtime.toISOString(),
+                  publishedAt:
+                    ((data.status as string | undefined) === "published" ||
+                      (data.status === undefined && (data.published as boolean) !== false))
+                      ? ((data.date as string) || fileStats.mtime.toISOString())
+                      : null,
                   coverImage: data.coverImage as string | undefined,
                   heroVideo: data.heroVideo as string | undefined,
                   published: (data.published as boolean) !== false,

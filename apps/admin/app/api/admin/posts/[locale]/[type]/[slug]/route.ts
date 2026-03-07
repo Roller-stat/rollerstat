@@ -272,9 +272,133 @@ export async function DELETE(
     }
 
     const ops = isDatabaseConfigured() ? dbOps : { updatePost, deletePost, listPosts }
+    const scope = request.nextUrl.searchParams.get("scope") === "all-draft-locales"
+      ? "all-draft-locales"
+      : "locale"
 
-    // Delete post
-    const result = await ops.deletePost(locale, type as "news" | "blog", slug)
+    const scopedPosts = await ops.listPosts(locale, type as "news" | "blog")
+    const targetPost = scopedPosts.find((post) => post.slug === slug)
+
+    if (!targetPost) {
+      return NextResponse.json(
+        { error: "Post not found" },
+        { status: 404 }
+      )
+    }
+
+    const targetStatus =
+      targetPost.data.status === "archived" || targetPost.data.status === "draft" || targetPost.data.status === "published"
+        ? targetPost.data.status
+        : (targetPost.data.published ? "published" : "draft")
+
+    if (targetStatus !== "draft") {
+      return NextResponse.json(
+        { error: "Only draft posts can be deleted from this action" },
+        { status: 400 }
+      )
+    }
+
+    let result: { success: boolean; error?: string } = { success: true }
+
+    if (scope === "all-draft-locales") {
+      if (isDatabaseConfigured()) {
+        const client = getSupabaseServerClient()
+        if (!client) {
+          return NextResponse.json(
+            { error: "Database is not configured" },
+            { status: 500 }
+          )
+        }
+
+        const postId = targetPost.postId
+        if (!postId) {
+          return NextResponse.json(
+            { error: "Unable to resolve post group for draft cleanup" },
+            { status: 400 }
+          )
+        }
+
+        const { data: localizations, error: localizationError } = await client
+          .from("post_localizations")
+          .select("id, status")
+          .eq("post_id", postId)
+
+        if (localizationError) {
+          return NextResponse.json(
+            { error: localizationError.message || "Failed to resolve locale drafts" },
+            { status: 400 }
+          )
+        }
+
+        const draftIds = (localizations || [])
+          .filter((row) => row.status === "draft")
+          .map((row) => row.id)
+
+        if (draftIds.length === 0) {
+          return NextResponse.json(
+            { error: "No draft locales found to delete" },
+            { status: 400 }
+          )
+        }
+
+        const { error: deleteDraftsError } = await client
+          .from("post_localizations")
+          .delete()
+          .in("id", draftIds)
+
+        if (deleteDraftsError) {
+          return NextResponse.json(
+            { error: deleteDraftsError.message || "Failed deleting draft locales" },
+            { status: 400 }
+          )
+        }
+
+        const { count: remainingCount } = await client
+          .from("post_localizations")
+          .select("id", { head: true, count: "exact" })
+          .eq("post_id", postId)
+
+        if ((remainingCount || 0) === 0) {
+          await client.from("posts").delete().eq("id", postId)
+        }
+      } else {
+        const translationKey = targetPost.data.translation_key
+        if (!translationKey) {
+          return NextResponse.json(
+            { error: "Cannot delete all locale drafts because translation key is missing" },
+            { status: 400 }
+          )
+        }
+
+        const allTypePosts = await ops.listPosts(undefined, type as "news" | "blog")
+        const draftMatches = allTypePosts.filter((post) => {
+          const postStatus =
+            post.data.status === "archived" || post.data.status === "draft" || post.data.status === "published"
+              ? post.data.status
+              : (post.data.published ? "published" : "draft")
+
+          return (
+            post.data.translation_key === translationKey &&
+            postStatus === "draft"
+          )
+        })
+
+        for (const post of draftMatches) {
+          const deletionResult = await ops.deletePost(
+            post.data.locale,
+            type as "news" | "blog",
+            post.slug
+          )
+
+          if (!deletionResult.success) {
+            result = deletionResult
+            break
+          }
+        }
+      }
+    } else {
+      result = await ops.deletePost(locale, type as "news" | "blog", slug)
+    }
     
     if (!result.success) {
       return NextResponse.json(
