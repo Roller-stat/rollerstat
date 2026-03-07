@@ -38,6 +38,23 @@ interface PostData {
   author: string
 }
 
+interface PostsApiResponse {
+  items?: PostData[]
+  totalPages?: number
+}
+
+function extractPosts(payload: unknown): PostData[] {
+  if (Array.isArray(payload)) {
+    return payload as PostData[]
+  }
+
+  if (payload && typeof payload === "object" && Array.isArray((payload as PostsApiResponse).items)) {
+    return (payload as PostsApiResponse).items || []
+  }
+
+  return []
+}
+
 export default function DashboardPage() {
   const { status } = useSession()
   const [stats, setStats] = useState<PostStats | null>(null)
@@ -54,17 +71,41 @@ export default function DashboardPage() {
   const fetchDashboardData = async () => {
     try {
       setLoading(true)
-      
-      // Fetch posts data
-      const response = await fetch("/api/admin/posts")
+
+      // Fetch all paginated post data so dashboard stats are accurate.
+      const response = await fetch("/api/admin/posts?page=1&pageSize=100", {
+        cache: "no-store",
+      })
       if (!response.ok) {
         throw new Error("Failed to fetch posts")
       }
-      
-      const data = await response.json()
-      
-      // Ensure we have an array of posts
-      const posts = Array.isArray(data) ? data : []
+
+      const firstPayload = (await response.json()) as PostsApiResponse | PostData[]
+      const firstPagePosts = extractPosts(firstPayload)
+      const firstPageTotalPages =
+        typeof (firstPayload as PostsApiResponse)?.totalPages === "number"
+          ? Math.max(1, (firstPayload as PostsApiResponse).totalPages as number)
+          : 1
+
+      const additionalPages =
+        firstPageTotalPages > 1
+          ? await Promise.all(
+              Array.from({ length: firstPageTotalPages - 1 }, (_, index) => index + 2).map(
+                async (page) => {
+                  const pageResponse = await fetch(`/api/admin/posts?page=${page}&pageSize=100`, {
+                    cache: "no-store",
+                  })
+                  if (!pageResponse.ok) {
+                    throw new Error(`Failed to fetch posts page ${page}`)
+                  }
+                  const pagePayload = (await pageResponse.json()) as PostsApiResponse | PostData[]
+                  return extractPosts(pagePayload)
+                },
+              ),
+            )
+          : []
+
+      const posts = firstPagePosts.concat(...additionalPages)
       
       // Calculate statistics
       const totalPosts = posts.length
