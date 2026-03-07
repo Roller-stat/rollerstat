@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { AuthGuard } from "@/components/auth/auth-guard";
 import { AdminLayout } from "@/components/admin/admin-layout";
@@ -61,6 +60,26 @@ const LOCALE_LABELS: Record<Locale, string> = {
   pt: "Portuguese",
 };
 
+function getWebBaseUrl(): string {
+  const configured =
+    process.env.NEXT_PUBLIC_WEB_BASE_URL ||
+    process.env.NEXT_PUBLIC_BASE_URL ||
+    process.env.NEXT_PUBLIC_SITE_URL;
+
+  if (configured) {
+    return configured.replace(/\/$/, "");
+  }
+
+  if (typeof window === "undefined") {
+    return "http://localhost:3000";
+  }
+
+  const { protocol, hostname, port } = window.location;
+  const resolvedPort = hostname === "localhost" && port === "3001" ? "3000" : port;
+  const portSegment = resolvedPort ? `:${resolvedPort}` : "";
+  return `${protocol}//${hostname}${portSegment}`;
+}
+
 export default function AdminCommentsPage() {
   const { status } = useSession();
   const [comments, setComments] = useState<AdminComment[]>([]);
@@ -76,6 +95,11 @@ export default function AdminCommentsPage() {
   const [total, setTotal] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [pendingId, setPendingId] = useState<string | null>(null);
+  const [webBaseUrl, setWebBaseUrl] = useState("http://localhost:3000");
+
+  useEffect(() => {
+    setWebBaseUrl(getWebBaseUrl());
+  }, []);
 
   const fetchComments = useCallback(async () => {
     try {
@@ -350,6 +374,7 @@ export default function AdminCommentsPage() {
                           comment.locale && comment.slug && comment.type
                             ? `/${comment.locale}/${comment.type === "news" ? "news" : "blogs"}/${comment.slug}`
                             : null;
+                        const postUrl = postPath ? `${webBaseUrl}${postPath}` : null;
 
                         const busy = pendingId === comment.id;
 
@@ -360,14 +385,15 @@ export default function AdminCommentsPage() {
                               <div className="text-xs text-muted-foreground">{comment.userEmail || "No email"}</div>
                             </TableCell>
                             <TableCell>
-                              {postPath ? (
-                                <Link
-                                  href={postPath}
+                              {postUrl ? (
+                                <a
+                                  href={postUrl}
                                   target="_blank"
+                                  rel="noopener noreferrer"
                                   className="text-sm text-primary hover:underline"
                                 >
                                   {comment.postTitle || "Open post"}
-                                </Link>
+                                </a>
                               ) : (
                                 <span className="text-sm text-muted-foreground">
                                   {comment.postTitle || "Unknown post"}

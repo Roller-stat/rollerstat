@@ -121,8 +121,8 @@ export function UnifiedNav() {
   return (
     <>
       {/* Desktop Navigation */}
-      <div className="hidden sm:flex items-center gap-4 lg:gap-6">
-        <NavigationMenu className="gap-6 lg:gap-8">
+      <div className="hidden sm:flex items-center">
+        <NavigationMenu>
           <NavigationMenuList>
             {navigationItems.map((item) => (
               <NavigationMenuItem key={item.href}>
@@ -141,21 +141,21 @@ export function UnifiedNav() {
                 </Link>
               </NavigationMenuItem>
             ))}
+            <NavigationMenuItem>
+              <button
+                type="button"
+                onClick={handleAuthAction}
+                disabled={status === "loading"}
+                className={getNavLinkClasses("__auth")}
+                style={getAuthControlStyle()}
+              >
+                {isAuthenticated ? "Sign Out" : "Sign In"}
+              </button>
+            </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
 
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={handleAuthAction}
-            disabled={status === "loading"}
-            className={getNavLinkClasses("__auth")}
-            style={getAuthControlStyle()}
-          >
-            {isAuthenticated ? "Sign Out" : "Sign In"}
-          </button>
-          <ThemeToggle />
-        </div>
+        <ThemeToggle className="ml-2" />
       </div>
 
       {/* Mobile Navigation */}

@@ -787,11 +787,17 @@ export async function listPosts(locale?: string, type?: 'news' | 'blog'): Promis
         slug: row.slug,
         filePath: `${row.locale}/${rowType}/${row.slug}`,
         data: {
+          status:
+            row.status === 'archived' || row.status === 'draft' || row.status === 'published'
+              ? row.status
+              : (row.status === 'published' ? 'published' : 'draft'),
           title: row.title,
           author: row.author,
           summary: row.summary,
           type: rowType,
           locale: row.locale,
+          createdAt: row.created_at,
+          publishedAt: row.published_at,
           date: row.published_at || row.created_at,
           updated: row.updated_at,
           coverImage: row.cover_image || undefined,

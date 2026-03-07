@@ -33,7 +33,7 @@ export function ThemeToggle({ className }: ThemeToggleProps) {
 
   if (!mounted) {
     return (
-      <div className={cn("inline-flex h-10 items-center rounded-md border bg-background px-3", className)}>
+      <div className={cn("inline-flex h-10 w-10 items-center justify-center rounded-md border bg-background", className)}>
         <Sun className="h-4 w-4" />
       </div>
     );
@@ -46,20 +46,20 @@ export function ThemeToggle({ className }: ThemeToggleProps) {
   return (
     <Select value={selectedTheme} onValueChange={(value: ThemeName) => setTheme(value)}>
       <SelectTrigger
-        className={cn("h-10 rounded-md bg-background px-3 uppercase", className)}
+        className={cn(
+          "h-10 w-10 min-w-10 justify-center gap-0 rounded-md bg-background px-0 [&>svg:last-child]:hidden",
+          className
+        )}
         aria-label="Theme"
       >
-        <span className="flex items-center gap-2">
-          <SelectedIcon className="h-4 w-4" />
-          <span className="text-xs font-semibold tracking-wide">{selectedThemeMeta.label}</span>
-        </span>
+        <SelectedIcon className="h-4 w-4" />
       </SelectTrigger>
-      <SelectContent align="end">
+      <SelectContent align="end" className="z-[220] min-w-[3rem]">
         {THEMES.map(({ name, label, icon: Icon }) => (
-          <SelectItem key={name} value={name}>
-            <span className="flex items-center gap-2">
+          <SelectItem key={name} value={name} aria-label={label} title={label}>
+            <span className="flex w-full items-center justify-center">
               <Icon className="h-4 w-4" />
-              <span>{label}</span>
+              <span className="sr-only">{label}</span>
             </span>
           </SelectItem>
         ))}
