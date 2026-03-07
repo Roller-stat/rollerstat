@@ -66,6 +66,10 @@ interface PostFormProps {
     content: string
     featured: boolean
     published: boolean
+    sendNewsletter?: boolean
+    newsletterSubject?: string
+    newsletterPreviewText?: string
+    newsletterScheduleAt?: string
     targetLocales: LocaleCode[]
     translationMode: "translate-only"
   }) => void
@@ -73,6 +77,10 @@ interface PostFormProps {
     content: string
     featured: boolean
     published: boolean
+    sendNewsletter?: boolean
+    newsletterSubject?: string
+    newsletterPreviewText?: string
+    newsletterScheduleAt?: string
     targetLocales: LocaleCode[]
     translationMode: "translate-only"
   }) => void
@@ -108,6 +116,10 @@ export function PostForm({
   const [showPreview, setShowPreview] = useState(false)
   const [isUploadingCoverImage, setIsUploadingCoverImage] = useState(false)
   const [isUploadingHeroVideo, setIsUploadingHeroVideo] = useState(false)
+  const [newsletterMode, setNewsletterMode] = useState<"none" | "send_now" | "schedule">("none")
+  const [newsletterSubject, setNewsletterSubject] = useState("")
+  const [newsletterPreviewText, setNewsletterPreviewText] = useState("")
+  const [newsletterScheduleAt, setNewsletterScheduleAt] = useState("")
   const coverImageInputRef = useRef<HTMLInputElement | null>(null)
   const heroVideoInputRef = useRef<HTMLInputElement | null>(null)
 
@@ -302,6 +314,16 @@ export function PostForm({
         content,
         featured: false,
         published: true,
+        sendNewsletter: newsletterMode !== "none",
+        newsletterSubject: newsletterMode !== "none" ? (newsletterSubject.trim() || values.title) : undefined,
+        newsletterPreviewText:
+          newsletterMode !== "none" && newsletterPreviewText.trim()
+            ? newsletterPreviewText.trim()
+            : undefined,
+        newsletterScheduleAt:
+          newsletterMode === "schedule" && newsletterScheduleAt.trim()
+            ? newsletterScheduleAt.trim()
+            : undefined,
         targetLocales,
         translationMode: "translate-only",
       })
@@ -320,6 +342,10 @@ export function PostForm({
         content,
         published: false,
         featured: false,
+        sendNewsletter: false,
+        newsletterSubject: undefined,
+        newsletterPreviewText: undefined,
+        newsletterScheduleAt: undefined,
         targetLocales,
         translationMode: "translate-only" as const,
       }
@@ -771,6 +797,67 @@ console.log('Hello World');
               </div>
             </div>
 
+
+            <Separator />
+
+            {/* Newsletter Campaign */}
+            <div className="space-y-3">
+              <FormLabel>Newsletter Campaign</FormLabel>
+              <p className="text-xs text-muted-foreground">
+                Optional: send this post as a newsletter campaign when publishing.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                <Button
+                  type="button"
+                  variant={newsletterMode === "none" ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setNewsletterMode("none")}
+                >
+                  No campaign
+                </Button>
+                <Button
+                  type="button"
+                  variant={newsletterMode === "send_now" ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setNewsletterMode("send_now")}
+                >
+                  Send now
+                </Button>
+                <Button
+                  type="button"
+                  variant={newsletterMode === "schedule" ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setNewsletterMode("schedule")}
+                >
+                  Schedule
+                </Button>
+              </div>
+
+              {newsletterMode !== "none" && (
+                <div className="grid grid-cols-1 gap-3 rounded-md border bg-muted/30 p-3 md:grid-cols-2">
+                  <Input
+                    placeholder="Newsletter subject (defaults to post title)"
+                    value={newsletterSubject}
+                    onChange={(event) => setNewsletterSubject(event.target.value)}
+                  />
+                  <Input
+                    placeholder="Preview text (optional)"
+                    value={newsletterPreviewText}
+                    onChange={(event) => setNewsletterPreviewText(event.target.value)}
+                  />
+                  {newsletterMode === "schedule" && (
+                    <div className="md:col-span-2 space-y-1">
+                      <label className="text-xs text-muted-foreground">Schedule time</label>
+                      <Input
+                        type="datetime-local"
+                        value={newsletterScheduleAt}
+                        onChange={(event) => setNewsletterScheduleAt(event.target.value)}
+                      />
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
 
             <Separator />
 

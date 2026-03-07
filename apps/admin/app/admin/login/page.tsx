@@ -51,7 +51,7 @@ export default function LoginPage() {
         // Redirect to admin dashboard on successful login
         router.push("/admin")
       }
-    } catch (error) {
+    } catch {
       setError("An error occurred. Please try again.")
     } finally {
       setIsLoading(false)

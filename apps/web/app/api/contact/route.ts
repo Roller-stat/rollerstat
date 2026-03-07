@@ -1,10 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sendContactNotification, sendAutoReply, verifyEmailConfig } from '@/lib/email';
+import { getSupabaseServerClient, isDatabaseConfigured } from '@/lib/db/client';
+
+function isMissingContactTableError(error: { code?: string; message?: string } | null | undefined) {
+  if (!error) {
+    return false;
+  }
+
+  return (
+    error.code === 'PGRST205' ||
+    (error.code === '42P01' && typeof error.message === 'string' && error.message.includes('contact_submissions'))
+  );
+}
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, email, message } = body;
+    const { name, email, message, locale } = body;
 
     // Basic validation
     if (!name || !email || !message) {
@@ -29,6 +41,34 @@ export async function POST(request: NextRequest) {
       email: email.trim().toLowerCase(),
       message: message.trim().substring(0, 2000)
     };
+
+    const validLocales = ['en', 'es', 'fr', 'it', 'pt'];
+    const sanitizedLocale =
+      typeof locale === 'string' && validLocales.includes(locale)
+        ? locale
+        : null;
+
+    // Persist contact submissions in DB when available so retention automation can enforce 12-month lifecycle.
+    if (isDatabaseConfigured()) {
+      const client = getSupabaseServerClient();
+      if (client) {
+        const { error: saveError } = await client.from('contact_submissions').insert({
+          name: sanitizedData.name,
+          email: sanitizedData.email,
+          message: sanitizedData.message,
+          locale: sanitizedLocale,
+          source: 'contact_form',
+        });
+
+        if (saveError && !isMissingContactTableError(saveError)) {
+          console.error('Failed to persist contact submission:', saveError);
+        } else if (saveError) {
+          console.warn(
+            'contact_submissions table is missing. Run packages/db/migrations/20260307_retention_automation.sql.',
+          );
+        }
+      }
+    }
 
     // Verify email configuration
     const isEmailConfigured = await verifyEmailConfig();

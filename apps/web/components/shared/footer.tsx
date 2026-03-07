@@ -3,17 +3,20 @@
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { Logo } from "./logo";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 export function Footer() {
   const t = useTranslations("footer");
+  const locale = useLocale();
+
+  const localizedHref = (path: string) => `/${locale}${path}`;
   return (
     <footer className="border-t border-white/10 bg-[var(--footer-bg)] text-white">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="space-y-4">
-            <Logo size="md" showText={true} href="/" loop={true} loopDelay={2000} color="white" />
+            <Logo size="md" showText={true} href={`/${locale}`} loop={true} loopDelay={2000} color="white" />
             <p className="text-sm text-white">
               {t("description")}
             </p>
@@ -24,17 +27,17 @@ export function Footer() {
             <h3 className="font-semibold text-white">{t("quickLinks")}</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/news" className="text-white hover:text-white/80 transition-colors">
+                <Link href={localizedHref("/news")} className="text-white hover:text-white/80 transition-colors">
                   {t("latestNews")}
                 </Link>
               </li>
               <li>
-                <Link href="/blogs" className="text-white hover:text-white/80 transition-colors">
+                <Link href={localizedHref("/blogs")} className="text-white hover:text-white/80 transition-colors">
                   {t("blogPosts")}
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="text-white hover:text-white/80 transition-colors">
+                <Link href={localizedHref("/contact")} className="text-white hover:text-white/80 transition-colors">
                   {t("contactUs")}
                 </Link>
               </li>
@@ -83,13 +86,13 @@ export function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-center text-sm text-white">
           <p>{t("copyright")}</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <Link href="/privacy" className="hover:text-white/80 transition-colors">
+            <Link href={localizedHref("/privacy")} className="hover:text-white/80 transition-colors">
               {t("privacyPolicy")}
             </Link>
-            <Link href="/license" className="hover:text-white/80 transition-colors">
+            <Link href={localizedHref("/license")} className="hover:text-white/80 transition-colors">
               {t("license")}
             </Link>
-            <Link href="/terms" className="hover:text-white/80 transition-colors">
+            <Link href={localizedHref("/terms")} className="hover:text-white/80 transition-colors">
               {t("termsOfService")}
             </Link>
           </div>

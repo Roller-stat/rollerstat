@@ -27,7 +27,8 @@ import {
   Plus, 
   LogOut,
   ChevronRight,
-  MessageSquare
+  MessageSquare,
+  Mail
 } from "lucide-react"
 
 interface AdminLayoutProps {
@@ -66,6 +67,11 @@ export function AdminLayout({ children, breadcrumbs = [] }: AdminLayoutProps) {
       title: "Comments",
       href: "/admin/comments",
       icon: MessageSquare,
+    },
+    {
+      title: "Newsletter",
+      href: "/admin/newsletter",
+      icon: Mail,
     },
   ]
 
