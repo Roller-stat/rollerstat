@@ -130,12 +130,6 @@ export default async function NewsPage({ params, searchParams }: NewsPageProps) 
           style={{ backgroundImage: 'url(/HeroBG.png)' }}
         />
         <div className="container mx-auto px-4 py-8 relative z-10">
-        <div className="mb-8">
-          <p className="text-muted-foreground text-lg">
-            Stay updated with the latest roller hockey news and events
-          </p>
-        </div>
-
         {/* Date Filter Component */}
         <DateFilter 
           locale={locale}
