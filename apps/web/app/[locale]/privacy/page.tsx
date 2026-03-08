@@ -220,8 +220,16 @@ export default async function PrivacyPage({ params }: PrivacyPageProps) {
       <section>
         <h2>14. EU representation notice</h2>
         <p>
-          If required under GDPR Article 27 based on processing scope, an EU representative will be appointed and listed here.
+          Under GDPR Article 27, Rollerstat&apos;s EU representative is:
         </p>
+        <ul>
+          <li>Name: Naved Ahmad</li>
+          <li>Address: 3 Rue de Gorges, 44000 Nantes, France</li>
+          <li>Email: navedmoin67@gmail.com</li>
+          <li>
+            Phone: <a href="tel:+33642355758">+33 6 42 35 57 58</a>
+          </li>
+        </ul>
       </section>
 
       <section>
