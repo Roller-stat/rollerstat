@@ -1,0 +1,191 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "news": "Actualités",
+    "blogs": "Blogs",
+    "about": "À propos",
+    "contact": "Contact"
+  },
+  "cta": {
+    "subscribe": "S'abonner",
+    "signin": "Se connecter",
+    "readMore": "Lire plus",
+    "viewAll": "Voir tout"
+  },
+  "content": {
+    "latestEdition": "Dernière édition",
+    "topStories": "Articles vedettes",
+    "readingTime": "min de lecture",
+    "publishedOn": "Publié le",
+    "updatedOn": "Mis à jour le",
+    "by": "par",
+    "tags": "Étiquettes",
+    "relatedPosts": "Articles connexes"
+  },
+  "interactions": {
+    "like": "J'aime",
+    "liked": "J'ai aimé",
+    "comments": "Commentaires",
+    "share": "Partager",
+    "bookmark": "Signet"
+  },
+  "seo": {
+    "title": "Rollerstat - Votre source d'actualités sur le hockey sur patins",
+    "description": "Restez informé des dernières actualités, analyses et histoires du monde du hockey sur patins en Europe.",
+    "keywords": "hockey sur patins, championnat européen, actualités, blogs, analyse",
+    "ogTitle": "Rollerstat - Votre source d'actualités sur le hockey sur patins",
+    "ogDescription": "Restez informé des dernières actualités, analyses et histoires du monde du hockey sur patins en Europe.",
+    "twitterTitle": "Rollerstat - Votre source d'actualités sur le hockey sur patins",
+    "twitterDescription": "Restez informé des dernières actualités, analyses et histoires du monde du hockey sur patins en Europe.",
+    "imageAlt": "Rollerstat - Votre source d'actualités sur le hockey sur patins"
+  },
+  "footer": {
+    "description": "Votre source principale d'actualités, d'analyses et de communauté sur le hockey sur patins en Europe.",
+    "quickLinks": "Liens Rapides",
+    "latestNews": "Dernières Actualités",
+    "blogPosts": "Articles de Blog",
+    "contactUs": "Contactez-nous",
+    "socialMedia": "Suivez-nous",
+    "contact": "Contact",
+    "email": "Email: rollerstat@rollerstat.com",
+    "phone": "Téléphone: +1 (555) 123-4567",
+    "copyright": "© 2026 Rollerstat. Tous droits réservés.",
+    "license": "Licence",
+    "privacyPolicy": "Politique de confidentialité",
+    "termsOfService": "Conditions d'utilisation"
+  },
+  "errors": {
+    "notFound": "Page non trouvée",
+    "serverError": "Quelque chose s'est mal passé",
+    "loading": "Chargement..."
+  },
+  "hero": {
+    "headingPart1": "Dernières actualités et analyses du monde du",
+    "headingPart2": "Hockey sur Patins",
+    "headingPart3": "en",
+    "headingPart4": "Europe",
+    "emailPlaceholder": "Entrez votre adresse e-mail",
+    "subscribeButton": "S'abonner",
+    "subscribing": "Abonnement en cours...",
+    "subscribed": "✓ Abonné !"
+  },
+  "quotes": {
+    "quote1": {
+      "text": "Le hockey sur patins n'est pas seulement un sport, c'est un mode de vie qui rassemble les communautés à travers l'Europe.",
+      "author": "Marco Silva",
+      "role": "Entraîneur du Championnat Européen"
+    },
+    "quote2": {
+      "text": "La vitesse, l'habileté et la stratégie du hockey sur patins en font l'un des sports les plus passionnants à regarder et à jouer.",
+      "author": "Elena Rodriguez",
+      "role": "Joueuse Professionnelle"
+    },
+    "quote3": {
+      "text": "Chaque match nous apprend quelque chose de nouveau sur le travail d'équipe, la persévérance et le beau jeu du hockey sur patins.",
+      "author": "Thomas Müller",
+      "role": "Commissaire de la Ligue"
+    },
+    "quote4": {
+      "text": "La passion pour le hockey sur patins coule profondément dans nos veines, reliant joueurs et fans à travers les frontières.",
+      "author": "Sophie Dubois",
+      "role": "Capitaine d'Équipe"
+    }
+  },
+  "newsletter": {
+    "content1": {
+      "title": "OBTENEZ LES DERNIÈRES MISES À JOUR DES MATCHS",
+      "description": "Restez informé avec les scores en temps réel, les moments forts et les dernières nouvelles des matchs de hockey sur patins à travers l'Europe."
+    },
+    "content2": {
+      "title": "CONSULTEZ L'ANALYSE POST-MATCH",
+      "description": "Plongez dans les analyses tactiques, les performances des joueurs et les perspectives d'experts de chaque match majeur."
+    },
+    "content3": {
+      "title": "VÉRIFIEZ LES CLASSEMENTS DU CHAMPIONNAT",
+      "description": "Suivez les progrès de vos équipes préférées avec des tableaux de ligue complets et des prédictions de championnat."
+    },
+    "content4": {
+      "title": "DÉCOUVREZ LES PORTRAITS DE JOUEURS",
+      "description": "Apprenez à connaître les stars du hockey sur patins européen avec des profils de joueurs exclusifs et des interviews."
+    }
+  },
+  "filters": {
+    "filters": "Filtres",
+    "active": "Actif",
+    "filterByDate": "Filtrer par Date",
+    "allTime": "Tout le temps",
+    "last7Days": "7 derniers jours",
+    "last30Days": "30 derniers jours",
+    "last3Months": "3 derniers mois",
+    "customDate": "Date personnalisée",
+    "selectDate": "Sélectionner la Date",
+    "sortOrder": "Ordre de Tri",
+    "newestFirst": "Plus Récents d'Abord",
+    "oldestFirst": "Plus Anciens d'Abord",
+    "applyFilters": "Appliquer les Filtres",
+    "clearFilters": "Effacer",
+    "showingResults": "Affichage de {start}-{end} sur {total} publications",
+    "noResults": "Aucun article trouvé pour les filtres sélectionnés."
+  },
+  "contact": {
+    "title": "Contactez-nous",
+    "description": "Contactez-nous pour toute question, suggestion ou commentaire sur le hockey sur patins.",
+    "formTitle": "Envoyez-nous un Message",
+    "name": "Nom",
+    "namePlaceholder": "Votre nom complet",
+    "email": "Email",
+    "emailPlaceholder": "Entrez votre email",
+    "message": "Message",
+    "messagePlaceholder": "Dites-nous ce que vous pensez...",
+    "sendMessage": "Envoyer le Message",
+    "sending": "Envoi en cours...",
+    "successMessage": "Merci ! Votre message a été envoyé avec succès.",
+    "errorMessage": "Désolé, une erreur s'est produite lors de l'envoi de votre message. Veuillez réessayer.",
+    "contactInfo": "Informations de Contact",
+    "phone": "Téléphone",
+    "address": "Adresse",
+    "addressLine1": "123 Rue du Hockey",
+    "addressLine2": "Quartier Sportif, Ville 12345",
+    "businessHours": "Heures d'Ouverture",
+    "hoursLine1": "Lundi - Vendredi: 9h00 - 18h00",
+    "hoursLine2": "Samedi: 10h00 - 16h00",
+    "followUs": "Suivez-nous",
+    "socialDescription": "Restez connecté avec nous sur les réseaux sociaux pour les dernières mises à jour et actualités."
+  },
+  "unsubscribe": {
+    "title": "Se désabonner de la newsletter",
+    "description": "Nous sommes désolés de vous voir partir ! Veuillez nous indiquer pourquoi vous vous désabonnez afin que nous puissions améliorer notre service.",
+    "emailLabel": "Email",
+    "loading": "Validation de la demande de désabonnement...",
+    "goToHomepage": "Aller à la page d'accueil",
+    "button": "Se désabonner de la newsletter",
+    "unsubscribing": "Désabonnement en cours...",
+    "reasons": {
+      "title": "Pourquoi vous désabonnez-vous ? (Optionnel)",
+      "tooManyEmails": "Trop d'emails",
+      "contentNotRelevant": "Le contenu n'est pas pertinent",
+      "neverSignedUp": "Je ne me suis jamais abonné",
+      "technicalIssues": "Problèmes techniques",
+      "other": "Autre"
+    },
+    "comments": {
+      "title": "Commentaires supplémentaires (Optionnel)",
+      "placeholder": "Parlez-nous davantage de votre expérience..."
+    },
+    "success": {
+      "title": "Désabonnement réussi",
+      "description": "Vous avez été désabonné de notre newsletter. Nous sommes désolés de vous voir partir !",
+      "message": "Vous ne recevrez plus nos emails de newsletter. Si vous changez d'avis, vous pouvez toujours vous réabonner depuis notre page d'accueil.",
+      "unsubscribed": "Vous avez été désabonné avec succès de notre newsletter"
+    },
+    "invalidToken": {
+      "title": "Lien de désabonnement invalide",
+      "description": "Ce lien de désabonnement est invalide ou a expiré. Veuillez nous contacter si vous avez besoin d'aide."
+    },
+    "errors": {
+      "emailNotFound": "Email introuvable",
+      "failedToUnsubscribe": "Échec du désabonnement. Veuillez réessayer.",
+      "failedToUnsubscribeLater": "Échec du désabonnement. Veuillez réessayer plus tard."
+    }
+  }
+}
