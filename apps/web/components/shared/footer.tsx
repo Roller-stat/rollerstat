@@ -10,6 +10,11 @@ export function Footer() {
   const locale = useLocale();
 
   const localizedHref = (path: string) => `/${locale}${path}`;
+  const socialLinks = {
+    x: "https://x.com/Rollerstat",
+    instagram: "https://www.instagram.com/rollerstat.ig/",
+    threads: "https://www.threads.com/@rollerstat.ig",
+  } as const;
   return (
     <footer className="border-t border-white/10 bg-[var(--footer-bg)] text-white">
       <div className="container mx-auto px-4 py-12">
@@ -48,24 +53,37 @@ export function Footer() {
           <div className="space-y-4">
             <h3 className="font-semibold text-white">{t("socialMedia")}</h3>
             <div className="flex space-x-4">
-              <a href="#" className="text-white hover:text-white/80 transition-colors" aria-label="Twitter">
+              <a
+                href={socialLinks.x}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white hover:text-white/80 transition-colors"
+                aria-label="X"
+              >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                  <path d="M18.901 1.153h3.68l-8.04 9.19 9.459 12.504H16.6l-5.796-7.574-6.63 7.574H.5l8.6-9.83L0 1.153h7.588l5.243 6.932 6.07-6.932Zm-1.29 19.5h2.04L6.48 3.112H4.29l13.32 17.54Z" />
                 </svg>
               </a>
-              <a href="#" className="text-white hover:text-white/80 transition-colors" aria-label="Facebook">
+              <a
+                href={socialLinks.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white hover:text-white/80 transition-colors"
+                aria-label="Instagram"
+              >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                  <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5Zm8.75 2a1 1 0 1 1 0 2 1 1 0 0 1 0-2ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.5A3.5 3.5 0 1 0 12 15.5 3.5 3.5 0 0 0 12 8.5Z" />
                 </svg>
               </a>
-              <a href="#" className="text-white hover:text-white/80 transition-colors" aria-label="Instagram">
+              <a
+                href={socialLinks.threads}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white hover:text-white/80 transition-colors"
+                aria-label="Threads"
+              >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 6.62 5.367 11.987 11.988 11.987 6.62 0 11.987-5.367 11.987-11.987C24.014 5.367 18.637.001 12.017.001zM8.449 16.988c-1.297 0-2.448-.49-3.323-1.297C4.198 14.895 3.708 13.744 3.708 12.447s.49-2.448 1.297-3.323c.875-.807 2.026-1.297 3.323-1.297s2.448.49 3.323 1.297c.807.875 1.297 2.026 1.297 3.323s-.49 2.448-1.297 3.323c-.875.807-2.026 1.297-3.323 1.297zm7.718-1.297c-.875.807-2.026 1.297-3.323 1.297s-2.448-.49-3.323-1.297c-.807-.875-1.297-2.026-1.297-3.323s.49-2.448 1.297-3.323c.875-.807 2.026-1.297 3.323-1.297s2.448.49 3.323 1.297c.807.875 1.297 2.026 1.297 3.323s-.49 2.448-1.297 3.323z"/>
-                </svg>
-              </a>
-              <a href="#" className="text-white hover:text-white/80 transition-colors" aria-label="YouTube">
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                  <path d="M16.3 10.7c-.1-2.7-1.6-4.2-4.3-4.2-2.8 0-4.5 1.7-4.6 4.1h2.2c.1-1.2 1-2 2.4-2 1.3 0 2.1.7 2.2 1.9-3.1.1-6 1-6 3.8 0 2 1.5 3.3 3.8 3.3 1.6 0 2.8-.6 3.5-1.8.5.8 1.3 1.3 2.4 1.3 1.8 0 3-1.2 3-3.1 0-2.2-1.5-3.2-4.6-3.3Zm-2.1 1.7c-.1 1.6-1 2.7-2.4 2.7-1 0-1.7-.5-1.7-1.3 0-1.1 1.2-1.5 4.1-1.6Zm2.2 2.5c-.3 0-.5-.1-.7-.2.1-.4.2-.8.2-1.2 1.3.1 1.9.4 1.9 1 0 .3-.2.4-.5.4Z" />
                 </svg>
               </a>
             </div>
@@ -76,7 +94,6 @@ export function Footer() {
             <h3 className="font-semibold text-white">{t("contact")}</h3>
             <div className="space-y-2 text-sm text-white">
               <p>{t("email")}</p>
-              <p>{t("phone")}</p>
             </div>
           </div>
         </div>
