@@ -16,9 +16,7 @@
     "lint:web": "cd apps/web && eslint .",
     "lint:admin": "cd apps/admin && eslint .",
     "content:build": "cd apps/web && npx contentlayer2 build",
-    "retention:run": "node scripts/run-retention-cleanup.mjs",
-    "test:phase3g": "node --test test/api/core.smoke.test.mjs test/api/newsletter.smoke.test.mjs",
-    "test:phase8": "node --test test/performance/http-latency.smoke.test.mjs"
+    "retention:run": "node scripts/run-retention-cleanup.mjs"
   },
   "dependencies": {
     "@emotion/is-prop-valid": "^1.2.2",
