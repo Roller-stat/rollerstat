@@ -1,5 +1,6 @@
 import * as brevo from '@getbrevo/brevo';
 import { generateUnsubscribeUrl } from './unsubscribe-tokens';
+import { resolveWebBaseUrl } from './deployment-env';
 
 const EMAIL_PATTERN = /([a-zA-Z0-9._%+-]{2})[a-zA-Z0-9._%+-]*@([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g;
 
@@ -634,8 +635,7 @@ export const sendWelcomeEmail = async (email: string, name?: string, locale: str
 
     // Generate unsubscribe URL with locale
     // Ensure baseUrl doesn't have trailing slash
-    let baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://rollerstat.com';
-    baseUrl = baseUrl.replace(/\/$/, ''); // Remove trailing slash if present
+    const baseUrl = resolveWebBaseUrl().replace(/\/$/, '');
     const unsubscribeUrl = await generateUnsubscribeUrl(email, baseUrl, sanitizedLocale);
 
     // Prepare template parameters with localized URLs
@@ -710,7 +710,7 @@ export const sendNewsletter = async (
     }
 
     // Add unsubscribe footer to HTML content
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://rollerstat.com';
+    const baseUrl = resolveWebBaseUrl();
     const unsubscribeFooter = `
       <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #dee2e6; text-align: center;">
         <p style="font-size: 12px; color: #999; margin: 0;">
@@ -779,8 +779,7 @@ export const sendUnsubscribeConfirmation = async (email: string, locale: string 
     }
 
     // Generate resubscribe URL with locale
-    let baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://rollerstat.com';
-    baseUrl = baseUrl.replace(/\/$/, ''); // Remove trailing slash if present
+    const baseUrl = resolveWebBaseUrl().replace(/\/$/, '');
 
     // Prepare template parameters
     const templateParams = {

@@ -92,10 +92,6 @@ export default function EditPostPage({ params }: EditPostPageProps) {
     heroVideo?: string
     featured: boolean
     published: boolean
-    sendNewsletter?: boolean
-    newsletterSubject?: string
-    newsletterPreviewText?: string
-    newsletterScheduleAt?: string
     tags: string[]
     content: string
   }) => {
@@ -136,10 +132,6 @@ export default function EditPostPage({ params }: EditPostPageProps) {
     heroVideo?: string
     featured: boolean
     published: boolean
-    sendNewsletter?: boolean
-    newsletterSubject?: string
-    newsletterPreviewText?: string
-    newsletterScheduleAt?: string
     tags: string[]
     content: string
   }) => {
@@ -180,10 +172,6 @@ export default function EditPostPage({ params }: EditPostPageProps) {
     heroVideo?: string
     featured: boolean
     published: boolean
-    sendNewsletter?: boolean
-    newsletterSubject?: string
-    newsletterPreviewText?: string
-    newsletterScheduleAt?: string
     tags: string[]
     content: string
   }) => {

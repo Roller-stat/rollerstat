@@ -7,7 +7,6 @@ import { z } from "zod"
 import fs from "node:fs"
 import path from "node:path"
 import { SUPPORTED_LOCALES } from "@/lib/gemini-translate"
-import { createCampaignFromPublishedPost } from "@/lib/newsletter"
 import type { PostFile } from "@/lib/file-operations"
 
 function resolveWebAppDir(): string {
@@ -137,10 +136,6 @@ const createPostSchema = z.object({
   tags: z.array(z.string()).default([]),
   content: z.string().min(1, "Content is required"),
   translation_key: z.string().optional(),
-  sendNewsletter: z.boolean().optional(),
-  newsletterSubject: z.string().max(180).optional(),
-  newsletterPreviewText: z.string().max(200).optional(),
-  newsletterScheduleAt: z.string().optional(),
 })
 
 // GET /api/admin/posts - List all posts
@@ -368,45 +363,6 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    let newsletterCampaign: {
-      attempted: boolean
-      success: boolean
-      campaignId?: number
-      status?: "scheduled" | "sent"
-      error?: string
-    } = {
-      attempted: false,
-      success: false,
-    }
-
-    if (validatedData.published && validatedData.sendNewsletter) {
-      newsletterCampaign.attempted = true
-      const campaignResult = await createCampaignFromPublishedPost({
-        title: validatedData.title,
-        summary: validatedData.summary,
-        locale: validatedData.locale,
-        type: validatedData.type,
-        slug: result.slug,
-        author: validatedData.author,
-        coverImage: validatedData.coverImage,
-        subject: validatedData.newsletterSubject,
-        previewText: validatedData.newsletterPreviewText,
-        scheduleAt: validatedData.newsletterScheduleAt,
-      })
-
-      newsletterCampaign = {
-        attempted: true,
-        success: campaignResult.success,
-        campaignId: campaignResult.campaignId,
-        status: campaignResult.status,
-        error: campaignResult.error,
-      }
-
-      if (!campaignResult.success) {
-        console.error("Failed creating newsletter campaign from post publish:", campaignResult.error)
-      }
-    }
-
     // Regenerate contentlayer only when filesystem mode is active
     if (!databaseConfigured) {
       try {
@@ -430,7 +386,6 @@ export async function POST(request: NextRequest) {
       skippedLocales: result.skippedLocales || [],
       failedLocales: result.failedLocales || [],
       supportedLocales: SUPPORTED_LOCALES,
-      newsletterCampaign,
     })
   } catch (error) {
     console.error("Error creating post:", error)

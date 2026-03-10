@@ -1,5 +1,10 @@
 import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
+import { resolveAdminAuthUrl } from "@/lib/deployment-env"
+
+if (process.env.ENV || process.env.NODE_ENV === "production" || !process.env.NEXTAUTH_URL) {
+  process.env.NEXTAUTH_URL = resolveAdminAuthUrl()
+}
 
 // Extend the built-in session types
 declare module "next-auth" {

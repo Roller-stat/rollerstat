@@ -29,7 +29,6 @@ COPY package.json package-lock.json ./
 RUN npm ci --omit=dev && npm cache clean --force
 
 COPY --from=builder /app/apps/admin ./apps/admin
-COPY --from=builder /app/packages/content ./packages/content
 RUN touch .env.local
 
 EXPOSE 3001

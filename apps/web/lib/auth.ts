@@ -1,5 +1,10 @@
 import NextAuth from 'next-auth';
 import Google from 'next-auth/providers/google';
+import { resolveWebAuthUrl } from '@/lib/deployment-env';
+
+if (process.env.ENV || process.env.NODE_ENV === "production" || !process.env.NEXTAUTH_URL) {
+  process.env.NEXTAUTH_URL = resolveWebAuthUrl();
+}
 
 declare module 'next-auth' {
   interface Session {

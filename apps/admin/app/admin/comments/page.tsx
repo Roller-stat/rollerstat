@@ -61,6 +61,18 @@ const LOCALE_LABELS: Record<Locale, string> = {
 };
 
 function getWebBaseUrl(): string {
+  if (typeof window !== "undefined") {
+    const { protocol, hostname } = window.location;
+
+    if (hostname === "localhost" || hostname === "127.0.0.1") {
+      return `${protocol}//${hostname}:3000`;
+    }
+
+    if (hostname.startsWith("admin.")) {
+      return `${protocol}//${hostname.slice("admin.".length)}`;
+    }
+  }
+
   const configured =
     process.env.NEXT_PUBLIC_WEB_BASE_URL ||
     process.env.NEXT_PUBLIC_BASE_URL ||
@@ -70,14 +82,7 @@ function getWebBaseUrl(): string {
     return configured.replace(/\/$/, "");
   }
 
-  if (typeof window === "undefined") {
-    return "http://localhost:3000";
-  }
-
-  const { protocol, hostname, port } = window.location;
-  const resolvedPort = hostname === "localhost" && port === "3001" ? "3000" : port;
-  const portSegment = resolvedPort ? `:${resolvedPort}` : "";
-  return `${protocol}//${hostname}${portSegment}`;
+  return "https://rollerstat.com";
 }
 
 export default function AdminCommentsPage() {

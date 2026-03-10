@@ -26,7 +26,6 @@ COPY package.json package-lock.json ./
 RUN npm ci --omit=dev && npm cache clean --force
 
 COPY --from=builder /app/apps/web ./apps/web
-COPY --from=builder /app/packages/content ./packages/content
 RUN touch .env.local
 
 ENV NODE_ENV=production

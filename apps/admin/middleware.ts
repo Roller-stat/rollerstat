@@ -1,5 +1,16 @@
 import { NextRequest, NextResponse } from "next/server"
 
+function resolveEnvironmentMode(): "LOCAL" | "PROD" {
+  const explicit = (process.env.ENV || "").trim().toUpperCase()
+  if (explicit === "LOCAL" || explicit === "DEV" || explicit === "DEVELOPMENT") {
+    return "LOCAL"
+  }
+  if (explicit === "PROD" || explicit === "PRODUCTION") {
+    return "PROD"
+  }
+  return process.env.NODE_ENV === "production" ? "PROD" : "LOCAL"
+}
+
 function parseIpAllowlist(raw: string | undefined): Set<string> {
   if (!raw) {
     return new Set()
@@ -45,7 +56,7 @@ function hasCloudflareAccessHeaders(request: NextRequest): boolean {
 }
 
 export function middleware(request: NextRequest) {
-  if (process.env.NODE_ENV !== "production") {
+  if (resolveEnvironmentMode() === "LOCAL") {
     return NextResponse.next()
   }
 
