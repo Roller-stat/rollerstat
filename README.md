@@ -111,3 +111,7 @@ Important:
 SQL files in `packages/db/migrations` are versioned migration scripts.
 Adding/editing files does not change your live database automatically.
 Apply them in Supabase SQL Editor (or your migration tooling) to update schema/security in the live DB.
+
+## IP Address command
+
+curl -s https://api.ipify.org && echo
