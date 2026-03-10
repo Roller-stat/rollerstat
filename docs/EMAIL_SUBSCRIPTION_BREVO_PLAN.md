@@ -28,6 +28,9 @@
   - `GET/POST /api/admin/newsletter/campaigns`
 - Admin post publish flow can trigger newsletter campaign creation from post content.
 - Webhook event processing logic is implemented for key events (including unsubscribe/spam/bounce handling behavior).
+- Webhook authentication enforces both:
+  - `x-brevo-webhook-id`
+  - HMAC signature verification with `BREVO_WEBHOOK_SECRET`
 
 ## Left to Implement
 
@@ -41,8 +44,6 @@
   - Criticality: **Not critical now**
 - Double opt-in flow (email confirmation before final subscription) if you want stricter compliance posture.
   - Criticality: **Recommended before large-scale/public growth**
-- Enforce webhook signature verification in the webhook route using `BREVO_WEBHOOK_SECRET` (helper exists, route should enforce it).
-  - Criticality: **Recommended soon (security hardening)**
 - Formal testing/optimization suite for newsletter features (load/perf/rate-limit behavior).
   - Criticality: **Not critical now**
 - Production operations hardening (SPF/DKIM/DMARC checks, monitoring/alerting runbook).

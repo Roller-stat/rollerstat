@@ -58,11 +58,10 @@ function isMissingPostIdColumnError(error: unknown): boolean {
 }
 
 function hashDeviceId(deviceId: string) {
-  const salt =
-    process.env.REACTION_DEVICE_SALT ||
-    process.env.NEXTAUTH_SECRET ||
-    process.env.AUTH_SECRET ||
-    'dev-reaction-salt-change-in-production';
+  const salt = process.env.REACTION_DEVICE_SALT?.trim();
+  if (!salt) {
+    throw new Error('REACTION_DEVICE_SALT is not configured');
+  }
 
   return crypto.createHash('sha256').update(`${deviceId}:${salt}`).digest('hex');
 }
@@ -267,7 +266,17 @@ export async function GET(request: NextRequest) {
   }
 
   const session = await auth();
-  const actor = await resolveActorHash(session?.user?.id);
+  let actor: Awaited<ReturnType<typeof resolveActorHash>>;
+  try {
+    actor = await resolveActorHash(session?.user?.id);
+  } catch (error) {
+    console.error('Reaction endpoint is not configured:', error);
+    return NextResponse.json(
+      { error: 'Reactions are not configured on this server' },
+      { status: 503 },
+    );
+  }
+
   const scope = await resolvePostScope(client, postId, postLocalizationId);
   if (!scope) {
     return NextResponse.json({
@@ -323,7 +332,17 @@ export async function POST(request: NextRequest) {
   }
 
   const session = await auth();
-  const actor = await resolveActorHash(session?.user?.id);
+  let actor: Awaited<ReturnType<typeof resolveActorHash>>;
+  try {
+    actor = await resolveActorHash(session?.user?.id);
+  } catch (error) {
+    console.error('Reaction endpoint is not configured:', error);
+    return NextResponse.json(
+      { error: 'Reactions are not configured on this server' },
+      { status: 503 },
+    );
+  }
+
   const scope = await resolvePostScope(client, postId || null, postLocalizationId || null);
   if (!scope) {
     return NextResponse.json({ error: 'Invalid post context' }, { status: 400 });

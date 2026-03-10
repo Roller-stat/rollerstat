@@ -97,6 +97,9 @@ This file is now split into two sections:
   - `POST /api/unsubscribe`
   - `GET /api/subscription-status`
   - `POST /api/webhooks/brevo`
+- Brevo webhook authentication hardened:
+  - requires `x-brevo-webhook-id`
+  - requires HMAC signature verification with `BREVO_WEBHOOK_SECRET`
 - Tokenized unsubscribe flow implemented (with verification route + page).
 - Admin newsletter module implemented:
   - subscribers listing
@@ -130,9 +133,6 @@ This file is now split into two sections:
   - alerting/monitoring runbook finalization
   - incident/recovery runbook finalization
 
-### D) Security hardening follow-up
-- Brevo webhook signature verification strict enforcement should be finalized if `BREVO_WEBHOOK_SECRET`-based validation is required in your production policy.
-
-### E) Optional product items (not critical now)
+### D) Optional product items (not critical now)
 - Forced sign-up prompt/gate on landing (current UX uses CTA, not forced gate).
 - Advanced newsletter segmentation and deeper analytics reporting.

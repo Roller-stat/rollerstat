@@ -1,8 +1,24 @@
 import crypto from 'crypto';
 
 // Unsubscribe token configuration
-const TOKEN_SECRET = process.env.UNSUBSCRIBE_TOKEN_SECRET || 'your-secret-key-change-this-in-production';
 const TOKEN_EXPIRY_HOURS = 24 * 7; // 7 days
+
+function resolveTokenSecret(): string {
+  const secret = process.env.UNSUBSCRIBE_TOKEN_SECRET?.trim();
+  if (!secret) {
+    throw new Error('UNSUBSCRIBE_TOKEN_SECRET is not configured');
+  }
+  return secret;
+}
+
+function constantTimeEqual(a: string, b: string): boolean {
+  const aBuffer = Buffer.from(a);
+  const bBuffer = Buffer.from(b);
+  if (aBuffer.length !== bBuffer.length) {
+    return false;
+  }
+  return crypto.timingSafeEqual(aBuffer, bBuffer);
+}
 
 /**
  * Generate a secure unsubscribe token for an email
@@ -10,12 +26,13 @@ const TOKEN_EXPIRY_HOURS = 24 * 7; // 7 days
  * @returns Promise<string> - The unsubscribe token
  */
 export const generateUnsubscribeToken = async (email: string): Promise<string> => {
+  const tokenSecret = resolveTokenSecret();
   const timestamp = Date.now();
   const data = `${email}:${timestamp}`;
   
   // Create HMAC signature
   const signature = crypto
-    .createHmac('sha256', TOKEN_SECRET)
+    .createHmac('sha256', tokenSecret)
     .update(data)
     .digest('hex');
   
@@ -36,18 +53,15 @@ export const verifyUnsubscribeToken = async (token: string): Promise<{
   expired?: boolean;
 }> => {
   try {
-    console.log('🔍 Verifying token:', token.substring(0, 50) + '...');
+    const tokenSecret = resolveTokenSecret();
     
     // Decode the token
     const decoded = Buffer.from(token, 'base64').toString('utf-8');
-    console.log('🔍 Decoded token:', decoded);
     
     const parts = decoded.split(':');
-    console.log('🔍 Token parts:', parts.length, parts);
     
     // Token format: email:timestamp:signature
     if (parts.length !== 3) {
-      console.error('❌ Invalid token format: expected 3 parts, got', parts.length);
       return { valid: false };
     }
     
@@ -55,24 +69,16 @@ export const verifyUnsubscribeToken = async (token: string): Promise<{
     const data = `${email}:${timestamp}`;
     
     if (!email || !timestamp || !signature) {
-      console.error('❌ Missing token components:', { email: !!email, timestamp: !!timestamp, signature: !!signature });
       return { valid: false };
     }
     
     // Verify signature
     const expectedSignature = crypto
-      .createHmac('sha256', TOKEN_SECRET)
+      .createHmac('sha256', tokenSecret)
       .update(data)
       .digest('hex');
-    
-    console.log('🔍 Signature comparison:', {
-      received: signature.substring(0, 20) + '...',
-      expected: expectedSignature.substring(0, 20) + '...',
-      match: signature === expectedSignature
-    });
-    
-    if (signature !== expectedSignature) {
-      console.error('❌ Signature mismatch!');
+
+    if (!constantTimeEqual(signature, expectedSignature)) {
       return { valid: false };
     }
     
@@ -80,23 +86,14 @@ export const verifyUnsubscribeToken = async (token: string): Promise<{
     const currentTime = Date.now();
     const expiryTime = tokenTime + (TOKEN_EXPIRY_HOURS * 60 * 60 * 1000);
     
-    console.log('🔍 Token time check:', {
-      tokenTime,
-      currentTime,
-      expiryTime,
-      expired: currentTime > expiryTime
-    });
-    
     // Check if token is expired
     if (currentTime > expiryTime) {
-      console.error('❌ Token expired!');
       return { valid: false, expired: true };
     }
-    
-    console.log('✅ Token valid for email:', email);
+
     return { valid: true, email };
   } catch (error) {
-    console.error('❌ Token verification error:', error);
+    console.error('Token verification error:', error);
     return { valid: false };
   }
 };

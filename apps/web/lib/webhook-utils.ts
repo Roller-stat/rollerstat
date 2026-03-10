@@ -50,17 +50,31 @@ export const verifyWebhookSignature = (
       };
     }
 
+    const normalizedSignature = signature.trim().replace(/^sha256=/i, '');
+    if (!/^[a-f0-9]+$/i.test(normalizedSignature)) {
+      return {
+        isValid: false,
+        error: 'Malformed webhook signature'
+      };
+    }
+
     // Create expected signature
     const expectedSignature = crypto
       .createHmac('sha256', secret)
       .update(payload, 'utf8')
       .digest('hex');
 
+    const actualBuffer = Buffer.from(normalizedSignature, 'hex');
+    const expectedBuffer = Buffer.from(expectedSignature, 'hex');
+    if (actualBuffer.length !== expectedBuffer.length) {
+      return {
+        isValid: false,
+        error: 'Invalid webhook signature'
+      };
+    }
+
     // Compare signatures using timing-safe comparison
-    const isValid = crypto.timingSafeEqual(
-      Buffer.from(signature, 'hex'),
-      Buffer.from(expectedSignature, 'hex')
-    );
+    const isValid = crypto.timingSafeEqual(actualBuffer, expectedBuffer);
 
     if (!isValid) {
       return {

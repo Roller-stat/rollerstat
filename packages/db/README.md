@@ -18,6 +18,10 @@ and:
 
 `migrations/20260307_retention_automation.sql`
 
+and:
+
+`migrations/20260310_enable_row_level_security.sql`
+
 ## Import Existing MDX Content
 
 After schema exists and env vars are set:
@@ -29,7 +33,7 @@ node scripts/import-mdx-to-db.mjs
 Required env vars:
 
 - `SUPABASE_URL`
-- one of `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_SECRET_KEY`, `SUPABASE_ANON_KEY`, `SUPABASE_PUBLISHABLE_KEY`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
+- one of `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_SECRET_KEY`, `SUPABASE_KEY`
 
 ## Retention Cleanup
 

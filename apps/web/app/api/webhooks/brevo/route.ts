@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { processWebhookEvent } from '@/lib/brevo';
-import { parseWebhookPayload, logWebhookEvent } from '@/lib/webhook-utils';
+import { parseWebhookPayload, logWebhookEvent, verifyWebhookSignature } from '@/lib/webhook-utils';
 
 // Webhook event types are now handled by the imported webhook-utils
 
@@ -12,11 +12,12 @@ export async function POST(request: NextRequest) {
     console.log('🔔 Received Brevo webhook');
 
     // Get webhook ID from environment
-    const webhookId = process.env.BREVO_WEBHOOK_ID;
-    if (!webhookId) {
-      console.error('❌ BREVO_WEBHOOK_ID not configured');
+    const webhookId = process.env.BREVO_WEBHOOK_ID?.trim();
+    const webhookSecret = process.env.BREVO_WEBHOOK_SECRET?.trim();
+    if (!webhookId || !webhookSecret) {
+      console.error('❌ Brevo webhook is not fully configured');
       return NextResponse.json(
-        { error: 'Webhook ID not configured' },
+        { error: 'Webhook authentication is not configured' },
         { status: 500 }
       );
     }
@@ -39,6 +40,21 @@ export async function POST(request: NextRequest) {
       console.error('❌ Invalid webhook ID:', receivedWebhookId);
       return NextResponse.json(
         { error: 'Invalid webhook ID' },
+        { status: 401 }
+      );
+    }
+
+    // Verify webhook signature (HMAC SHA-256)
+    const receivedSignature = request.headers.get('x-brevo-signature');
+    const signatureVerification = verifyWebhookSignature(
+      body,
+      receivedSignature || '',
+      webhookSecret,
+    );
+    if (!signatureVerification.isValid) {
+      console.error('❌ Invalid Brevo webhook signature');
+      return NextResponse.json(
+        { error: signatureVerification.error || 'Invalid webhook signature' },
         { status: 401 }
       );
     }

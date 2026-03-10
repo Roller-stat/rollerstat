@@ -122,7 +122,7 @@ function resolveSender() {
 }
 
 function resolveBaseUrl(): string {
-  return (process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000").replace(/\/$/, "")
+  return (process.env.NEXT_PUBLIC_BASE_URL || "https://rollerstat.com").replace(/\/$/, "")
 }
 
 function getPostPath(type: "news" | "blog"): "news" | "blogs" {

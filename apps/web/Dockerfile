@@ -9,6 +9,10 @@ COPY package.json package-lock.json ./
 RUN npm ci
 
 FROM deps AS builder
+ARG NEXT_PUBLIC_BASE_URL=https://rollerstat.com
+ARG NEXT_PUBLIC_SITE_URL=https://rollerstat.com
+ENV NEXT_PUBLIC_BASE_URL=${NEXT_PUBLIC_BASE_URL}
+ENV NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL}
 COPY . .
 # apps/web/.env.local is a symlink to ../../.env.local in local dev.
 # In Docker context, root .env.local is excluded, so create a safe placeholder.
