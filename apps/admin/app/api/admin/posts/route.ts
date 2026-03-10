@@ -24,6 +24,10 @@ function resolveWebAppDir(): string {
   return existing ?? candidates[0]
 }
 
+function isFileFallbackEnabled(): boolean {
+  return process.env.NODE_ENV !== "production"
+}
+
 type PostStatus = "draft" | "published" | "archived"
 type DateField = "publishedAt" | "createdAt" | "updatedAt"
 type DatePreset = "all" | "today" | "7d" | "30d" | "custom"
@@ -186,7 +190,15 @@ export async function GET(request: NextRequest) {
     const page = parsePositiveInt(searchParams.get("page"), 1)
     const pageSize = Math.min(100, Math.max(1, parsePositiveInt(searchParams.get("pageSize"), 20)))
 
-    const ops = isDatabaseConfigured() ? dbOps : { listPosts, createPost }
+    const databaseConfigured = isDatabaseConfigured()
+    if (!databaseConfigured && !isFileFallbackEnabled()) {
+      return NextResponse.json(
+        { error: "Database is required in production" },
+        { status: 503 }
+      )
+    }
+
+    const ops = databaseConfigured ? dbOps : { listPosts, createPost }
 
     const posts = await ops.listPosts(locale, type)
 
@@ -333,7 +345,15 @@ export async function POST(request: NextRequest) {
     }
 
     // Create post
-    const result = isDatabaseConfigured()
+    const databaseConfigured = isDatabaseConfigured()
+    if (!databaseConfigured && !isFileFallbackEnabled()) {
+      return NextResponse.json(
+        { error: "Database is required in production" },
+        { status: 503 }
+      )
+    }
+
+    const result = databaseConfigured
       ? await dbOps.createPost(normalizedPayload)
       : await createPost({
           ...normalizedPayload,
@@ -388,7 +408,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Regenerate contentlayer only when filesystem mode is active
-    if (!isDatabaseConfigured()) {
+    if (!databaseConfigured) {
       try {
         const { exec } = await import("child_process")
         const { promisify } = await import("util")

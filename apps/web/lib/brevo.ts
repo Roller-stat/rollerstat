@@ -1,6 +1,67 @@
 import * as brevo from '@getbrevo/brevo';
 import { generateUnsubscribeUrl } from './unsubscribe-tokens';
 
+const EMAIL_PATTERN = /([a-zA-Z0-9._%+-]{2})[a-zA-Z0-9._%+-]*@([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g;
+
+function sanitizeLogValue(value: unknown, depth = 0): unknown {
+  if (depth > 2) {
+    return '[redacted]';
+  }
+
+  if (typeof value === 'string') {
+    return value.replace(EMAIL_PATTERN, (_, prefix: string, domain: string) => `${prefix}***@${domain}`);
+  }
+
+  if (Array.isArray(value)) {
+    return value.map((entry) => sanitizeLogValue(entry, depth + 1));
+  }
+
+  if (value && typeof value === 'object') {
+    const sanitized: Record<string, unknown> = {};
+    for (const [key, entry] of Object.entries(value)) {
+      if (/email|token|secret|password|signature/i.test(key)) {
+        sanitized[key] = '[redacted]';
+      } else {
+        sanitized[key] = sanitizeLogValue(entry, depth + 1);
+      }
+    }
+    return sanitized;
+  }
+
+  return value;
+}
+
+function logInfo(...args: unknown[]) {
+  if (process.env.NODE_ENV === 'production') {
+    return;
+  }
+  globalThis.console.log(...args.map((value) => sanitizeLogValue(value)));
+}
+
+function logWarn(...args: unknown[]) {
+  const sanitized = args.map((value) => sanitizeLogValue(value));
+  if (process.env.NODE_ENV === 'production') {
+    if (sanitized.length > 0) {
+      globalThis.console.warn(String(sanitized[0]));
+    }
+    return;
+  }
+  globalThis.console.warn(...sanitized);
+}
+
+function logError(...args: unknown[]) {
+  const sanitized = args.map((value) => sanitizeLogValue(value));
+  if (process.env.NODE_ENV === 'production') {
+    if (sanitized.length > 0) {
+      globalThis.console.error(String(sanitized[0]));
+      return;
+    }
+    globalThis.console.error('Brevo operation failed');
+    return;
+  }
+  globalThis.console.error(...sanitized);
+}
+
 // Initialize Brevo API client
 const apiInstance = new brevo.ContactsApi();
 const listsApiInstance = new brevo.ContactsApi();
@@ -12,10 +73,10 @@ if (brevoApiKey) {
   apiInstance.setApiKey(brevo.ContactsApiApiKeys.apiKey, brevoApiKey);
   listsApiInstance.setApiKey(brevo.ContactsApiApiKeys.apiKey, brevoApiKey);
   emailApiInstance.setApiKey(brevo.TransactionalEmailsApiApiKeys.apiKey, brevoApiKey);
-  console.log('✅ Brevo API client initialized');
+  logInfo('✅ Brevo API client initialized');
 } else {
   // Keep module import-safe for builds where runtime secrets are unavailable.
-  console.warn('⚠️ BREVO_API_KEY not found in environment variables. Brevo features are disabled.');
+  logWarn('⚠️ BREVO_API_KEY not found in environment variables. Brevo features are disabled.');
 }
 
 // Types for better type safety
@@ -79,7 +140,7 @@ export const addSubscriber = async (
   listIds: number[] = []
 ): Promise<BrevoResponse> => {
   try {
-    console.log(`📧 Adding subscriber: ${email}`);
+    logInfo(`📧 Adding subscriber: ${email}`);
 
     // Get default list IDs from environment if not provided
     const defaultListIds = listIds.length > 0 ? listIds : [
@@ -90,20 +151,20 @@ export const addSubscriber = async (
     // First, try to get the contact to see if it already exists
     try {
       const existingContact = await apiInstance.getContactInfo(email);
-      console.log(`📧 Contact already exists: ${email}, checking subscription status`);
+      logInfo(`📧 Contact already exists: ${email}, checking subscription status`);
       
       // Check if user is already subscribed to newsletter list
       const newsletterListId = parseInt(process.env.BREVO_NEWSLETTER_LIST_ID || '');
       const currentListIds = existingContact.body?.listIds || [];
       
-      console.log(`🔍 Checking subscription status for ${email}:`, {
+      logInfo(`🔍 Checking subscription status for ${email}:`, {
         newsletterListId,
         currentListIds,
         isInNewsletterList: currentListIds.includes(newsletterListId)
       });
       
       if (currentListIds.includes(newsletterListId)) {
-        console.log(`📧 User ${email} is already subscribed to newsletter`);
+        logInfo(`📧 User ${email} is already subscribed to newsletter`);
         return {
           success: false,
           error: 'Email already subscribed'
@@ -111,7 +172,7 @@ export const addSubscriber = async (
       }
       
       // User exists but not in newsletter list - they need to be added
-      console.log(`📧 Adding existing user ${email} to newsletter list`);
+      logInfo(`📧 Adding existing user ${email} to newsletter list`);
       
       // Check if user was previously unsubscribed (blacklisted)
       const isBlacklisted = existingContact.body?.emailBlacklisted;
@@ -120,7 +181,7 @@ export const addSubscriber = async (
       
       // If user was previously unsubscribed, remove blacklist status
       if (isBlacklisted || wasUnsubscribed) {
-        console.log(`📧 User ${email} was previously unsubscribed, removing blacklist status`);
+        logInfo(`📧 User ${email} was previously unsubscribed, removing blacklist status`);
         
         const updateContact = new brevo.UpdateContact();
         updateContact.emailBlacklisted = false;
@@ -132,18 +193,18 @@ export const addSubscriber = async (
         };
         
         await apiInstance.updateContact(email, updateContact);
-        console.log(`✅ Removed blacklist status for ${email}`);
+        logInfo(`✅ Removed blacklist status for ${email}`);
       }
       
       // Add to Newsletter list (they're already in Welcome series if they exist)
       try {
         await addToList(email, newsletterListId);
-        console.log(`✅ Successfully added to Newsletter list ${newsletterListId}`);
+        logInfo(`✅ Successfully added to Newsletter list ${newsletterListId}`);
       } catch (listError) {
-        console.warn(`⚠️ Failed to add to Newsletter list ${newsletterListId}:`, listError);
+        logWarn(`⚠️ Failed to add to Newsletter list ${newsletterListId}:`, listError);
       }
       
-      console.log(`📧 Returning addSubscriber result for ${email}:`, {
+      logInfo(`📧 Returning addSubscriber result for ${email}:`, {
         success: true,
         shouldSendWelcome: true // Always send welcome email for existing users who weren't subscribed
       });
@@ -156,7 +217,7 @@ export const addSubscriber = async (
       };
     } catch {
       // Contact doesn't exist, create new one
-      console.log(`📧 Creating new contact: ${email}`);
+      logInfo(`📧 Creating new contact: ${email}`);
       
       const createContact = new brevo.CreateContact();
       createContact.email = email;
@@ -167,8 +228,8 @@ export const addSubscriber = async (
 
       const result = await apiInstance.createContact(createContact);
       
-      console.log(`✅ New subscriber added successfully: ${email}`);
-      console.log(`📧 Returning addSubscriber result for new user ${email}:`, {
+      logInfo(`✅ New subscriber added successfully: ${email}`);
+      logInfo(`📧 Returning addSubscriber result for new user ${email}:`, {
         success: true,
         shouldSendWelcome: true
       });
@@ -181,7 +242,7 @@ export const addSubscriber = async (
       };
     }
   } catch (error: unknown) {
-    console.error(`❌ Failed to add subscriber ${email}`);
+    logError(`❌ Failed to add subscriber ${email}`);
     
     // Handle specific Brevo errors - check multiple possible error structures
     if (error && typeof error === 'object') {
@@ -200,7 +261,7 @@ export const addSubscriber = async (
                         (errorObj.status as number) || 
                         response?.statusCode;
       
-      console.log('🔍 Parsed error details:', {
+      logInfo('🔍 Parsed error details:', {
         statusCode,
         errorMessage: errorMessage || 'No provider message',
         isDuplicate: errorMessage.includes('Contact already exist') || 
@@ -223,7 +284,7 @@ export const addSubscriber = async (
             errorMessage.includes('already exist') ||
             errorMessage.includes('duplicate') ||
             errorMessage.includes('already registered')) {
-          console.log('✅ Detected duplicate contact, returning already subscribed error');
+          logInfo('✅ Detected duplicate contact, returning already subscribed error');
           return {
             success: false,
             error: 'Email already subscribed'
@@ -250,20 +311,20 @@ export const updateSubscriber = async (
   attributes: SubscriberAttributes
 ): Promise<BrevoResponse> => {
   try {
-    console.log(`📝 Updating subscriber: ${email}`);
+    logInfo(`📝 Updating subscriber: ${email}`);
 
     const updateContact = new brevo.UpdateContact();
     updateContact.attributes = attributes;
 
     const result = await apiInstance.updateContact(email, updateContact);
     
-    console.log(`✅ Subscriber updated successfully: ${email}`);
+    logInfo(`✅ Subscriber updated successfully: ${email}`);
     return {
       success: true,
       data: result
     };
   } catch (error: unknown) {
-    console.error(`❌ Failed to update subscriber ${email}:`, error);
+    logError(`❌ Failed to update subscriber ${email}:`, error);
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to update subscriber'
@@ -278,14 +339,14 @@ export const updateSubscriber = async (
  */
 export const removeSubscriber = async (email: string): Promise<BrevoResponse> => {
   try {
-    console.log(`🗑️ Unsubscribing: ${email}`);
+    logInfo(`🗑️ Unsubscribing: ${email}`);
 
     // Get the contact first to get their current list IDs
     let contactInfo;
     try {
       contactInfo = await apiInstance.getContactInfo(email);
     } catch {
-      console.log(`📧 Contact ${email} not found, nothing to unsubscribe`);
+      logInfo(`📧 Contact ${email} not found, nothing to unsubscribe`);
       return {
         success: true,
         data: { message: 'Contact not found, already unsubscribed' }
@@ -299,18 +360,18 @@ export const removeSubscriber = async (email: string): Promise<BrevoResponse> =>
     const newsletterListId = parseInt(process.env.BREVO_NEWSLETTER_LIST_ID || '');
     const currentListIds = contactInfo.body?.listIds || [];
     
-    console.log(`📋 Current lists: ${currentListIds.join(', ')}`);
-    console.log(`📋 Removing from Newsletter list only (ID: ${newsletterListId})`);
+    logInfo(`📋 Current lists: ${currentListIds.join(', ')}`);
+    logInfo(`📋 Removing from Newsletter list only (ID: ${newsletterListId})`);
     
     if (currentListIds.includes(newsletterListId)) {
       try {
         await removeFromList(email, newsletterListId);
-        console.log(`✅ Removed from Newsletter list ${newsletterListId}`);
+        logInfo(`✅ Removed from Newsletter list ${newsletterListId}`);
       } catch (listError) {
-        console.warn(`⚠️ Failed to remove from Newsletter list ${newsletterListId}:`, listError);
+        logWarn(`⚠️ Failed to remove from Newsletter list ${newsletterListId}:`, listError);
       }
     } else {
-      console.log(`📧 User ${email} was not in Newsletter list`);
+      logInfo(`📧 User ${email} was not in Newsletter list`);
     }
 
     // IMPORTANT: Update attributes first (but DON'T blacklist yet - we need to send confirmation email)
@@ -325,7 +386,7 @@ export const removeSubscriber = async (email: string): Promise<BrevoResponse> =>
 
     const result = await apiInstance.updateContact(email, updateContact);
     
-    console.log(`✅ Subscriber unsubscribed successfully: ${email}`);
+    logInfo(`✅ Subscriber unsubscribed successfully: ${email}`);
     return {
       success: true,
       data: result,
@@ -333,7 +394,7 @@ export const removeSubscriber = async (email: string): Promise<BrevoResponse> =>
       locale: subscriberLocale || 'en' // Return locale for confirmation email
     };
   } catch (error: unknown) {
-    console.error(`❌ Failed to unsubscribe ${email}:`, error);
+    logError(`❌ Failed to unsubscribe ${email}:`, error);
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to unsubscribe'
@@ -348,17 +409,17 @@ export const removeSubscriber = async (email: string): Promise<BrevoResponse> =>
  */
 export const getSubscriber = async (email: string): Promise<BrevoResponse> => {
   try {
-    console.log(`🔍 Getting subscriber details: ${email}`);
+    logInfo(`🔍 Getting subscriber details: ${email}`);
 
     const result = await apiInstance.getContactInfo(email);
     
-    console.log(`✅ Subscriber details retrieved: ${email}`);
+    logInfo(`✅ Subscriber details retrieved: ${email}`);
     return {
       success: true,
       data: result
     };
   } catch (error: unknown) {
-    console.error(`❌ Failed to get subscriber ${email}:`, error);
+    logError(`❌ Failed to get subscriber ${email}:`, error);
     
     if (error && typeof error === 'object' && 'status' in error && error.status === 404) {
       return {
@@ -380,7 +441,7 @@ export const getSubscriber = async (email: string): Promise<BrevoResponse> => {
  */
 export const getSubscriberStats = async (): Promise<SubscriberStats> => {
   try {
-    console.log(`📊 Getting subscriber statistics`);
+    logInfo(`📊 Getting subscriber statistics`);
 
     // Get all lists
     const listsResult = await listsApiInstance.getLists();
@@ -401,7 +462,7 @@ export const getSubscriberStats = async (): Promise<SubscriberStats> => {
       }
     });
 
-    console.log(`✅ Subscriber statistics retrieved`);
+    logInfo(`✅ Subscriber statistics retrieved`);
     return {
       totalSubscribers,
       activeSubscribers,
@@ -409,7 +470,7 @@ export const getSubscriberStats = async (): Promise<SubscriberStats> => {
       listStats
     };
   } catch (error: unknown) {
-    console.error(`❌ Failed to get subscriber statistics:`, error);
+    logError(`❌ Failed to get subscriber statistics:`, error);
     return {
       totalSubscribers: 0,
       activeSubscribers: 0,
@@ -431,7 +492,7 @@ export const getSubscriberStats = async (): Promise<SubscriberStats> => {
  */
 export const createList = async (name: string): Promise<BrevoResponse> => {
   try {
-    console.log(`📋 Creating list: ${name}`);
+    logInfo(`📋 Creating list: ${name}`);
 
     const createList = new brevo.CreateList();
     createList.name = name;
@@ -439,13 +500,13 @@ export const createList = async (name: string): Promise<BrevoResponse> => {
 
     const result = await listsApiInstance.createList(createList);
     
-    console.log(`✅ List created successfully: ${name}`);
+    logInfo(`✅ List created successfully: ${name}`);
     return {
       success: true,
       data: result
     };
   } catch (error: unknown) {
-    console.error(`❌ Failed to create list ${name}:`, error);
+    logError(`❌ Failed to create list ${name}:`, error);
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to create list'
@@ -461,20 +522,20 @@ export const createList = async (name: string): Promise<BrevoResponse> => {
  */
 export const addToList = async (email: string, listId: number): Promise<BrevoResponse> => {
   try {
-    console.log(`➕ Adding ${email} to list ${listId}`);
+    logInfo(`➕ Adding ${email} to list ${listId}`);
 
     const addContactToList = new brevo.AddContactToList();
     addContactToList.emails = [email];
 
     const result = await listsApiInstance.addContactToList(listId, addContactToList);
     
-    console.log(`✅ Subscriber added to list successfully: ${email} -> ${listId}`);
+    logInfo(`✅ Subscriber added to list successfully: ${email} -> ${listId}`);
     return {
       success: true,
       data: result
     };
   } catch (error: unknown) {
-    console.error(`❌ Failed to add ${email} to list ${listId}:`, error);
+    logError(`❌ Failed to add ${email} to list ${listId}:`, error);
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to add subscriber to list'
@@ -490,20 +551,20 @@ export const addToList = async (email: string, listId: number): Promise<BrevoRes
  */
 export const removeFromList = async (email: string, listId: number): Promise<BrevoResponse> => {
   try {
-    console.log(`➖ Removing ${email} from list ${listId}`);
+    logInfo(`➖ Removing ${email} from list ${listId}`);
 
     const removeContactFromList = new brevo.RemoveContactFromList();
     removeContactFromList.emails = [email];
 
     const result = await listsApiInstance.removeContactFromList(listId, removeContactFromList);
     
-    console.log(`✅ Subscriber removed from list successfully: ${email} <- ${listId}`);
+    logInfo(`✅ Subscriber removed from list successfully: ${email} <- ${listId}`);
     return {
       success: true,
       data: result
     };
   } catch (error: unknown) {
-    console.error(`❌ Failed to remove ${email} from list ${listId}:`, error);
+    logError(`❌ Failed to remove ${email} from list ${listId}:`, error);
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to remove subscriber from list'
@@ -518,17 +579,17 @@ export const removeFromList = async (email: string, listId: number): Promise<Bre
  */
 export const getListMembers = async (listId: number): Promise<BrevoResponse> => {
   try {
-    console.log(`👥 Getting members of list ${listId}`);
+    logInfo(`👥 Getting members of list ${listId}`);
 
     const result = await listsApiInstance.getContactsFromList(listId);
     
-    console.log(`✅ List members retrieved: ${listId}`);
+    logInfo(`✅ List members retrieved: ${listId}`);
     return {
       success: true,
       data: result
     };
   } catch (error: unknown) {
-    console.error(`❌ Failed to get members of list ${listId}:`, error);
+    logError(`❌ Failed to get members of list ${listId}:`, error);
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to get list members'
@@ -549,8 +610,8 @@ export const getListMembers = async (listId: number): Promise<BrevoResponse> => 
  */
 export const sendWelcomeEmail = async (email: string, name?: string, locale: string = 'en'): Promise<BrevoResponse> => {
   try {
-    console.log(`📧 Sending welcome email to: ${email} with locale: ${locale}`);
-    console.log(`📧 Welcome email function called with:`, { email, name, locale });
+    logInfo(`📧 Sending welcome email to: ${email} with locale: ${locale}`);
+    logInfo(`📧 Welcome email function called with:`, { email, name, locale });
 
     // Validate locale and get template ID based on locale
     const validLocales = ['en', 'es', 'fr', 'it', 'pt'];
@@ -562,12 +623,12 @@ export const sendWelcomeEmail = async (email: string, name?: string, locale: str
     
     // Fallback to default English template if locale-specific template not found
     if (!templateId || isNaN(templateId)) {
-      console.warn(`⚠️ Template ID for locale ${sanitizedLocale} not found, falling back to English template`);
+      logWarn(`⚠️ Template ID for locale ${sanitizedLocale} not found, falling back to English template`);
       templateId = parseInt(process.env.BREVO_WELCOME_TEMPLATE_ID || '');
     }
     
     if (!templateId || isNaN(templateId)) {
-      console.error('❌ BREVO_WELCOME_TEMPLATE_ID not configured or invalid');
+      logError('❌ BREVO_WELCOME_TEMPLATE_ID not configured or invalid');
       throw new Error('Welcome email template ID not configured');
     }
 
@@ -597,13 +658,13 @@ export const sendWelcomeEmail = async (email: string, name?: string, locale: str
       email: senderEmail
     };
 
-    console.log(`📧 About to send welcome email via Brevo template (ID: ${templateId}) to: ${email}`);
-    console.log(`📧 Template parameters:`, templateParams);
-    console.log(`📧 Sender configured:`, { name: 'Rollerstat', email: senderEmail });
+    logInfo(`📧 About to send welcome email via Brevo template (ID: ${templateId}) to: ${email}`);
+    logInfo(`📧 Template parameters:`, templateParams);
+    logInfo(`📧 Sender configured:`, { name: 'Rollerstat', email: senderEmail });
     
     const result = await emailApiInstance.sendTransacEmail(sendSmtpEmail);
     
-    console.log(`✅ Welcome email sent successfully: ${email}`, {
+    logInfo(`✅ Welcome email sent successfully: ${email}`, {
       messageId: result.body?.messageId,
       templateId: templateId,
       result: result.body
@@ -614,8 +675,8 @@ export const sendWelcomeEmail = async (email: string, name?: string, locale: str
       messageId: result.body?.messageId
     };
   } catch (error: unknown) {
-    console.error(`❌ Failed to send welcome email to ${email}:`, error);
-    console.error(`❌ Welcome email error details:`, {
+    logError(`❌ Failed to send welcome email to ${email}:`, error);
+    logError(`❌ Welcome email error details:`, {
       error: error,
       type: typeof error,
       message: error instanceof Error ? error.message : 'Unknown error'
@@ -640,7 +701,7 @@ export const sendNewsletter = async (
   listId?: number
 ): Promise<BrevoResponse> => {
   try {
-    console.log(`📰 Sending newsletter: ${subject}`);
+    logInfo(`📰 Sending newsletter: ${subject}`);
 
     const targetListId = listId || parseInt(process.env.BREVO_NEWSLETTER_LIST_ID || '');
     
@@ -673,14 +734,14 @@ export const sendNewsletter = async (
 
     const result = await emailApiInstance.sendTransacEmail(sendSmtpEmail);
     
-    console.log(`✅ Newsletter sent successfully: ${subject}`);
+    logInfo(`✅ Newsletter sent successfully: ${subject}`);
     return {
       success: true,
       data: result,
       messageId: result.body?.messageId
     };
   } catch (error: unknown) {
-    console.error(`❌ Failed to send newsletter:`, error);
+    logError(`❌ Failed to send newsletter:`, error);
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to send newsletter'
@@ -696,7 +757,7 @@ export const sendNewsletter = async (
  */
 export const sendUnsubscribeConfirmation = async (email: string, locale: string = 'en'): Promise<BrevoResponse> => {
   try {
-    console.log(`📧 Sending unsubscribe confirmation to: ${email} with locale: ${locale}`);
+    logInfo(`📧 Sending unsubscribe confirmation to: ${email} with locale: ${locale}`);
 
     // Validate locale and get template ID based on locale
     const validLocales = ['en', 'es', 'fr', 'it', 'pt'];
@@ -708,12 +769,12 @@ export const sendUnsubscribeConfirmation = async (email: string, locale: string 
     
     // Fallback to default English template if locale-specific template not found
     if (!templateId || isNaN(templateId)) {
-      console.warn(`⚠️ Template ID for locale ${sanitizedLocale} not found, falling back to English template`);
+      logWarn(`⚠️ Template ID for locale ${sanitizedLocale} not found, falling back to English template`);
       templateId = parseInt(process.env.BREVO_UNSUBSCRIBE_TEMPLATE_ID || '');
     }
     
     if (!templateId || isNaN(templateId)) {
-      console.error('❌ BREVO_UNSUBSCRIBE_TEMPLATE_ID not configured or invalid');
+      logError('❌ BREVO_UNSUBSCRIBE_TEMPLATE_ID not configured or invalid');
       throw new Error('Unsubscribe confirmation template ID not configured');
     }
 
@@ -726,14 +787,14 @@ export const sendUnsubscribeConfirmation = async (email: string, locale: string 
       resubscribeUrl: `${baseUrl}/${sanitizedLocale}`
     };
 
-    console.log(`🔍 Template parameters being sent:`, templateParams);
-    console.log(`🔍 Resubscribe URL value: ${templateParams.resubscribeUrl}`);
-    console.log(`🔍 Base URL: ${baseUrl}, Locale: ${sanitizedLocale}`);
+    logInfo(`🔍 Template parameters being sent:`, templateParams);
+    logInfo(`🔍 Resubscribe URL value: ${templateParams.resubscribeUrl}`);
+    logInfo(`🔍 Base URL: ${baseUrl}, Locale: ${sanitizedLocale}`);
 
     const senderEmail = process.env.BREVO_SENDER_EMAIL;
     
     if (!senderEmail) {
-      console.error('❌ BREVO_SENDER_EMAIL not configured in environment variables');
+      logError('❌ BREVO_SENDER_EMAIL not configured in environment variables');
       throw new Error('BREVO_SENDER_EMAIL is required');
     }
 
@@ -747,18 +808,18 @@ export const sendUnsubscribeConfirmation = async (email: string, locale: string 
       email: senderEmail
     };
 
-    console.log(`📧 Sending email with params object:`, JSON.stringify(sendSmtpEmail.params, null, 2));
-    console.log(`📧 Expected URL in email: ${templateParams.resubscribeUrl}`);
+    logInfo(`📧 Sending email with params object:`, JSON.stringify(sendSmtpEmail.params, null, 2));
+    logInfo(`📧 Expected URL in email: ${templateParams.resubscribeUrl}`);
 
     const result = await emailApiInstance.sendTransacEmail(sendSmtpEmail);
     
-    console.log(`✅ Unsubscribe confirmation sent successfully: ${email}`, {
+    logInfo(`✅ Unsubscribe confirmation sent successfully: ${email}`, {
       messageId: result.body?.messageId,
       templateId: templateId,
       locale: sanitizedLocale,
       resubscribeUrlSent: templateParams.resubscribeUrl
     });
-    console.log(`✅ Check email - link should point to: ${templateParams.resubscribeUrl}`);
+    logInfo(`✅ Check email - link should point to: ${templateParams.resubscribeUrl}`);
     
     return {
       success: true,
@@ -766,7 +827,7 @@ export const sendUnsubscribeConfirmation = async (email: string, locale: string 
       messageId: result.body?.messageId
     };
   } catch (error: unknown) {
-    console.error(`❌ Failed to send unsubscribe confirmation to ${email}:`, error);
+    logError(`❌ Failed to send unsubscribe confirmation to ${email}:`, error);
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to send unsubscribe confirmation'
@@ -789,63 +850,63 @@ export const processWebhookEvent = async (event: {
   [key: string]: unknown;
 }): Promise<BrevoResponse> => {
   try {
-    console.log(`🔔 Processing webhook event: ${event.event} for ${event.email}`);
+    logInfo(`🔔 Processing webhook event: ${event.event} for ${event.email}`);
 
     switch (event.event) {
       case 'spam':
         // Remove from all lists immediately when spam complaint is received
-        console.log(`⚠️ Spam complaint received for ${event.email} - removing from all lists`);
+        logInfo(`⚠️ Spam complaint received for ${event.email} - removing from all lists`);
         const spamResult = await removeSubscriber(event.email);
         if (spamResult.success) {
-          console.log(`✅ Removed ${event.email} from all lists due to spam complaint`);
+          logInfo(`✅ Removed ${event.email} from all lists due to spam complaint`);
         }
         return spamResult;
 
       case 'unsubscribed':
         // Remove from all lists when user unsubscribes
-        console.log(`👋 Unsubscribe event received for ${event.email} - removing from all lists`);
+        logInfo(`👋 Unsubscribe event received for ${event.email} - removing from all lists`);
         const unsubscribeResult = await removeSubscriber(event.email);
         if (unsubscribeResult.success) {
-          console.log(`✅ Removed ${event.email} from all lists due to unsubscribe`);
+          logInfo(`✅ Removed ${event.email} from all lists due to unsubscribe`);
         }
         return unsubscribeResult;
 
       case 'bounce':
         // Handle bounce events
         if (event.hard_bounce) {
-          console.log(`🚨 Hard bounce detected for ${event.email} - removing from all lists`);
+          logInfo(`🚨 Hard bounce detected for ${event.email} - removing from all lists`);
           const bounceResult = await removeSubscriber(event.email);
           if (bounceResult.success) {
-            console.log(`✅ Removed ${event.email} from all lists due to hard bounce`);
+            logInfo(`✅ Removed ${event.email} from all lists due to hard bounce`);
           }
           return bounceResult;
         } else {
-          console.log(`📧 Soft bounce for ${event.email} - keeping in lists`);
+          logInfo(`📧 Soft bounce for ${event.email} - keeping in lists`);
           return { success: true, data: { action: 'soft_bounce_ignored' } };
         }
 
       case 'blocked':
-        console.log(`🚫 Email blocked for ${event.email} - logging for analytics`);
+        logInfo(`🚫 Email blocked for ${event.email} - logging for analytics`);
         return { success: true, data: { action: 'blocked_logged' } };
 
       case 'delivered':
-        console.log(`✅ Email delivered to ${event.email}`);
+        logInfo(`✅ Email delivered to ${event.email}`);
         return { success: true, data: { action: 'delivery_logged' } };
 
       case 'opened':
-        console.log(`👀 Email opened by ${event.email}`);
+        logInfo(`👀 Email opened by ${event.email}`);
         return { success: true, data: { action: 'open_logged' } };
 
       case 'clicked':
-        console.log(`🖱️ Link clicked by ${event.email}`);
+        logInfo(`🖱️ Link clicked by ${event.email}`);
         return { success: true, data: { action: 'click_logged' } };
 
       default:
-        console.log(`❓ Unknown webhook event: ${event.event} for ${event.email}`);
+        logInfo(`❓ Unknown webhook event: ${event.event} for ${event.email}`);
         return { success: true, data: { action: 'unknown_event_logged' } };
     }
   } catch (error: unknown) {
-    console.error(`❌ Failed to process webhook event for ${event.email}:`, error);
+    logError(`❌ Failed to process webhook event for ${event.email}:`, error);
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to process webhook event'
@@ -859,7 +920,7 @@ export const processWebhookEvent = async (event: {
  */
 export const getWebhookStats = async (): Promise<BrevoResponse> => {
   try {
-    console.log('📊 Getting webhook statistics');
+    logInfo('📊 Getting webhook statistics');
 
     // This would typically query your database for webhook event statistics
     // For now, we'll return a placeholder response
@@ -874,13 +935,13 @@ export const getWebhookStats = async (): Promise<BrevoResponse> => {
       unsubscribed: 0
     };
 
-    console.log('✅ Webhook statistics retrieved');
+    logInfo('✅ Webhook statistics retrieved');
     return {
       success: true,
       data: stats
     };
   } catch (error: unknown) {
-    console.error('❌ Failed to get webhook statistics:', error);
+    logError('❌ Failed to get webhook statistics:', error);
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to get webhook statistics'
@@ -898,19 +959,19 @@ export const getWebhookStats = async (): Promise<BrevoResponse> => {
  */
 export const verifyBrevoConfig = async (): Promise<boolean> => {
   try {
-    console.log('🔍 Verifying Brevo API configuration...');
+    logInfo('🔍 Verifying Brevo API configuration...');
     
     if (!process.env.BREVO_API_KEY) {
-      console.error('❌ BREVO_API_KEY not found in environment variables');
+      logError('❌ BREVO_API_KEY not found in environment variables');
       return false;
     }
 
     // Test API by getting lists
     await listsApiInstance.getLists();
-    console.log('✅ Brevo API configuration verified successfully');
+    logInfo('✅ Brevo API configuration verified successfully');
     return true;
   } catch (error: unknown) {
-    console.error('❌ Brevo API configuration verification failed:', error);
+    logError('❌ Brevo API configuration verification failed:', error);
     return false;
   }
 };
@@ -921,17 +982,17 @@ export const verifyBrevoConfig = async (): Promise<boolean> => {
  */
 export const getAllLists = async (): Promise<BrevoResponse> => {
   try {
-    console.log('📋 Getting all lists...');
+    logInfo('📋 Getting all lists...');
 
     const result = await listsApiInstance.getLists();
     
-    console.log('✅ All lists retrieved successfully');
+    logInfo('✅ All lists retrieved successfully');
     return {
       success: true,
       data: result
     };
   } catch (error: unknown) {
-    console.error('❌ Failed to get all lists:', error);
+    logError('❌ Failed to get all lists:', error);
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to get all lists'

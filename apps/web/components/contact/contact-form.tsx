@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { useTranslations } from "next-intl";
 import { Send, CheckCircle, AlertCircle } from "lucide-react";
+import { TurnstileWidget } from "@/components/security/turnstile-widget";
 
 export function ContactForm() {
   const t = useTranslations("contact");
@@ -18,11 +19,19 @@ export function ContactForm() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [captchaToken, setCaptchaToken] = useState('');
+  const captchaEnabled = Boolean(process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitStatus('idle');
+
+    if (captchaEnabled && !captchaToken) {
+      setSubmitStatus('error');
+      setIsSubmitting(false);
+      return;
+    }
 
     try {
       const response = await fetch('/api/contact', {
@@ -30,12 +39,16 @@ export function ContactForm() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          captchaToken,
+        }),
       });
 
       if (response.ok) {
         setSubmitStatus('success');
         setFormData({ name: "", email: "", message: "" });
+        setCaptchaToken('');
       } else {
         setSubmitStatus('error');
       }
@@ -125,9 +138,11 @@ export function ContactForm() {
             </div>
           )}
 
+          <TurnstileWidget action="contact" onTokenChange={setCaptchaToken} />
+
           <Button
             type="submit"
-            disabled={isSubmitting}
+            disabled={isSubmitting || (captchaEnabled && !captchaToken)}
             className="w-full rounded-none bg-primary hover:bg-primary/90"
           >
             {isSubmitting ? (

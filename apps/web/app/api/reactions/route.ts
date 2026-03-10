@@ -9,6 +9,7 @@ const REACTION_TYPES = ['like', 'applaud', 'love', 'dislike'] as const;
 type ReactionType = (typeof REACTION_TYPES)[number];
 type ReactionCounts = Record<ReactionType, number>;
 type ReactionScopeMode = 'post' | 'localization';
+type SupabaseServerClient = NonNullable<ReturnType<typeof getSupabaseServerClient>>;
 
 function createEmptyCounts(): ReactionCounts {
   return {
@@ -151,6 +152,76 @@ async function resolvePostScope(
   };
 }
 
+async function resolveReactionScopeMode(
+  client: SupabaseServerClient,
+  scope: { postId: string; postLocalizationId: string },
+): Promise<{ schemaReady: boolean; scopeMode: ReactionScopeMode }> {
+  let scopeMode: ReactionScopeMode = 'post';
+
+  let probe = await client
+    .from('reactions')
+    .select('id', { count: 'exact', head: true })
+    .eq('post_id', scope.postId);
+
+  if (probe.error && isMissingPostIdColumnError(probe.error)) {
+    scopeMode = 'localization';
+    probe = await client
+      .from('reactions')
+      .select('id', { count: 'exact', head: true })
+      .eq('post_localization_id', scope.postLocalizationId);
+  }
+
+  if (probe.error) {
+    if (isMissingTableError(probe.error)) {
+      return {
+        schemaReady: false,
+        scopeMode,
+      };
+    }
+    throw probe.error;
+  }
+
+  return {
+    schemaReady: true,
+    scopeMode,
+  };
+}
+
+async function countReactionsByType(
+  client: SupabaseServerClient,
+  scope: { postId: string; postLocalizationId: string },
+  scopeMode: ReactionScopeMode,
+): Promise<ReactionCounts> {
+  const counts = createEmptyCounts();
+  const scopeColumn = scopeMode === 'post' ? 'post_id' : 'post_localization_id';
+  const scopeValue = scopeMode === 'post' ? scope.postId : scope.postLocalizationId;
+
+  const countResults = await Promise.all(
+    REACTION_TYPES.map(async (reactionType) => {
+      const { count, error } = await client
+        .from('reactions')
+        .select('id', { count: 'exact', head: true })
+        .eq(scopeColumn, scopeValue)
+        .eq('reaction_type', reactionType);
+
+      if (error) {
+        throw error;
+      }
+
+      return {
+        reactionType,
+        count: count ?? 0,
+      };
+    }),
+  );
+
+  for (const result of countResults) {
+    counts[result.reactionType] = result.count;
+  }
+
+  return counts;
+}
+
 async function getReactionState(
   scope: { postId: string; postLocalizationId: string },
   deviceHash: string,
@@ -166,60 +237,34 @@ async function getReactionState(
     };
   }
 
-  const counts = createEmptyCounts();
-  let scopeMode: ReactionScopeMode = 'post';
-
-  let rowsResult = await client
-    .from('reactions')
-    .select('reaction_type')
-    .eq('post_id', scope.postId);
-
-  if (rowsResult.error && isMissingPostIdColumnError(rowsResult.error)) {
-    scopeMode = 'localization';
-    rowsResult = await client
-      .from('reactions')
-      .select('reaction_type')
-      .eq('post_localization_id', scope.postLocalizationId);
+  const scopeResolution = await resolveReactionScopeMode(client, scope);
+  if (!scopeResolution.schemaReady) {
+    return {
+      counts: createEmptyCounts(),
+      selectedReactionType: null,
+      existingReactionId: null,
+      schemaReady: false,
+      scopeMode: scopeResolution.scopeMode,
+    };
   }
 
-  const { data: rows, error: rowsError } = rowsResult;
+  const scopeMode = scopeResolution.scopeMode;
+  const counts = await countReactionsByType(client, scope, scopeMode);
 
-  if (rowsError) {
-    if (isMissingTableError(rowsError)) {
-      return {
-        counts,
-        selectedReactionType: null,
-        existingReactionId: null,
-        schemaReady: false,
-        scopeMode,
-      };
-    }
-    throw rowsError;
-  }
-
-  for (const row of rows || []) {
-    const rawType = String(row.reaction_type || '');
-    if (isValidReactionType(rawType)) {
-      counts[rawType] += 1;
-    }
-  }
-
-  let existingResult = await client
-    .from('reactions')
-    .select('id, reaction_type')
-    .eq('post_id', scope.postId)
-    .eq('device_hash', deviceHash)
-    .maybeSingle();
-
-  if (existingResult.error && isMissingPostIdColumnError(existingResult.error)) {
-    scopeMode = 'localization';
-    existingResult = await client
+  const existingResult =
+    scopeMode === 'post'
+      ? await client
+          .from('reactions')
+          .select('id, reaction_type')
+          .eq('post_id', scope.postId)
+          .eq('device_hash', deviceHash)
+          .maybeSingle()
+      : await client
       .from('reactions')
       .select('id, reaction_type')
       .eq('post_localization_id', scope.postLocalizationId)
       .eq('device_hash', deviceHash)
       .maybeSingle();
-  }
 
   const { data: existing, error: existingError } = existingResult;
 

@@ -91,7 +91,7 @@ export default function AdminCommentsPage() {
   const [postFilter, setPostFilter] = useState<"all" | string>("all");
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(25);
+  const [pageSize, setPageSize] = useState(20);
   const [total, setTotal] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [pendingId, setPendingId] = useState<string | null>(null);

@@ -1,6 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sendContactNotification, sendAutoReply, verifyEmailConfig } from '@/lib/email';
 import { getSupabaseServerClient, isDatabaseConfigured } from '@/lib/db/client';
+import {
+  createRateLimitResponse,
+  enforceRateLimits,
+  getClientIp,
+  maskEmail,
+  verifyTurnstileCaptcha,
+} from '@/lib/request-guards';
 
 function isMissingContactTableError(error: { code?: string; message?: string } | null | undefined) {
   if (!error) {
@@ -14,9 +21,19 @@ function isMissingContactTableError(error: { code?: string; message?: string } |
 }
 
 export async function POST(request: NextRequest) {
+  const ip = getClientIp(request);
+  const rateLimit = enforceRateLimits([
+    { key: `contact:minute:${ip}`, limit: 3, windowMs: 60_000 },
+    { key: `contact:daily:${ip}`, limit: 30, windowMs: 24 * 60 * 60 * 1000 },
+  ]);
+
+  if (!rateLimit.allowed) {
+    return createRateLimitResponse(rateLimit.retryAfterSeconds);
+  }
+
   try {
     const body = await request.json();
-    const { name, email, message, locale } = body;
+    const { name, email, message, locale, captchaToken } = body;
 
     // Basic validation
     if (!name || !email || !message) {
@@ -47,6 +64,19 @@ export async function POST(request: NextRequest) {
       typeof locale === 'string' && validLocales.includes(locale)
         ? locale
         : null;
+
+    const captchaResult = await verifyTurnstileCaptcha({
+      request,
+      token: typeof captchaToken === 'string' ? captchaToken : null,
+      action: 'contact',
+    });
+
+    if (!captchaResult.ok) {
+      return NextResponse.json(
+        { error: captchaResult.error },
+        { status: captchaResult.status },
+      );
+    }
 
     // Persist contact submissions in DB when available so retention automation can enforce 12-month lifecycle.
     if (isDatabaseConfigured()) {
@@ -83,7 +113,7 @@ export async function POST(request: NextRequest) {
     // Send notification to site owner
     const notificationResult = await sendContactNotification(sanitizedData);
     if (!notificationResult.success) {
-      console.error('Failed to send notification:', notificationResult.error);
+      console.error('Failed to send notification');
       return NextResponse.json(
         { error: 'Failed to send notification email' },
         { status: 500 }
@@ -97,13 +127,15 @@ export async function POST(request: NextRequest) {
       // Don't fail the request if auto-reply fails, just log it
     }
 
-    console.log('✅ Contact form submission processed successfully:', {
-      name: sanitizedData.name,
-      email: sanitizedData.email,
-      timestamp: new Date().toISOString(),
-      notificationId: notificationResult.messageId,
-      autoReplyId: autoReplyResult.messageId
-    });
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('Contact form submission processed successfully:', {
+        nameLength: sanitizedData.name.length,
+        email: maskEmail(sanitizedData.email),
+        timestamp: new Date().toISOString(),
+        notificationSent: notificationResult.success,
+        autoReplySent: autoReplyResult.success,
+      });
+    }
 
     return NextResponse.json(
       { 
@@ -114,8 +146,8 @@ export async function POST(request: NextRequest) {
       { status: 200 }
     );
 
-  } catch (error) {
-    console.error('Contact form error:', error);
+  } catch {
+    console.error('Contact form error');
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

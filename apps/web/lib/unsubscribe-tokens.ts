@@ -92,8 +92,8 @@ export const verifyUnsubscribeToken = async (token: string): Promise<{
     }
 
     return { valid: true, email };
-  } catch (error) {
-    console.error('Token verification error:', error);
+  } catch {
+    console.error('Token verification error');
     return { valid: false };
   }
 };

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSubscriber } from '@/lib/brevo';
+import { createRateLimitResponse, enforceRateLimits, getClientIp, maskEmail } from '@/lib/request-guards';
 
 // Type for subscriber data from Brevo
 interface SubscriberData {
@@ -13,9 +14,16 @@ interface SubscriberData {
 }
 
 export async function GET(request: NextRequest) {
-  try {
-    console.log('🔍 Checking subscription status');
+  const ip = getClientIp(request);
+  const rateLimit = enforceRateLimits([
+    { key: `subscription-status:minute:${ip}`, limit: 30, windowMs: 60_000 },
+  ]);
 
+  if (!rateLimit.allowed) {
+    return createRateLimitResponse(rateLimit.retryAfterSeconds);
+  }
+
+  try {
     const { searchParams } = new URL(request.url);
     const email = searchParams.get('email');
 
@@ -40,7 +48,6 @@ export async function GET(request: NextRequest) {
     const sanitizedEmail = email.trim().toLowerCase();
 
     // Check subscriber status
-    console.log(`🔍 Checking status for: ${sanitizedEmail}`);
     const subscriberResult = await getSubscriber(sanitizedEmail);
 
     if (!subscriberResult.success) {
@@ -67,11 +74,13 @@ export async function GET(request: NextRequest) {
     const subscriberData = subscriberResult.data as SubscriberData;
     const isSubscribed = subscriberData && !subscriberData.emailBlacklisted;
 
-    console.log('✅ Subscription status checked:', {
-      email: sanitizedEmail,
-      subscribed: isSubscribed,
-      timestamp: new Date().toISOString()
-    });
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('Subscription status checked:', {
+        email: maskEmail(sanitizedEmail),
+        subscribed: isSubscribed,
+        timestamp: new Date().toISOString(),
+      });
+    }
 
     return NextResponse.json({
       success: true,
@@ -86,8 +95,8 @@ export async function GET(request: NextRequest) {
       message: isSubscribed ? 'Email is subscribed to newsletter' : 'Email is not subscribed to newsletter'
     });
 
-  } catch (error) {
-    console.error('❌ Subscription status check error:', error);
+  } catch {
+    console.error('Subscription status check error');
     return NextResponse.json(
       { 
         success: false,

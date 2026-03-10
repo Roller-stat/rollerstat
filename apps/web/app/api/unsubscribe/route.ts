@@ -1,10 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { removeSubscriber, sendUnsubscribeConfirmation } from '@/lib/brevo';
+import { createRateLimitResponse, enforceRateLimits, getClientIp, maskEmail } from '@/lib/request-guards';
 
 export async function POST(request: NextRequest) {
-  try {
-    console.log('👋 Processing unsubscribe request');
+  const ip = getClientIp(request);
+  const rateLimit = enforceRateLimits([
+    { key: `unsubscribe:minute:${ip}`, limit: 10, windowMs: 60_000 },
+  ]);
 
+  if (!rateLimit.allowed) {
+    return createRateLimitResponse(rateLimit.retryAfterSeconds);
+  }
+
+  try {
     const body = await request.json();
     const { email, locale, reasons, customReason } = body;
 
@@ -29,7 +37,6 @@ export async function POST(request: NextRequest) {
     const sanitizedEmail = email.trim().toLowerCase();
 
     // Remove subscriber from Brevo
-    console.log(`🗑️ Removing subscriber: ${sanitizedEmail}`);
     const removeResult = await removeSubscriber(sanitizedEmail);
 
     if (!removeResult.success) {
@@ -48,12 +55,6 @@ export async function POST(request: NextRequest) {
     const passedLocale = locale && validLocales.includes(locale) ? locale : null;
     const storedLocale = (removeResult as { locale?: string }).locale;
     const subscriberLocale = passedLocale || (storedLocale && validLocales.includes(storedLocale) ? storedLocale : 'en');
-    
-    console.log(`🌍 Locale for unsubscribe confirmation:`, {
-      passedLocale,
-      storedLocale,
-      finalLocale: subscriberLocale
-    });
 
     // Send unsubscribe confirmation email with locale (BEFORE blacklisting)
     const confirmationResult = await sendUnsubscribeConfirmation(sanitizedEmail, subscriberLocale);
@@ -66,15 +67,15 @@ export async function POST(request: NextRequest) {
     // Do not blacklist the contact here.
     // Removing from newsletter list + unsubscribed flags is sufficient and avoids
     // suppressing the transactional unsubscribe confirmation email.
-    console.log(`ℹ️ Skipping contact blacklisting for ${sanitizedEmail}; unsubscribe is list-based.`);
-
-    console.log('✅ Unsubscribe successful:', {
-      email: sanitizedEmail,
-      reasons: reasons || [],
-      customReason: customReason || '',
-      timestamp: new Date().toISOString(),
-      confirmationEmailSent: confirmationResult.success
-    });
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('Unsubscribe successful:', {
+        email: maskEmail(sanitizedEmail),
+        reasonCount: Array.isArray(reasons) ? reasons.length : 0,
+        hasCustomReason: Boolean(customReason?.trim()),
+        timestamp: new Date().toISOString(),
+        confirmationEmailSent: confirmationResult.success,
+      });
+    }
 
     return NextResponse.json({
       success: true,
@@ -83,8 +84,8 @@ export async function POST(request: NextRequest) {
       confirmationEmailSent: confirmationResult.success
     });
 
-  } catch (error) {
-    console.error('❌ Unsubscribe error:', error);
+  } catch {
+    console.error('Unsubscribe error');
     return NextResponse.json(
       { 
         success: false,

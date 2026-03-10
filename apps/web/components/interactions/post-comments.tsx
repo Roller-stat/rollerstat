@@ -29,12 +29,17 @@ interface PostCommentsProps {
 }
 
 export function PostComments({ postId, postLocalizationId }: PostCommentsProps) {
+  const COMMENTS_PAGE_SIZE = 20;
   const { data: session, status } = useSession();
   const [comments, setComments] = useState<CommentItem[]>([]);
   const [newComment, setNewComment] = useState('');
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editingBody, setEditingBody] = useState('');
   const [loading, setLoading] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalComments, setTotalComments] = useState(0);
 
   const currentUserId = session?.user?.id || '';
 
@@ -43,20 +48,32 @@ export function PostComments({ postId, postLocalizationId }: PostCommentsProps) 
     [comments],
   );
 
-  const fetchComments = useCallback(async () => {
+  const fetchComments = useCallback(async (targetPage = 1, append = false) => {
     const params = new URLSearchParams();
     params.set('postId', postId);
     if (postLocalizationId) {
       params.set('postLocalizationId', postLocalizationId);
     }
+    params.set('page', String(targetPage));
+    params.set('pageSize', String(COMMENTS_PAGE_SIZE));
+    params.set('sortOrder', 'desc');
+
     const response = await fetch(`/api/comments?${params.toString()}`);
     const data = await response.json();
-    setComments(Array.isArray(data.comments) ? data.comments : []);
-  }, [postId, postLocalizationId]);
+    const nextComments = Array.isArray(data.comments) ? data.comments : [];
+
+    setComments((current) => (append ? [...current, ...nextComments] : nextComments));
+    setPage(typeof data.page === 'number' && data.page > 0 ? data.page : targetPage);
+    setTotalPages(typeof data.totalPages === 'number' && data.totalPages > 0 ? data.totalPages : 1);
+    setTotalComments(typeof data.total === 'number' && data.total >= 0 ? data.total : nextComments.length);
+  }, [COMMENTS_PAGE_SIZE, postId, postLocalizationId]);
 
   useEffect(() => {
-    fetchComments().catch(() => {
+    fetchComments(1, false).catch(() => {
       setComments([]);
+      setPage(1);
+      setTotalPages(1);
+      setTotalComments(0);
     });
   }, [fetchComments]);
 
@@ -82,7 +99,7 @@ export function PostComments({ postId, postLocalizationId }: PostCommentsProps) 
       }
 
       setNewComment('');
-      await fetchComments();
+      await fetchComments(1, false);
     } finally {
       setLoading(false);
     }
@@ -107,7 +124,7 @@ export function PostComments({ postId, postLocalizationId }: PostCommentsProps) 
 
       setEditingId(null);
       setEditingBody('');
-      await fetchComments();
+      await fetchComments(1, false);
     } finally {
       setLoading(false);
     }
@@ -124,16 +141,29 @@ export function PostComments({ postId, postLocalizationId }: PostCommentsProps) 
         return;
       }
 
-      await fetchComments();
+      await fetchComments(1, false);
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function loadMoreComments() {
+    if (loadingMore || page >= totalPages) {
+      return;
+    }
+
+    try {
+      setLoadingMore(true);
+      await fetchComments(page + 1, true);
+    } finally {
+      setLoadingMore(false);
     }
   }
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Comments ({visibleComments.length})</CardTitle>
+        <CardTitle>Comments ({totalComments})</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         {status === 'authenticated' ? (
@@ -225,6 +255,14 @@ export function PostComments({ postId, postLocalizationId }: PostCommentsProps) 
 
           {visibleComments.length === 0 && (
             <p className="text-sm text-muted-foreground">No comments yet.</p>
+          )}
+
+          {page < totalPages && (
+            <div className="pt-2">
+              <Button variant="outline" onClick={loadMoreComments} disabled={loadingMore}>
+                {loadingMore ? 'Loading...' : 'Load more comments'}
+              </Button>
+            </div>
           )}
         </div>
       </CardContent>

@@ -1,12 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { addSubscriber, sendWelcomeEmail } from '@/lib/brevo';
+import {
+  createRateLimitResponse,
+  enforceRateLimits,
+  getClientIp,
+  maskEmail,
+  verifyTurnstileCaptcha,
+} from '@/lib/request-guards';
 
 export async function POST(request: NextRequest) {
-  try {
-    console.log('📧 Processing newsletter subscription request');
+  const ip = getClientIp(request);
+  const ipRateLimit = enforceRateLimits([
+    { key: `subscribe:minute:${ip}`, limit: 5, windowMs: 60_000 },
+  ]);
 
+  if (!ipRateLimit.allowed) {
+    return createRateLimitResponse(ipRateLimit.retryAfterSeconds);
+  }
+
+  try {
     const body = await request.json();
-    const { email, firstName, lastName, locale } = body;
+    const { email, firstName, lastName, locale, captchaToken } = body;
 
     // Basic validation
     if (!email) {
@@ -30,6 +44,34 @@ export async function POST(request: NextRequest) {
     const sanitizedFirstName = firstName?.trim().substring(0, 50) || '';
     const sanitizedLastName = lastName?.trim().substring(0, 50) || '';
 
+    const emailIpRateLimit = enforceRateLimits([
+      {
+        key: `subscribe:daily:${sanitizedEmail}:${ip}`,
+        limit: 20,
+        windowMs: 24 * 60 * 60 * 1000,
+      },
+    ]);
+
+    if (!emailIpRateLimit.allowed) {
+      return createRateLimitResponse(emailIpRateLimit.retryAfterSeconds);
+    }
+
+    const captchaResult = await verifyTurnstileCaptcha({
+      request,
+      token: typeof captchaToken === 'string' ? captchaToken : null,
+      action: 'subscribe',
+    });
+
+    if (!captchaResult.ok) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: captchaResult.error,
+        },
+        { status: captchaResult.status },
+      );
+    }
+
     // Validate and sanitize locale
     const validLocales = ['en', 'es', 'fr', 'it', 'pt'];
     const sanitizedLocale = locale && validLocales.includes(locale) ? locale : 'en';
@@ -44,7 +86,6 @@ export async function POST(request: NextRequest) {
     };
 
     // Add subscriber to Brevo
-    console.log(`📝 Adding subscriber: ${sanitizedEmail}`);
     const addResult = await addSubscriber(sanitizedEmail, attributes);
 
     if (!addResult.success) {
@@ -83,13 +124,7 @@ export async function POST(request: NextRequest) {
 
     // Send welcome email only if shouldSendWelcome is true
     let welcomeEmailSent = false;
-    console.log(`🔍 Welcome email decision for ${sanitizedEmail}:`, {
-      shouldSendWelcome: addResult.shouldSendWelcome,
-      condition: addResult.shouldSendWelcome !== false
-    });
-    
     if (addResult.shouldSendWelcome !== false) {
-      console.log(`📧 Sending welcome email to: ${sanitizedEmail} with locale: ${sanitizedLocale}`);
       const welcomeResult = await sendWelcomeEmail(sanitizedEmail, sanitizedFirstName || 'Friend', sanitizedLocale);
 
       if (!welcomeResult.success) {
@@ -97,18 +132,16 @@ export async function POST(request: NextRequest) {
         // Don't fail the subscription if welcome email fails
       } else {
         welcomeEmailSent = true;
-        console.log(`✅ Welcome email sent successfully to: ${sanitizedEmail}`);
       }
-    } else {
-      console.log(`📧 Skipping welcome email for ${sanitizedEmail} - shouldSendWelcome is false`);
     }
 
-    console.log('✅ Newsletter subscription successful:', {
-      email: sanitizedEmail,
-      firstName: sanitizedFirstName,
-      timestamp: new Date().toISOString(),
-      welcomeEmailSent: welcomeEmailSent
-    });
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('Newsletter subscription successful:', {
+        email: maskEmail(sanitizedEmail),
+        timestamp: new Date().toISOString(),
+        welcomeEmailSent: welcomeEmailSent
+      });
+    }
 
     return NextResponse.json({
       success: true,
@@ -117,18 +150,12 @@ export async function POST(request: NextRequest) {
       welcomeEmailSent: welcomeEmailSent
     });
 
-  } catch (error) {
-    console.error('❌ Newsletter subscription error:', error);
-    console.error('❌ Error details:', {
-      message: error instanceof Error ? error.message : 'Unknown error',
-      stack: error instanceof Error ? error.stack : undefined,
-      error: error
-    });
+  } catch {
+    console.error('Newsletter subscription error');
     return NextResponse.json(
       { 
         success: false,
-        error: 'Internal server error. Please try again later.',
-        details: error instanceof Error ? error.message : 'Unknown error'
+        error: 'Internal server error. Please try again later.'
       },
       { status: 500 }
     );
@@ -148,12 +175,11 @@ export async function GET() {
       brevoConfigured: isConfigured,
       timestamp: new Date().toISOString()
     });
-  } catch (error) {
-    console.error('Health check error:', error);
+  } catch {
+    console.error('Health check error');
     return NextResponse.json({ 
       status: 'error', 
       message: 'Newsletter subscription endpoint has issues',
-      error: error instanceof Error ? error.message : 'Unknown error',
       timestamp: new Date().toISOString()
     }, { status: 500 });
   }

@@ -22,6 +22,10 @@ function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value));
 }
 
+function sanitizeSearchValue(value: string): string {
+  return value.replace(/[(),]/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
 function isCommentStatus(value: string): value is CommentStatus {
   return (VALID_STATUSES as readonly string[]).includes(value);
 }
@@ -53,7 +57,7 @@ export async function GET(request: NextRequest) {
       items: [],
       total: 0,
       page: 1,
-      pageSize: 25,
+      pageSize: 20,
       totalPages: 1,
       filters: { posts: [] },
     });
@@ -63,9 +67,9 @@ export async function GET(request: NextRequest) {
   const typeParam = request.nextUrl.searchParams.get('type');
   const localeParam = request.nextUrl.searchParams.get('locale');
   const postLocalizationIdParam = request.nextUrl.searchParams.get('postLocalizationId');
-  const searchQuery = (request.nextUrl.searchParams.get('q') || '').trim().toLowerCase();
+  const searchQuery = sanitizeSearchValue((request.nextUrl.searchParams.get('q') || '').trim().toLowerCase());
   const requestedPage = parsePositiveInt(request.nextUrl.searchParams.get('page'), 1);
-  const pageSize = clamp(parsePositiveInt(request.nextUrl.searchParams.get('pageSize'), 25), 5, 100);
+  const pageSize = clamp(parsePositiveInt(request.nextUrl.searchParams.get('pageSize'), 20), 5, 100);
 
   const statusFilter = statusParam && isCommentStatus(statusParam) ? statusParam : 'all';
   const typeFilter = typeParam && isPostType(typeParam) ? typeParam : 'all';
@@ -201,51 +205,105 @@ export async function GET(request: NextRequest) {
     });
   }
 
-  let commentsQuery = client
-    .from('comments')
-    .select('id, post_id, post_localization_id, user_id, body, status, created_at, updated_at')
-    .in('post_id', scopedPostIdsForComments)
-    .order('created_at', { ascending: false });
+  const matchedLocalizationIds = searchQuery
+    ? scopedLocalizations
+        .filter((row) => {
+          const title = row.title?.toLowerCase() || '';
+          const slug = row.slug?.toLowerCase() || '';
+          const locale = row.locale?.toLowerCase() || '';
+          return (
+            title.includes(searchQuery) ||
+            slug.includes(searchQuery) ||
+            locale.includes(searchQuery)
+          );
+        })
+        .map((row) => row.id)
+    : [];
 
-  if (statusFilter !== 'all') {
-    commentsQuery = commentsQuery.eq('status', statusFilter);
-  }
+  let matchedUserIds: string[] = [];
+  if (searchQuery) {
+    const { data: matchedUsers, error: matchedUsersError } = await client
+      .from('app_users')
+      .select('id')
+      .or(`name.ilike.%${searchQuery}%,email.ilike.%${searchQuery}%`)
+      .limit(200);
 
-  let { data: comments, error } = await commentsQuery;
-  let isLegacyCommentsSchema = false;
-
-  if (error && isMissingCommentsPostIdColumnError(error)) {
-    isLegacyCommentsSchema = true;
-    let legacyCommentsQuery = client
-      .from('comments')
-      .select('id, post_localization_id, user_id, body, status, created_at, updated_at')
-      .in('post_localization_id', scopedLocalizationIdsForComments)
-      .order('created_at', { ascending: false });
-
-    if (statusFilter !== 'all') {
-      legacyCommentsQuery = legacyCommentsQuery.eq('status', statusFilter);
+    if (matchedUsersError) {
+      console.error('Error fetching matching users for comments search:', matchedUsersError);
+      return NextResponse.json({ error: 'Failed to load comments' }, { status: 500 });
     }
 
-    const legacyResult = await legacyCommentsQuery;
-    comments = (legacyResult.data || []).map((comment) => ({
-      ...comment,
-      post_id: null,
-    }));
-    error = legacyResult.error;
+    matchedUserIds = (matchedUsers || []).map((row) => row.id);
   }
 
-  if (error || !comments) {
+  const page = Math.max(1, requestedPage);
+  const from = (page - 1) * pageSize;
+  const to = from + pageSize - 1;
+
+  const buildCommentsQuery = (legacySchema: boolean) => {
+    let query = client
+      .from('comments')
+      .select(
+        'id, post_id, post_localization_id, user_id, body, status, created_at, updated_at',
+        { count: 'exact' },
+      )
+      .order('created_at', { ascending: false });
+
+    if (legacySchema) {
+      query = query.in('post_localization_id', scopedLocalizationIdsForComments);
+    } else {
+      query = query.in('post_id', scopedPostIdsForComments);
+    }
+
+    if (statusFilter !== 'all') {
+      query = query.eq('status', statusFilter);
+    }
+
+    if (searchQuery) {
+      const orFilters = [`body.ilike.%${searchQuery}%`];
+      if (matchedUserIds.length > 0) {
+        orFilters.push(`user_id.in.(${matchedUserIds.join(',')})`);
+      }
+      if (matchedLocalizationIds.length > 0) {
+        orFilters.push(`post_localization_id.in.(${matchedLocalizationIds.join(',')})`);
+      }
+
+      query = query.or(orFilters.join(','));
+    }
+
+    return query.range(from, to);
+  };
+
+  let isLegacyCommentsSchema = false;
+  let commentsResult = await buildCommentsQuery(false);
+
+  if (commentsResult.error && isMissingCommentsPostIdColumnError(commentsResult.error)) {
+    isLegacyCommentsSchema = true;
+    commentsResult = await buildCommentsQuery(true);
+  }
+
+  if (commentsResult.error || !commentsResult.data) {
+    const { error } = commentsResult;
     console.error('Error fetching comments for admin:', error);
     return NextResponse.json({ error: 'Failed to load comments' }, { status: 500 });
   }
 
+  const comments = isLegacyCommentsSchema
+    ? commentsResult.data.map((comment) => ({
+        ...comment,
+        post_id: null,
+      }))
+    : commentsResult.data;
+
   if (comments.length === 0) {
+    const total = commentsResult.count ?? 0;
+    const totalPages = Math.max(1, Math.ceil(total / pageSize));
     return NextResponse.json({
       items: [],
-      total: 0,
-      page: 1,
+      total,
+      page: Math.min(page, totalPages),
       pageSize,
-      totalPages: 1,
+      totalPages,
       filters: { posts: postOptions },
     });
   }
@@ -282,28 +340,14 @@ export async function GET(request: NextRequest) {
     };
   });
 
-  const searched = searchQuery
-    ? mapped.filter((comment) => {
-        return (
-          comment.body.toLowerCase().includes(searchQuery) ||
-          comment.userName.toLowerCase().includes(searchQuery) ||
-          (comment.userEmail || '').toLowerCase().includes(searchQuery) ||
-          (comment.postTitle || '').toLowerCase().includes(searchQuery)
-        );
-      })
-    : mapped;
-
-  const total = searched.length;
+  const total = commentsResult.count ?? mapped.length;
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
-  const page = clamp(requestedPage, 1, totalPages);
-  const start = (page - 1) * pageSize;
-  const end = start + pageSize;
-  const items = searched.slice(start, end);
+  const normalizedPage = clamp(page, 1, totalPages);
 
   return NextResponse.json({
-    items,
+    items: mapped,
     total,
-    page,
+    page: normalizedPage,
     pageSize,
     totalPages,
     filters: {

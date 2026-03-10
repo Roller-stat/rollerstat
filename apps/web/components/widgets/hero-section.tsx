@@ -7,6 +7,7 @@ import { useVideoRotation } from "@/lib/hooks";
 import { useLocale, useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { NewsletterOverlay } from "./newsletter-overlay";
+import { TurnstileWidget } from "@/components/security/turnstile-widget";
 
 export function HeroSection() {
   const t = useTranslations("hero");
@@ -14,6 +15,8 @@ export function HeroSection() {
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState("");
+  const captchaEnabled = Boolean(process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY);
   
   // Array of video URLs - replace with your actual video URLs
   const videos = [
@@ -34,6 +37,11 @@ export function HeroSection() {
       return;
     }
 
+    if (captchaEnabled && !captchaToken) {
+      toast.error("Please complete the CAPTCHA.");
+      return;
+    }
+
     setIsLoading(true);
 
     try {
@@ -45,6 +53,7 @@ export function HeroSection() {
         body: JSON.stringify({
           email: email.trim(),
           locale,
+          captchaToken,
         }),
       });
 
@@ -58,6 +67,7 @@ export function HeroSection() {
         toast.success("Successfully subscribed to our newsletter!");
         setIsSubscribed(true);
         setEmail("");
+        setCaptchaToken("");
       } else {
         toast.error(data.error || "Failed to subscribe. Please try again.");
       }
@@ -101,7 +111,7 @@ export function HeroSection() {
                     />
                     <Button 
                       onClick={handleSubscribe}
-                      disabled={isLoading || isSubscribed}
+                      disabled={isLoading || isSubscribed || (captchaEnabled && !captchaToken)}
                       className={`flex-[1] rounded-none border border-gray-300 border-l-0 px-1 sm:px-2 md:px-3 lg:px-4 h-8 sm:h-10 md:h-12 lg:h-14 font-semibold text-xs sm:text-xs md:text-sm lg:text-sm uppercase tracking-wide ${
                         isSubscribed
                           ? "bg-green-600 hover:bg-green-700 text-white"
@@ -123,6 +133,7 @@ export function HeroSection() {
                     </Button>
                   </div>
                 </div>
+                <TurnstileWidget action="subscribe" onTokenChange={setCaptchaToken} />
               </div>
             </div>
           </div>
@@ -183,7 +194,7 @@ export function HeroSection() {
                   />
                   <Button 
                     onClick={handleSubscribe}
-                    disabled={isLoading || isSubscribed}
+                    disabled={isLoading || isSubscribed || (captchaEnabled && !captchaToken)}
                     className={`flex-[1] rounded-none border border-gray-300 border-l-0 px-2 sm:px-2 h-8 sm:h-10 font-semibold text-[10px] sm:text-sm uppercase tracking-wide ${
                       isSubscribed
                         ? "bg-green-600 hover:bg-green-700 text-white"
@@ -205,6 +216,7 @@ export function HeroSection() {
                   </Button>
                 </div>
               </div>
+              <TurnstileWidget action="subscribe" onTokenChange={setCaptchaToken} />
             </div>
           </div>
           

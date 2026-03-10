@@ -22,6 +22,10 @@ function resolveWebAppDir(): string {
   return existing ?? candidates[0]
 }
 
+function isFileFallbackEnabled(): boolean {
+  return process.env.NODE_ENV !== "production"
+}
+
 // Validation schema for post updates
 const updatePostSchema = z.object({
   title: z.string().min(1, "Title is required").optional(),
@@ -72,7 +76,15 @@ export async function GET(
       )
     }
 
-    const ops = isDatabaseConfigured() ? dbOps : { updatePost, deletePost, listPosts }
+    const databaseConfigured = isDatabaseConfigured()
+    if (!databaseConfigured && !isFileFallbackEnabled()) {
+      return NextResponse.json(
+        { error: "Database is required in production" },
+        { status: 503 }
+      )
+    }
+
+    const ops = databaseConfigured ? dbOps : { updatePost, deletePost, listPosts }
 
     // Get posts for the specific locale and type
     const posts = await ops.listPosts(locale, type as "news" | "blog")
@@ -126,7 +138,7 @@ export async function GET(
       translation_key: post.data.translation_key,
     }
 
-    if (isDatabaseConfigured() && post.postId) {
+    if (databaseConfigured && post.postId) {
       const client = getSupabaseServerClient()
       if (client) {
         const { data: localesRows } = await client
@@ -193,7 +205,15 @@ export async function PUT(
     // Validate data
     const validatedData = updatePostSchema.parse(body)
     
-    const ops = isDatabaseConfigured() ? dbOps : { updatePost, deletePost, listPosts }
+    const databaseConfigured = isDatabaseConfigured()
+    if (!databaseConfigured && !isFileFallbackEnabled()) {
+      return NextResponse.json(
+        { error: "Database is required in production" },
+        { status: 503 }
+      )
+    }
+
+    const ops = databaseConfigured ? dbOps : { updatePost, deletePost, listPosts }
 
     // Update post
     const result = await ops.updatePost(locale, type as "news" | "blog", slug, validatedData as Partial<PostData>)
@@ -205,7 +225,7 @@ export async function PUT(
       )
     }
 
-    if (!isDatabaseConfigured()) {
+    if (!databaseConfigured) {
       try {
         const { exec } = await import("child_process")
         const { promisify } = await import("util")
@@ -271,7 +291,15 @@ export async function DELETE(
       )
     }
 
-    const ops = isDatabaseConfigured() ? dbOps : { updatePost, deletePost, listPosts }
+    const databaseConfigured = isDatabaseConfigured()
+    if (!databaseConfigured && !isFileFallbackEnabled()) {
+      return NextResponse.json(
+        { error: "Database is required in production" },
+        { status: 503 }
+      )
+    }
+
+    const ops = databaseConfigured ? dbOps : { updatePost, deletePost, listPosts }
     const scope = request.nextUrl.searchParams.get("scope") === "all-draft-locales"
       ? "all-draft-locales"
       : "locale"
@@ -301,7 +329,7 @@ export async function DELETE(
     let result: { success: boolean; error?: string } = { success: true }
 
     if (scope === "all-draft-locales") {
-      if (isDatabaseConfigured()) {
+      if (databaseConfigured) {
         const client = getSupabaseServerClient()
         if (!client) {
           return NextResponse.json(
@@ -407,7 +435,7 @@ export async function DELETE(
       )
     }
 
-    if (!isDatabaseConfigured()) {
+    if (!databaseConfigured) {
       try {
         const { exec } = await import("child_process")
         const { promisify } = await import("util")

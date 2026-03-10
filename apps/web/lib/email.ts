@@ -11,14 +11,29 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+function sanitizeMailHeader(value: string): string {
+  return value.replace(/[\r\n]+/g, ' ').trim();
+}
+
 // Verify transporter configuration
 export const verifyEmailConfig = async () => {
   try {
     await transporter.verify();
-    console.log('✅ Email server is ready to send messages');
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('Email server is ready to send messages');
+    }
     return true;
-  } catch (error) {
-    console.error('❌ Email server configuration error:', error);
+  } catch {
+    console.error('Email server configuration error');
     return false;
   }
 };
@@ -30,11 +45,15 @@ export const sendContactNotification = async (formData: {
   message: string;
 }) => {
   const { name, email, message } = formData;
+  const escapedName = escapeHtml(name);
+  const escapedEmail = escapeHtml(email);
+  const escapedMessageHtml = escapeHtml(message).replace(/\n/g, '<br>');
+  const safeSubjectName = sanitizeMailHeader(name);
   
   const mailOptions = {
     from: `"Rollerstat Contact Form" <${process.env.SMTP_USER}>`,
     to: process.env.CONTACT_EMAIL || process.env.SMTP_USER,
-    subject: `New Contact Form Submission from ${name}`,
+    subject: `New Contact Form Submission from ${safeSubjectName}`,
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h2 style="color: #057ec8; border-bottom: 2px solid #057ec8; padding-bottom: 10px;">
@@ -43,11 +62,11 @@ export const sendContactNotification = async (formData: {
         
         <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
           <h3 style="color: #333; margin-top: 0;">Contact Details:</h3>
-          <p><strong>Name:</strong> ${name}</p>
-          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Name:</strong> ${escapedName}</p>
+          <p><strong>Email:</strong> ${escapedEmail}</p>
           <p><strong>Message:</strong></p>
           <div style="background-color: white; padding: 15px; border-radius: 4px; border-left: 4px solid #057ec8;">
-            ${message.replace(/\n/g, '<br>')}
+            ${escapedMessageHtml}
           </div>
         </div>
         
@@ -68,16 +87,20 @@ export const sendContactNotification = async (formData: {
 
   try {
     const result = await transporter.sendMail(mailOptions);
-    console.log('✅ Contact notification sent:', result.messageId);
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('Contact notification sent');
+    }
     return { success: true, messageId: result.messageId };
   } catch (error) {
-    console.error('❌ Failed to send contact notification:', error);
+    console.error('Failed to send contact notification');
     return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
   }
 };
 
 // Send auto-reply to user
 export const sendAutoReply = async (userEmail: string, userName: string) => {
+  const escapedUserName = escapeHtml(userName);
+
   const mailOptions = {
     from: `"Rollerstat" <${process.env.CONTACT_EMAIL || 'noreply@rollerstat.com'}>`,
     to: userEmail,
@@ -89,7 +112,7 @@ export const sendAutoReply = async (userEmail: string, userName: string) => {
           <p style="color: #666; margin: 5px 0;">Your Source for Roller Hockey News</p>
         </div>
         
-        <h2 style="color: #333;">Thank you for reaching out, ${userName}!</h2>
+        <h2 style="color: #333;">Thank you for reaching out, ${escapedUserName}!</h2>
         
         <p>We've received your message and will get back to you as soon as possible. Our team typically responds within 24 hours.</p>
         
@@ -124,10 +147,12 @@ export const sendAutoReply = async (userEmail: string, userName: string) => {
 
   try {
     const result = await transporter.sendMail(mailOptions);
-    console.log('✅ Auto-reply sent:', result.messageId);
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('Auto-reply sent');
+    }
     return { success: true, messageId: result.messageId };
   } catch (error) {
-    console.error('❌ Failed to send auto-reply:', error);
+    console.error('Failed to send auto-reply');
     return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
   }
 };

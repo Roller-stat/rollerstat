@@ -8,6 +8,25 @@ type CommentUserRelation = {
   email?: string | null;
 };
 
+type CommentSortOrder = 'asc' | 'desc';
+
+function parsePositiveInt(value: string | null, fallback: number) {
+  if (!value) {
+    return fallback;
+  }
+
+  const parsed = Number.parseInt(value, 10);
+  if (!Number.isFinite(parsed) || parsed < 1) {
+    return fallback;
+  }
+
+  return parsed;
+}
+
+function clamp(value: number, min: number, max: number) {
+  return Math.min(max, Math.max(min, value));
+}
+
 function resolveCommentUser(
   relation: CommentUserRelation | CommentUserRelation[] | null | undefined,
 ): CommentUserRelation | null {
@@ -174,34 +193,72 @@ async function ensureAppUser(
 export async function GET(request: NextRequest) {
   const postId = request.nextUrl.searchParams.get('postId');
   const postLocalizationId = request.nextUrl.searchParams.get('postLocalizationId');
+  const requestedPage = parsePositiveInt(request.nextUrl.searchParams.get('page'), 1);
+  const pageSize = clamp(parsePositiveInt(request.nextUrl.searchParams.get('pageSize'), 20), 1, 50);
+  const sortOrderParam = request.nextUrl.searchParams.get('sortOrder');
+  const sortOrder: CommentSortOrder = sortOrderParam === 'asc' ? 'asc' : 'desc';
+
   if (!postId && !postLocalizationId) {
     return NextResponse.json({ error: 'postId or postLocalizationId is required' }, { status: 400 });
   }
 
   const client = getSupabaseServerClient();
   if (!client) {
-    return NextResponse.json({ comments: [] });
+    return NextResponse.json({
+      comments: [],
+      total: 0,
+      page: 1,
+      pageSize,
+      totalPages: 1,
+      hasMore: false,
+      sortOrder,
+    });
   }
 
   const scope = await resolvePostScope(client, postId, postLocalizationId);
   if (!scope) {
-    return NextResponse.json({ comments: [] });
+    return NextResponse.json({
+      comments: [],
+      total: 0,
+      page: 1,
+      pageSize,
+      totalPages: 1,
+      hasMore: false,
+      sortOrder,
+    });
   }
 
-  const { data, error } = await client
+  const page = Math.max(1, requestedPage);
+  const start = (page - 1) * pageSize;
+  const end = start + pageSize - 1;
+
+  const { data, error, count } = await client
     .from('comments')
-    .select('id, post_id, post_localization_id, user_id, body, status, created_at, updated_at, app_users(name, image, email)')
+    .select(
+      'id, post_id, post_localization_id, user_id, body, status, created_at, updated_at, app_users(name, image, email)',
+      { count: 'exact' },
+    )
     .eq('post_id', scope.postId)
     .in('status', ['visible'])
-    .order('created_at', { ascending: true });
+    .order('created_at', { ascending: sortOrder === 'asc' })
+    .range(start, end);
 
   if (error) {
     console.error('Error fetching comments:', error);
     return NextResponse.json({ error: 'Failed to fetch comments' }, { status: 500 });
   }
 
+  const normalizedTotal = count ?? 0;
+  const totalPages = Math.max(1, Math.ceil(normalizedTotal / pageSize));
+
   return NextResponse.json({
     comments: (data || []).map((row) => mapCommentRow(row)),
+    total: normalizedTotal,
+    page,
+    pageSize,
+    totalPages,
+    hasMore: page < totalPages,
+    sortOrder,
   });
 }
 
