@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import crypto from 'node:crypto';
 import { getSupabaseServerClient } from '@/lib/db/client';
-import { auth } from '@/lib/auth';
+import { getRequestUser } from '@/lib/request-user';
 
 const DEVICE_COOKIE_NAME = 'rs_device_id';
 const REACTION_TYPES = ['like', 'applaud', 'love', 'dislike'] as const;
@@ -79,8 +79,21 @@ async function resolveDeviceHash() {
   };
 }
 
-async function resolveActorHash(userId?: string) {
-  const device = await resolveDeviceHash();
+async function resolveDeviceHashFromRequest(request: NextRequest) {
+  const mobileDeviceId = request.headers.get('x-mobile-device-id')?.trim();
+  if (mobileDeviceId) {
+    return {
+      deviceId: mobileDeviceId,
+      isNew: false,
+      deviceHash: hashDeviceId(`mobile:${mobileDeviceId}`),
+    };
+  }
+
+  return resolveDeviceHash();
+}
+
+async function resolveActorHash(request: NextRequest, userId?: string) {
+  const device = await resolveDeviceHashFromRequest(request);
 
   if (userId) {
     return {
@@ -310,10 +323,10 @@ export async function GET(request: NextRequest) {
     });
   }
 
-  const session = await auth();
+  const user = await getRequestUser(request);
   let actor: Awaited<ReturnType<typeof resolveActorHash>>;
   try {
-    actor = await resolveActorHash(session?.user?.id);
+    actor = await resolveActorHash(request, user?.id);
   } catch (error) {
     console.error('Reaction endpoint is not configured:', error);
     return NextResponse.json(
@@ -376,10 +389,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Database is not configured' }, { status: 500 });
   }
 
-  const session = await auth();
+  const user = await getRequestUser(request);
   let actor: Awaited<ReturnType<typeof resolveActorHash>>;
   try {
-    actor = await resolveActorHash(session?.user?.id);
+    actor = await resolveActorHash(request, user?.id);
   } catch (error) {
     console.error('Reaction endpoint is not configured:', error);
     return NextResponse.json(

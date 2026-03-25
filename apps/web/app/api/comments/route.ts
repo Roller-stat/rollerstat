@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@/lib/auth';
 import { getSupabaseServerClient } from '@/lib/db/client';
+import { getRequestUser } from '@/lib/request-user';
 
 type CommentUserRelation = {
   name?: string | null;
@@ -263,8 +263,8 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const session = await auth();
-  if (!session?.user?.id) {
+  const user = await getRequestUser(request);
+  if (!user?.id) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -296,9 +296,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid post context' }, { status: 400 });
   }
 
-  let commentUserId = session.user.id;
+  let commentUserId = user.id;
   try {
-    commentUserId = await ensureAppUser(client, session.user);
+    commentUserId = await ensureAppUser(client, user);
   } catch (userError) {
     console.error('Error upserting user:', userError);
     return NextResponse.json({ error: 'Failed to persist user profile' }, { status: 500 });

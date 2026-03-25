@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@/lib/auth';
 import { getSupabaseServerClient } from '@/lib/db/client';
+import { getRequestUser } from '@/lib/request-user';
 
 type AppUserEmailRelation =
   | { email?: string | null }
@@ -24,8 +24,8 @@ export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const session = await auth();
-  if (!session?.user?.id) {
+  const user = await getRequestUser(request);
+  if (!user?.id) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -53,11 +53,11 @@ export async function PATCH(
   }
 
   const commentOwnerEmail = extractOwnerEmail(existing.app_users as AppUserEmailRelation);
-  const isOwnerById = existing.user_id === session.user.id;
+  const isOwnerById = existing.user_id === user.id;
   const isOwnerByEmail =
-    Boolean(session.user.email) &&
+    Boolean(user.email) &&
     Boolean(commentOwnerEmail) &&
-    String(session.user.email).toLowerCase() === String(commentOwnerEmail).toLowerCase();
+    String(user.email).toLowerCase() === String(commentOwnerEmail).toLowerCase();
 
   if (!isOwnerById && !isOwnerByEmail) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
@@ -84,8 +84,8 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const session = await auth();
-  if (!session?.user?.id) {
+  const user = await getRequestUser(request);
+  if (!user?.id) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -107,11 +107,11 @@ export async function DELETE(
   }
 
   const commentOwnerEmail = extractOwnerEmail(existing.app_users as AppUserEmailRelation);
-  const isOwnerById = existing.user_id === session.user.id;
+  const isOwnerById = existing.user_id === user.id;
   const isOwnerByEmail =
-    Boolean(session.user.email) &&
+    Boolean(user.email) &&
     Boolean(commentOwnerEmail) &&
-    String(session.user.email).toLowerCase() === String(commentOwnerEmail).toLowerCase();
+    String(user.email).toLowerCase() === String(commentOwnerEmail).toLowerCase();
 
   if (!isOwnerById && !isOwnerByEmail) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });

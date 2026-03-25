@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "npm run dev:web",
     "dev:web": "cd apps/web && next dev",
+    "dev:mobile": "cd apps/mobile && npm run start",
+    "dev:mobile:android": "cd apps/mobile && npm run android",
     "dev:admin": "node scripts/dev-admin.mjs",
     "build": "npm run build:web && npm run build:admin",
     "build:web": "cd apps/web && next build && next-sitemap",

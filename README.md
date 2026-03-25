@@ -12,6 +12,7 @@ Newsletter campaign management is handled directly in Brevo. The admin dashboard
 
 - `apps/web` - public website + public APIs
 - `apps/admin` - admin dashboard + admin APIs
+- `apps/mobile` - Android-first Expo React Native client app
 - `packages/db/migrations` - SQL migrations for Supabase/Postgres
 - `scripts` - operational scripts (admin dev launcher, retention cleanup)
 
@@ -48,6 +49,12 @@ Run admin dashboard:
 
 ```bash
 npm run dev:admin
+```
+
+Run mobile app (Android):
+
+```bash
+npm run dev:mobile:android
 ```
 
 Local URLs:
@@ -115,3 +122,17 @@ Apply them in Supabase SQL Editor (or your migration tooling) to update schema/s
 ## IP Address command
 
 curl -s https://api.ipify.org && echo
+
+
+
+About the Firebase/Web env points you pasted:
+
+Firebase setup is not required to run locally right now.
+It is required before release if you want Crashlytics/Analytics:
+Create Firebase project
+Add Android app com.rollerstat.app
+Put google-services.json at apps/mobile/google-services.json
+Then I wire Firebase SDK + telemetry.ts implementation
+Web env modes:
+Local: ENV=LOCAL
+Prod: ENV=PROD, NEXT_PUBLIC_BASE_URL=https://rollerstat.com, NEXT_PUBLIC_SITE_URL=https://rollerstat.com, plus mobile auth/db/email vars in deployment env.
