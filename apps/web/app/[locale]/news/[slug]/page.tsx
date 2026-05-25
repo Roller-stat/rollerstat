@@ -10,20 +10,17 @@ import { Footer } from "@/components/shared/footer";
 import { PostReactions } from "@/components/interactions/post-reactions";
 import { PostComments } from "@/components/interactions/post-comments";
 import { isDatabaseConfigured } from "@/lib/db/client";
+import {
+  absoluteUrl,
+  DEFAULT_OG_IMAGE,
+  getOpenGraphLocale,
+  getPostAlternates,
+  ORGANIZATION_LOGO,
+  SITE_NAME,
+} from "@/lib/seo";
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
-
-function getOpenGraphLocale(locale: string): string {
-  const localeMap: Record<string, string> = {
-    'en': 'en_US',
-    'es': 'es_ES',
-    'fr': 'fr_FR',
-    'it': 'it_IT',
-    'pt': 'pt_PT',
-  };
-  return localeMap[locale] || 'en_US';
-}
 
 interface NewsDetailPageProps {
   params: Promise<{
@@ -44,27 +41,24 @@ export async function generateMetadata({ params }: NewsDetailPageProps) {
     notFound();
   }
 
-  // SEO metadata handled by locale layout
+  const canonicalUrl = absoluteUrl(post.url);
+  const imageUrl = post.coverImage ? absoluteUrl(post.coverImage) : DEFAULT_OG_IMAGE;
+  const languages = await getPostAlternates(post);
 
   return {
-    title: `${post.title} - Rollerstat`,
+    title: `${post.title} - ${SITE_NAME}`,
     description: post.summary,
+    keywords: [...post.tags, "roller hockey", "quad hockey", "rink hockey", "European roller hockey", "Rollerstat"],
     openGraph: {
       title: post.title,
       description: post.summary,
       type: "article",
       locale: getOpenGraphLocale(locale),
-      siteName: "Rollerstat",
-      url: `https://rollerstat.com${post.url}`,
+      siteName: SITE_NAME,
+      url: canonicalUrl,
       images: [
-        ...(post.coverImage ? [{
-          url: post.coverImage,
-          width: 1200,
-          height: 630,
-          alt: post.title,
-        }] : []),
         {
-          url: "https://rollerstat.com/og-image.jpg",
+          url: imageUrl,
           width: 1200,
           height: 630,
           alt: post.title,
@@ -73,23 +67,18 @@ export async function generateMetadata({ params }: NewsDetailPageProps) {
       publishedTime: post.date,
       modifiedTime: post.updated || post.date,
       authors: [post.author],
+      section: "Roller Hockey News",
+      tags: post.tags,
     },
     twitter: {
       card: "summary_large_image",
       title: post.title,
       description: post.summary,
-      images: post.coverImage ? [post.coverImage] : ["https://rollerstat.com/og-image.jpg"],
+      images: [imageUrl],
     },
     alternates: {
-      canonical: `https://rollerstat.com${post.url}`,
-      languages: {
-        'x-default': `https://rollerstat.com${post.url.replace(`/${locale}/`, '/en/')}`,
-        'en': `https://rollerstat.com${post.url.replace(`/${locale}/`, '/en/')}`,
-        'es': `https://rollerstat.com${post.url.replace(`/${locale}/`, '/es/')}`,
-        'fr': `https://rollerstat.com${post.url.replace(`/${locale}/`, '/fr/')}`,
-        'it': `https://rollerstat.com${post.url.replace(`/${locale}/`, '/it/')}`,
-        'pt': `https://rollerstat.com${post.url.replace(`/${locale}/`, '/pt/')}`,
-      },
+      canonical: canonicalUrl,
+      languages,
     },
   };
 }
@@ -113,27 +102,36 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
   // JSON-LD for SEO
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": "NewsArticle",
     headline: post.title,
     description: post.summary,
-    image: post.coverImage,
+    image: [post.coverImage ? absoluteUrl(post.coverImage) : DEFAULT_OG_IMAGE],
     datePublished: post.date,
     dateModified: post.updated || post.date,
+    articleSection: "Roller Hockey News",
+    keywords: post.tags,
+    about: [
+      {
+        "@type": "Sport",
+        name: "Roller hockey",
+        alternateName: ["quad hockey", "rink hockey"],
+      },
+    ],
     author: {
       "@type": "Person",
       name: post.author,
     },
     publisher: {
       "@type": "Organization",
-      name: "Rollerstat",
+      name: SITE_NAME,
       logo: {
         "@type": "ImageObject",
-        url: `${process.env.NEXT_PUBLIC_SITE_URL || "https://rollerstat.com"}/rollerstat-logo.png`,
+        url: ORGANIZATION_LOGO,
       },
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `${process.env.NEXT_PUBLIC_SITE_URL || "https://rollerstat.com"}${post.url}`,
+      "@id": absoluteUrl(post.url),
     },
     inLanguage: locale,
   };

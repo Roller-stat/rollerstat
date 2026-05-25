@@ -3,6 +3,7 @@ import { Barlow_Condensed, Allura } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { WebSessionProvider } from "@/components/auth/web-session-provider";
 import { ThemeProvider } from "@/components/theme/theme-provider";
+import { SITE_URL } from "@/lib/seo";
 import "./globals.css";
 
 const barlowCondensed = Barlow_Condensed({
@@ -18,6 +19,7 @@ const allura = Allura({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Rollerstat - Your Source for Roller Hockey News",
     template: "%s | Rollerstat",

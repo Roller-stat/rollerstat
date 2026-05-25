@@ -7,7 +7,7 @@
     "dev:web": "cd apps/web && next dev",
     "dev:admin": "node scripts/dev-admin.mjs",
     "build": "npm run build:web && npm run build:admin",
-    "build:web": "cd apps/web && next build && next-sitemap",
+    "build:web": "cd apps/web && next build",
     "build:admin": "cd apps/admin && next build",
     "start": "npm run start:web",
     "start:web": "cd apps/web && next start -H 0.0.0.0 -p ${PORT:-3000}",
